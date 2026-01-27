@@ -8,6 +8,7 @@ import VerificationScreen from '../screens/Verification';
 import ForgotPasswordScreen from '../screens/ForgotPassword';
 import CreateShopScreen from '../screens/CreateShop';
 import RetailerHomeScreen from '../screens/RetailerHome';
+import MyShopScreen from '../screens/MyShop';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,7 @@ const RootNavigator = () => {
         <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
         <Stack.Screen name="RetailerHome" component={RetailerHomeScreen} />
         <Stack.Screen name="CreateShop" component={CreateShopScreen} />
+        <Stack.Screen name="MyShop" component={MyShopScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

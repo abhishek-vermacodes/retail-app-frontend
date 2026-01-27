@@ -91,7 +91,7 @@ const IntroScreen = () => {
 
         <TouchableOpacity
           style={styles.primaryButton}
-          onPress={() => navigation.navigate('CreateShop')}
+          onPress={() => navigation.navigate('MyShop')}
         >
           <Text style={styles.primaryButtonText}>Get Started</Text>
         </TouchableOpacity>
