@@ -35,6 +35,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const loadUser = async () => {
       const token = await getToken();
+      console.log('token', token);
       if (token) {
         API.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       }
@@ -45,10 +46,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const signIn = async (email: string, password: string) => {
     const res = await signin({ email, password });
-    const { token, user } = res.data;
+    console.log('res', res.data);
 
-    await setToken(token);
-    setUser(user);
+    await setToken(res.data.token);
+    setUser(res.data.user);
   };
 
   const signUp = async (

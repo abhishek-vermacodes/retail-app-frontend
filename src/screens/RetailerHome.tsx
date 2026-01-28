@@ -11,8 +11,10 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
 
 const RetailerHomeScreen = () => {
+    const navigation = useNavigation<any>();
   return (
     <LinearGradient
       start={{ x: 1.2, y: 0 }}
@@ -55,7 +57,7 @@ const RetailerHomeScreen = () => {
             commission.
           </Text>
 
-          <TouchableOpacity style={styles.bannerBtn}>
+          <TouchableOpacity style={styles.bannerBtn} onPress={() => navigation.navigate("CreateShop")}>
             <Text style={styles.bannerBtnText}>Create Shop</Text>
             <Ionicons name="arrow-forward" size={16} color="#ff6a32" />
           </TouchableOpacity>
