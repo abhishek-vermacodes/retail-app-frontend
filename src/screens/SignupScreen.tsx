@@ -10,6 +10,7 @@ import {
   // Alert,
   KeyboardAvoidingView,
   Image,
+  Alert,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -31,7 +32,21 @@ const SignupScreen = () => {
   const { signUp, loading } = useContext(AuthContext);
 
   const handleSignup = () => {
-    signUp(user.username, user.email, user.password, user.role);
+    try {
+      signUp(user.username, user.email, user.password, user.role);
+      Alert.alert('success', 'Signup successful');
+
+      const email = user.email;
+      setUser({ username: '', email: '', password: '', role: 'customer' });
+      setRole('customer');
+
+      navigation.navigate('Verification', {
+        email,
+      });
+    } catch (error) {
+      console.log('Signup Failed', error);
+      Alert.alert('error', 'Signup Failed');
+    }
   };
 
   // const onSignup = async () => {
@@ -175,7 +190,7 @@ const SignupScreen = () => {
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Full Name</Text>
+        <Text style={styles.label}>Username</Text>
         <View style={styles.inputWrapper}>
           <MaterialIcons
             name="person"
@@ -317,6 +332,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 16,
+    color: '#000',
   },
   button: {
     height: 50,

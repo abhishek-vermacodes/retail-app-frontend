@@ -10,7 +10,7 @@ export default function AppNavigator() {
   const { user } = useContext(AuthContext);
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       {user?.role === 'retailer' && (
         <Stack.Screen name="Retailer" component={RetailerHomeScreen} />
       )}
