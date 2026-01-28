@@ -10,11 +10,17 @@ import {
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
-
+import LinearGradient from 'react-native-linear-gradient';
 
 const RetailerHomeScreen = () => {
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      start={{ x: 1.2, y: 0 }}
+      end={{ x: 0, y: 0.6 }}
+      colors={['#ff693299', '#ffffff']}
+      locations={[0, 0.6]}
+      style={styles.container}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <View>
@@ -24,14 +30,15 @@ const RetailerHomeScreen = () => {
 
           <View style={styles.headerIcons}>
             <View style={styles.notification}>
-              <Ionicons name="notifications-outline" size={22} />
+              <Ionicons name="notifications-outline" size={18} />
               <View style={styles.dot} />
             </View>
-
-            <Image
-              source={{ uri: 'https://i.pravatar.cc/150?img=12' }}
-              style={styles.avatar}
-            />
+            <View style={styles.avatarContainer}>
+              <Image
+                source={{ uri: 'https://i.pravatar.cc/150?img=12' }}
+                style={styles.avatar}
+              />
+            </View>
           </View>
         </View>
 
@@ -113,7 +120,7 @@ const RetailerHomeScreen = () => {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -135,17 +142,33 @@ const styles = StyleSheet.create({
   welcome: { color: '#888', fontFamily: 'Poppins-Regular', fontSize: 12 },
   username: { fontSize: 20, fontFamily: 'Poppins-Bold' },
   headerIcons: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  notification: { position: 'relative' },
+  notification: {
+    position: 'relative',
+    backgroundColor: '#fff',
+    padding: 7,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: '#bbb',
+  },
   dot: {
     position: 'absolute',
-    right: 0,
-    top: 0,
+    right: 10,
+    top: 10,
     height: 8,
     width: 8,
     borderRadius: 4,
     backgroundColor: 'red',
   },
-  avatar: { width: 36, height: 36, borderRadius: 18 },
+  avatarContainer: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    padding: 2,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#bbb',
+  },
+  avatar: { width: '100%', height: '100%', borderRadius: 18 },
   banner: {
     borderRadius: 22,
     backgroundColor: '#ff6a32',
