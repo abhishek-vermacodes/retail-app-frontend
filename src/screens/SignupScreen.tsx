@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 import React, { useState } from 'react';
 import {
   View,
@@ -20,24 +21,27 @@ const SignupScreen = () => {
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState('customer');
   const [user, setUser] = useState({
-    fullname: '',
+    username: '',
     email: '',
     password: '',
     role: 'customer',
   });
 
   const onSignup = async () => {
-    if (!user.fullname || !user.email || !user.password) {
+    if (!user.username || !user.email || !user.password) {
       Alert.alert('Error', 'All fields are required');
       return;
     }
 
     try {
       setLoading(true);
+
+      await axios.post('http://192.168.1.3:5000/api/auth/signup', user);
       Alert.alert('success', 'Signup successful');
+      console.log('Signup successful', user);
 
       const email = user.email;
-      setUser({ fullname: '', email: '', password: '', role: 'customer' });
+      setUser({ username: '', email: '', password: '', role: 'customer' });
       setRole('customer');
 
       navigation.navigate('Verification', {
@@ -176,8 +180,8 @@ const SignupScreen = () => {
             style={styles.input}
             placeholder="e.g. Alex Morgan"
             placeholderTextColor="#00000061"
-            value={user.fullname}
-            onChangeText={text => setUser({ ...user, fullname: text })}
+            value={user.username}
+            onChangeText={text => setUser({ ...user, username: text })}
           />
         </View>
       </View>
@@ -419,7 +423,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
   },
   shopIcon: {
-    height: 20, 
-    width: 20
-  }
+    height: 20,
+    width: 20,
+  },
 });

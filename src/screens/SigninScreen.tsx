@@ -13,6 +13,7 @@ import {
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
+import axios from 'axios';
 
 const SigninScreen = () => {
   const navigation = useNavigation<any>();
@@ -33,7 +34,7 @@ const SigninScreen = () => {
 
     try {
       setLoading(true);
-
+      await axios.post('http://192.168.1.3:5000/api/auth/signin', user);
       Alert.alert('success', 'Signin successful');
       setUser({ email: '', password: '' });
     } catch (error) {
@@ -46,7 +47,10 @@ const SigninScreen = () => {
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
-      <TouchableOpacity style={styles.headerBtn} onPress={() => navigation.goBack()}>
+      <TouchableOpacity
+        style={styles.headerBtn}
+        onPress={() => navigation.goBack()}
+      >
         <FontAwesome6 name="arrow-left" size={18} color="#000000" />
       </TouchableOpacity>
 
@@ -103,7 +107,12 @@ const SigninScreen = () => {
         </View>
       </View>
 
-      <Text style={styles.forgotText} onPress={() => navigation.navigate("ForgotPassword")}>Forgot Password?</Text>
+      <Text
+        style={styles.forgotText}
+        onPress={() => navigation.navigate('ForgotPassword')}
+      >
+        Forgot Password?
+      </Text>
 
       <TouchableOpacity style={styles.button} onPress={onSignin}>
         <Text style={styles.buttonText}>

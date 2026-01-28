@@ -1,4 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
+import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
@@ -60,7 +61,10 @@ const VerificationScreen = () => {
 
     try {
       setLoading(true);
-
+      await axios.post('http://192.168.1.3:5000/api/auth/verification', {
+        email,
+        otp: otpValue,
+      });
       Alert.alert('Success', 'Email verified successfully');
       navigation.navigate('Signin');
     } catch (error: any) {
@@ -141,20 +145,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 6,
     color: 'black',
-    fontFamily: 'Poppins_600SemiBold',
+    fontFamily: 'Poppins-SemiBold',
   },
   subtitle: {
     fontSize: 15,
     color: '#000000a3',
     lineHeight: 20,
-    fontFamily: 'Poppins_400Regular',
+    fontFamily: 'Poppins-Regular',
     textAlign: 'center',
   },
   email: {
     fontSize: 14,
     color: '#000000',
     lineHeight: 20,
-    fontFamily: 'Poppins_500Medium',
+    fontFamily: 'Poppins-Medium',
     textAlign: 'center',
   },
   otpContainer: {
@@ -183,7 +187,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#4a4a4a',
     marginBottom: 5,
-    fontFamily: 'Poppins_500Medium',
+    fontFamily: 'Poppins-Medium',
   },
   inputWrapper: {
     flexDirection: 'row',
@@ -212,6 +216,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     fontWeight: '600',
     textAlign: 'center',
+    fontFamily: 'Poppins-SemiBold',
   },
   button: {
     height: 50,
@@ -225,6 +230,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 16,
-    fontFamily: 'Poppins_400Regular',
+    fontFamily: 'Poppins-Regular',
   },
 });
