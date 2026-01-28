@@ -1,22 +1,24 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
+  // Alert,
   KeyboardAvoidingView,
 } from 'react-native';
 
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
-import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
+// import axios from 'axios';
 
 const SigninScreen = () => {
   const navigation = useNavigation<any>();
+  const { signIn, loading } = useContext(AuthContext);
 
   const [user, setUser] = useState({
     email: '',
@@ -24,26 +26,29 @@ const SigninScreen = () => {
   });
 
   const [isVisible, setIsVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const onSignin = async () => {
-    if (!user.email || !user.password) {
-      Alert.alert('Error', 'All fields are required');
-      return;
-    }
-
-    try {
-      setLoading(true);
-      await axios.post('http://192.168.1.3:5000/api/auth/signin', user);
-      Alert.alert('success', 'Signin successful');
-      setUser({ email: '', password: '' });
-    } catch (error) {
-      Alert.alert('Error', 'Signup failed');
-      console.log('Signin failed', error);
-    } finally {
-      setLoading(false);
-    }
+  const handleSignin = () => {
+    signIn(user.email, user.password);
   };
+  // const [loading, setLoading] = useState(false);
+
+  // const onSignin = async () => {
+  //   if (!user.email || !user.password) {
+  //     Alert.alert('Error', 'All fields are required');
+  //     return;
+  //   }
+
+  //   try {
+  //     setLoading(true);
+  //     await axios.post('http://192.168.1.3:5000/api/auth/signin', user);
+  //     Alert.alert('success', 'Signin successful');
+  //     setUser({ email: '', password: '' });
+  //   } catch (error) {
+  //     Alert.alert('Error', 'Signup failed');
+  //     console.log('Signin failed', error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -114,7 +119,7 @@ const SigninScreen = () => {
         Forgot Password?
       </Text>
 
-      <TouchableOpacity style={styles.button} onPress={onSignin}>
+      <TouchableOpacity style={styles.button} onPress={handleSignin}>
         <Text style={styles.buttonText}>
           {loading ? 'loading...' : 'Sign Up'}
         </Text>

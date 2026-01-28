@@ -1,24 +1,25 @@
 import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
-import React, { useState } from 'react';
+// import axios from 'axios';
+import React, { useContext, useState } from 'react';
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
+  // Alert,
   KeyboardAvoidingView,
   Image,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { AuthContext } from '../context/AuthContext';
 
 const SignupScreen = () => {
   const navigation = useNavigation<any>();
 
   const [isVisible, setIsVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [role, setRole] = useState('customer');
   const [user, setUser] = useState({
     username: '',
@@ -27,33 +28,39 @@ const SignupScreen = () => {
     role: 'customer',
   });
 
-  const onSignup = async () => {
-    if (!user.username || !user.email || !user.password) {
-      Alert.alert('Error', 'All fields are required');
-      return;
-    }
+  const { signUp, loading } = useContext(AuthContext);
 
-    try {
-      setLoading(true);
-
-      await axios.post('http://192.168.1.3:5000/api/auth/signup', user);
-      Alert.alert('success', 'Signup successful');
-      console.log('Signup successful', user);
-
-      const email = user.email;
-      setUser({ username: '', email: '', password: '', role: 'customer' });
-      setRole('customer');
-
-      navigation.navigate('Verification', {
-        email,
-      });
-    } catch (error) {
-      Alert.alert('Error', 'Signup failed');
-      console.log('Signup failed', error);
-    } finally {
-      setLoading(false);
-    }
+  const handleSignup = () => {
+    signUp(user.username, user.email, user.password, user.role);
   };
+
+  // const onSignup = async () => {
+  //   if (!user.username || !user.email || !user.password) {
+  //     Alert.alert('Error', 'All fields are required');
+  //     return;
+  //   }
+
+  //   try {
+  //     setLoading(true);
+
+  //     await axios.post('http://192.168.1.3:5000/api/auth/signup', user);
+  //     Alert.alert('success', 'Signup successful');
+  //     console.log('Signup successful', user);
+
+  //     const email = user.email;
+  //     setUser({ username: '', email: '', password: '', role: 'customer' });
+  //     setRole('customer');
+
+  //     navigation.navigate('Verification', {
+  //       email,
+  //     });
+  //   } catch (error) {
+  //     Alert.alert('Error', 'Signup failed');
+  //     console.log('Signup failed', error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -234,7 +241,7 @@ const SignupScreen = () => {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={onSignup}>
+      <TouchableOpacity style={styles.button} onPress={handleSignup}>
         <Text style={styles.buttonText}>
           {loading ? 'Loading...' : 'Sign Up'}
         </Text>
