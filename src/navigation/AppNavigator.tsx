@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthContext } from '../context/AuthContext';
-import RetailerHomeScreen from '../screens/RetailerHome';
+// import RetailerHomeScreen from '../screens/RetailerHome';
 import CustomerHomeScreen from '../screens/CustomerHome';
 import CreateShopScreen from '../screens/CreateShop';
+import BottomTabNavigator from './BottomTabNavForCustomer';
 
 const Stack = createNativeStackNavigator();
 
@@ -14,7 +15,7 @@ export default function AppNavigator() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {user?.role === 'retailer' && (
         <>
-          <Stack.Screen name="Retailer" component={RetailerHomeScreen} />
+          <Stack.Screen name="Retailer" component={BottomTabNavigator} />
           <Stack.Screen name="CreateShop" component={CreateShopScreen} />
         </>
       )}

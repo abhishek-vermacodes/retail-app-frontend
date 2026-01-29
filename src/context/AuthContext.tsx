@@ -6,7 +6,7 @@ interface User {
   id: number;
   username: string;
   email: string;
-  role: string;
+  role: 'retailer' | 'customer';
 }
 
 type AuthContextType = {
@@ -33,15 +33,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadUser = async () => {
+    const bootstrapAuth = async () => {
       const token = await getToken();
-      console.log('token', token);
+
       if (token) {
         API.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+        try {
+          const res = await API.get('/users/me');
+          setUser(res.data.user);
+        } catch (err) {
+          await removeToken();
+          console.log('Failed to fetch user', err);
+          setUser(null);
+        }
       }
+
       setLoading(false);
     };
-    loadUser();
+
+    bootstrapAuth();
   }, []);
 
   const signIn = async (email: string, password: string) => {
@@ -49,6 +60,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     console.log('res', res.data);
 
     await setToken(res.data.token);
+    API.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
     setUser(res.data.user);
   };
 
