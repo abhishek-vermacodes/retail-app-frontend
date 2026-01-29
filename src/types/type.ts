@@ -25,3 +25,14 @@ export interface Store {
 export interface StoreResponse {
   store: Store;
 }
+
+export interface Product {
+  id: string;
+  productName: string;
+  price: string;
+  stock: number;
+  category: string;
+  description: string;
+  image: string;
+  createdAt: string;
+}

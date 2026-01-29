@@ -7,37 +7,39 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
-
-const products = [
-  {
-    id: 1,
-    image: '../assets/images/bag.jpeg',
-    name: 'Wireless Headphones',
-    price: 2499,
-    stock: 15,
-  },
-  {
-    id: 2,
-    image: '../assets/images/bag.jpeg',
-    name: 'Smart Watch',
-    price: 3999,
-    stock: 8,
-  },
-  {
-    id: 3,
-    image: '../assets/images/bag.jpeg',
-    name: 'Bluetooth Speaker',
-    price: 1799,
-    stock: 0,
-  },
-];
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { Product } from '../types/type';
 
 const MyShopScreen = () => {
+  const [products, setProducts] = useState<Product[] | null>(null);
+
+  const getProducts = async () => {
+    const token = await AsyncStorage.getItem('token');
+    try {
+      const response = await axios.get(
+        'http://192.168.1.3:5000/api/products/my-products',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      setProducts(response.data.products);
+    } catch (error) {
+      console.log('Failed to fetch products', error);
+    }
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
   return (
     <ScrollView
       contentContainerStyle={styles.container}
@@ -49,7 +51,7 @@ const MyShopScreen = () => {
         <TouchableOpacity style={styles.headerBtn}>
           <FontAwesome6 name="arrow-left" size={18} color="#000000" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>My Shop</Text>
+        <Text style={styles.headerTitle}>Products</Text>
         <Ionicons
           name="settings-outline"
           size={24}
@@ -58,7 +60,7 @@ const MyShopScreen = () => {
         />
       </View>
 
-      <View style={styles.shopContainer}>
+      {/* <View style={styles.shopContainer}>
         <View style={styles.shopImageContainer}>
           <Image
             source={require('../assets/images/intro.jpg')}
@@ -76,25 +78,27 @@ const MyShopScreen = () => {
             <Text style={styles.shopContent}>Groceries & produce</Text>
           </View>
         </View>
-      </View>
+      </View> */}
 
       <View style={styles.itemContainer}>
-        <View style={styles.productHeader}>
+        {/* <View style={styles.productHeader}>
           <Text style={styles.title}>Products</Text>
           <Text style={styles.productQty}>4 Items</Text>
-        </View>
+        </View> */}
 
-        {products.map(product => (
+        {products?.map(product => (
           <View style={styles.productContainer} key={product.id}>
             <View style={styles.productImageContainer}>
               <Image
                 style={styles.productImage}
-                source={require('../assets/images/bag.jpeg')}
+                source={{
+                  uri: `http://192.168.1.3:5000${product.image}`,
+                }}
               />
             </View>
 
             <View style={styles.ProductContentContainer}>
-              <Text style={styles.productTitle}>{product.name}</Text>
+              <Text style={styles.productTitle}>{product.productName}</Text>
               <Text style={styles.productPrice}>₹{product.price}</Text>
               <View style={styles.productStockBadge}>
                 <Feather name="box" size={16} color={'#888'} />
@@ -129,7 +133,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     paddingVertical: 60,
     position: 'relative',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   header: {
     width: '100%',
@@ -207,7 +211,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginTop: 26,
     gap: 12,
-    width: '100%'
+    width: '100%',
   },
   productHeader: {
     flexDirection: 'row',
@@ -237,6 +241,9 @@ const styles = StyleSheet.create({
   productImageContainer: {
     height: 90,
     width: 90,
+    borderColor: '#ffe3d9',
+    borderWidth: 1,
+    borderRadius: 12,
   },
   productImage: {
     width: '100%',
