@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -12,9 +12,35 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { Store } from '../types/type';
 
 const RetailerHomeScreen = () => {
   const navigation = useNavigation<any>();
+  const [store, setStore] = useState<Store | null>(null);
+  console.log('Store', store);
+
+  const getStore = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      const response = await axios.get(
+        'http://192.168.1.3:5000/api/store/my-store',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      setStore(response.data.store);
+    } catch (error) {
+      console.log('Failed to fetch', error);
+    }
+  };
+
+  useEffect(() => {
+    getStore();
+  }, []);
   return (
     <LinearGradient
       start={{ x: 1.2, y: 0 }}
@@ -44,33 +70,90 @@ const RetailerHomeScreen = () => {
           </View>
         </View>
 
-        {/* Banner */}
-        <View style={styles.banner}>
-          <View style={styles.badge}>
-            <Ionicons name="sparkles-outline" size={14} color="#fff" />
-            <Text style={styles.badgeText}>New Feature</Text>
+        {store === null ? (
+          <View style={styles.banner}>
+            <View style={styles.badge}>
+              <Ionicons name="sparkles-outline" size={14} color="#fff" />
+              <Text style={styles.badgeText}>New Feature</Text>
+            </View>
+
+            <Text style={styles.bannerTitle}>
+              Launch your{'\n'}online store
+            </Text>
+            <Text style={styles.bannerDesc}>
+              Start selling products directly to{'\n'}customers with zero
+              commission.
+            </Text>
+
+            <TouchableOpacity
+              style={styles.bannerBtn}
+              onPress={() => navigation.navigate('CreateShop')}
+            >
+              <Text style={styles.bannerBtnText}>Create Shop</Text>
+              <Ionicons name="arrow-forward" size={16} color="#ff6a32" />
+            </TouchableOpacity>
+
+            <View style={styles.circle} />
+            <Image
+              source={require('../assets/images/bag.jpeg')}
+              style={styles.bagImage}
+            />
           </View>
+        ) : (
+          <View style={styles.banner}>
+            <View style={styles.badge}>
+              {/* <Ionicons name="sparkles-outline" size={14} color="#fff" /> */}
+              <Text style={styles.badgeText}>{store.category}</Text>
+            </View>
 
-          <Text style={styles.bannerTitle}>Launch your{'\n'}online store</Text>
-          <Text style={styles.bannerDesc}>
-            Start selling products directly to{'\n'}customers with zero
-            commission.
-          </Text>
+            <Text style={styles.storeTitle}>
+              {/* Launch your{'\n'}online store */}
+              {store.storeName}
+            </Text>
+            <Text style={styles.storeDesc}>
+              {/* Start selling products directly to{'\n'}customers with zero
+              commission. */}
+              {store.description}
+            </Text>
 
-          <TouchableOpacity
-            style={styles.bannerBtn}
-            onPress={() => navigation.navigate('CreateShop')}
-          >
-            <Text style={styles.bannerBtnText}>Create Shop</Text>
-            <Ionicons name="arrow-forward" size={16} color="#ff6a32" />
-          </TouchableOpacity>
+            <View style={styles.storeContainer}>
+              <View style={styles.storeBadge}>
+                <Feather name="map-pin" size={14} color="#fff" />
+                <Text style={styles.storeAddress}>{store.address}</Text>
+              </View>
+              <View style={styles.storeBadge}>
+                <Feather name="phone" size={14} color={'#fff'} />
 
-          <View style={styles.circle} />
-          <Image
-            source={require('../assets/images/bag.jpeg')}
-            style={styles.bagImage}
-          />
-        </View>
+                <Text style={styles.storeNumber}>+91 {store.phone}</Text>
+              </View>
+            </View>
+
+            {/* <TouchableOpacity
+              style={styles.bannerBtn}
+              onPress={() => navigation.navigate('CreateShop')}
+            >
+              <Text style={styles.bannerBtnText}>Create Shop</Text>
+              <Ionicons name="arrow-forward" size={16} color="#ff6a32" />
+            </TouchableOpacity> */}
+
+            <View style={styles.storeCircle} />
+            {/* <View style={styles.storeImageContainer}>
+              <Image
+                style={styles.storeImage}
+                source={{
+                  uri: `http://192.168.1.3:5000${store.image}`,
+                }}
+              />
+            </View> */}
+            <Image
+              // source={require('../assets/images/bag.jpeg')}
+              source={{
+                uri: `http://192.168.1.3:5000${store.image}`,
+              }}
+              style={styles.bagImage}
+            />
+          </View>
+        )}
 
         {/* Overview */}
         <View style={styles.overviewHeader}>
@@ -311,5 +394,64 @@ const styles = StyleSheet.create({
     bottom: -6,
     right: -14,
     transform: [{ rotate: '-14deg' }],
+  },
+  storeTitle: {
+    width: '75%',
+    fontSize: 24,
+    color: '#fff',
+    marginTop: 14,
+    fontFamily: 'Poppins-Bold',
+    lineHeight: 32,
+  },
+  storeDesc: {
+    width: '80%',
+    color: '#ffe7dd',
+    fontSize: 12,
+    marginTop: 10,
+    lineHeight: 18,
+    fontFamily: 'Poppins-Medium',
+  },
+  storeContainer: {
+    flexDirection: 'column',
+    gap: 4,
+  },
+  storeBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  storeAddress: {
+    fontSize: 12,
+    color: '#fff',
+    fontFamily: 'Poppins-Regular',
+  },
+  storeNumber: {
+    fontSize: 12,
+    color: '#fff',
+    fontFamily: 'Poppins-Regular',
+  },
+  storeImageContainer: {
+    position: 'absolute',
+    right: 10,
+    top: 10,
+    width: 86,
+    height: 86,
+    padding: 4,
+    backgroundColor: 'rgba(255, 255, 255, 0.334)',
+    borderRadius: 50,
+  },
+  storeImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 50,
+  },
+  storeCircle: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    height: 160,
+    width: 160,
+    borderRadius: 100,
+    position: 'absolute',
+    top: -50,
+    right: -50,
   },
 });
