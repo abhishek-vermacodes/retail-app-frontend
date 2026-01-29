@@ -40,7 +40,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         API.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
         try {
-          const res = await API.get('/users/me');
+          const res = await API.get('/user/me');
           setUser(res.data.user);
         } catch (err) {
           await removeToken();

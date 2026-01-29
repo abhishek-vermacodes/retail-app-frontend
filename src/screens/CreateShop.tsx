@@ -7,6 +7,7 @@ import {
   Image,
   StatusBar,
   ScrollView,
+  Alert,
 } from 'react-native';
 import React, { useState } from 'react';
 
@@ -14,17 +15,23 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const categories = ['Grocery', 'Medicine', 'Electronics', 'Clothing', 'Food'];
 
 const CreateShopScreen = () => {
-  const [shop, setShop] = useState({
-    shopName: '',
-    shopCategory: '',
-    shopDesc: '',
-    shopAddress: '',
-    shopImage: null as any,
+  const navigation = useNavigation<any>();
+  const [store, setStore] = useState({
+    storeName: '',
+    category: '',
+    description: '',
+    address: '',
+    phone: '',
+    image: null as any,
   });
+  const [loading, setLoading] = useState(false);
 
   const pickImage = () => {
     launchImageLibrary(
@@ -34,13 +41,56 @@ const CreateShopScreen = () => {
       },
       response => {
         if (!response.didCancel && response.assets?.length) {
-          setShop({
-            ...shop,
-            shopImage: response.assets[0],
+          setStore({
+            ...store,
+            image: response.assets[0],
           });
         }
       },
     );
+  };
+
+  const createShop = async () => {
+    const formData = new FormData();
+
+    formData.append('storeName', store.storeName);
+    formData.append('category', store.category);
+    formData.append('description', store.description);
+    formData.append('address', store.address);
+    formData.append('phone', store.phone);
+
+    formData.append('image', {
+      uri: store.image.uri,
+      type: store.image.type || 'image/jpeg',
+      name: store.image.fileName || 'product.jpg',
+    } as any);
+
+    try {
+      setLoading(true);
+
+      const token = await AsyncStorage.getItem('token');
+
+      await axios.post('http://192.168.1.3:5000/api/store', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      Alert.alert('success', 'Store Created Successfully');
+      setStore({
+        storeName: '',
+        category: '',
+        description: '',
+        address: '',
+        phone: '',
+        image: '',
+      });
+      navigation.navigate('Retailer');
+    } catch (error) {
+      console.log('Failed to create shop', error);
+      Alert.alert('error', 'Failed to Create Shop');
+    }
   };
   return (
     <ScrollView
@@ -50,7 +100,10 @@ const CreateShopScreen = () => {
     >
       <StatusBar barStyle="dark-content" />
       <View style={styles.header}>
-        <TouchableOpacity style={styles.headerBtn}>
+        <TouchableOpacity
+          style={styles.headerBtn}
+          onPress={() => navigation.navigate('Retailer')}
+        >
           <FontAwesome6 name="arrow-left" size={18} color="#000000" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Create Shop</Text>
@@ -58,9 +111,9 @@ const CreateShopScreen = () => {
       <View style={styles.form}>
         <View style={styles.logoInputContainer}>
           <TouchableOpacity style={styles.card} onPress={pickImage}>
-            {shop.shopImage ? (
+            {store.image ? (
               <Image
-                source={{ uri: shop.shopImage.uri }}
+                source={{ uri: store.image.uri }}
                 style={styles.previewImage}
               />
             ) : (
@@ -73,7 +126,7 @@ const CreateShopScreen = () => {
           <Text style={styles.cardText}>Tap to upload shop logo</Text>
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.InputLabel}>Shop Name</Text>
+          <Text style={styles.InputLabel}>Store Name</Text>
           <View style={styles.inputSubContainer}>
             <Image
               source={require('../assets/icons/shopGray.png')}
@@ -81,8 +134,10 @@ const CreateShopScreen = () => {
             />
             <TextInput
               placeholder="My awesome store"
-              placeholderTextColor={'#000'}
+              placeholderTextColor={'#888'}
               style={styles.input}
+              value={store.storeName}
+              onChangeText={text => setStore({ ...store, storeName: text })}
             />
           </View>
         </View>
@@ -95,14 +150,14 @@ const CreateShopScreen = () => {
                 key={item}
                 style={[
                   styles.categoryChip,
-                  shop.shopCategory === item && styles.categoryChipActive,
+                  store.category === item && styles.categoryChipActive,
                 ]}
-                onPress={() => setShop({ ...shop, shopCategory: item })}
+                onPress={() => setStore({ ...store, category: item })}
               >
                 <Text
                   style={[
                     styles.categoryText,
-                    shop.shopCategory === item && styles.categoryTextActive,
+                    store.category === item && styles.categoryTextActive,
                   ]}
                 >
                   {item}
@@ -112,31 +167,51 @@ const CreateShopScreen = () => {
           </View>
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.InputLabel}>Description</Text>
-          <View style={styles.textAreaContainer}>
-            <TextInput
-              style={styles.textArea}
-              placeholder="Write product description"
-              placeholderTextColor="#000000"
-              multiline
-              numberOfLines={4}
-              textAlignVertical="top"
-            />
-          </View>
-        </View>
-        <View style={styles.inputContainer}>
           <Text style={styles.InputLabel}>Address</Text>
           <View style={styles.inputSubContainer}>
             <Feather name="map-pin" size={20} color={'#888'} />
             <TextInput
               placeholder="123 Market street, city"
-              placeholderTextColor={'#000'}
+              placeholderTextColor={'#888'}
               style={styles.input}
+              value={store.address}
+              onChangeText={text => setStore({ ...store, address: text })}
             />
           </View>
         </View>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Launch Shop</Text>
+        <View style={styles.inputContainer}>
+          <Text style={styles.InputLabel}>Phone</Text>
+          <View style={styles.inputSubContainer}>
+            <Feather name="phone" size={20} color={'#888'} />
+            <TextInput
+              placeholder="+91 1231231231"
+              placeholderTextColor={'#888'}
+              style={styles.input}
+              value={store.phone}
+              onChangeText={text => setStore({ ...store, phone: text })}
+            />
+          </View>
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.InputLabel}>Description</Text>
+          <View style={styles.textAreaContainer}>
+            <TextInput
+              style={styles.textArea}
+              placeholder="Write product description"
+              placeholderTextColor="#888"
+              multiline
+              numberOfLines={4}
+              textAlignVertical="top"
+              value={store.description}
+              onChangeText={text => setStore({ ...store, description: text })}
+            />
+          </View>
+        </View>
+
+        <TouchableOpacity style={styles.button} onPress={createShop}>
+          <Text style={styles.buttonText}>
+            {loading ? 'Loading...' : 'Launch Shop'}
+          </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -188,7 +263,7 @@ const styles = StyleSheet.create({
     gap: 10,
     borderWidth: 1,
     borderColor: '#bbb',
-    borderRadius: 16,
+    borderRadius: 20,
     paddingHorizontal: 14,
     paddingVertical: 6,
   },
@@ -225,7 +300,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     borderWidth: 1,
     borderColor: '#bbb',
-    borderRadius: 16,
+    borderRadius: 20,
     paddingHorizontal: 14,
     paddingVertical: 6,
   },
@@ -268,12 +343,11 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   button: {
+    height: 60,
     backgroundColor: '#ff5b27',
-    borderRadius: 16,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 14,
-    marginBottom: 30,
   },
   buttonText: {
     color: '#ffffff',
