@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
     color: '#ff5b27',
   },
   stockBadge: {
-    backgroundColor: '#ddd',
+    backgroundColor: '#dddddd',
     paddingVertical: 2,
     paddingHorizontal: 6,
     width: 80,
