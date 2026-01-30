@@ -5,6 +5,7 @@ import { useState } from 'react';
 import {
   Alert,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
@@ -105,15 +106,16 @@ const AddProductScreen = () => {
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <TouchableOpacity
-        style={styles.headerBtn}
-        onPress={() => navigation.goBack()}
-      >
-        <FontAwesome6 name="arrow-left" size={18} color="#000000" />
-      </TouchableOpacity>
-
-      <Text style={styles.title}>Create Product</Text>
-      <Text style={styles.subtitle}>Add product details to start selling.</Text>
+      <StatusBar barStyle={'dark-content'} />
+      <View style={styles.headerContainer}>
+        <TouchableOpacity
+          style={styles.backBtn}
+          onPress={() => navigation.goBack()}
+        >
+          <FontAwesome6 name="arrow-left" size={18} color="#000000" />
+        </TouchableOpacity>
+        <Text style={styles.pageTitle}>Create Product</Text>
+      </View>
 
       <TouchableOpacity style={styles.card} onPress={pickImage}>
         {product.image ? (
@@ -123,7 +125,9 @@ const AddProductScreen = () => {
           />
         ) : (
           <>
-            <Ionicons name="camera-outline" size={40} color="#ff5b27" />
+            <View style={styles.iconContainer}>
+              <Ionicons name="camera-outline" size={22} color="#ff5b27" />
+            </View>
             <Text style={styles.cardTitle}>Upload Product Image</Text>
             <Text style={styles.cardText}>
               Tap to select an image from gallery
@@ -194,8 +198,8 @@ const AddProductScreen = () => {
             <TouchableOpacity
               key={item.value}
               style={[
-                styles.categoryChip,
-                product.category === item.value && styles.categoryChipActive,
+                styles.categoryBtn,
+                product.category === item.value && styles.categoryBtnActive,
               ]}
               onPress={() => setProduct({ ...product, category: item.value })}
             >
@@ -241,23 +245,65 @@ export default AddProductScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: 60,
+    flexGrow: 1,
+    paddingVertical: 60,
     paddingHorizontal: 20,
+    backgroundColor: '#fff',
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 20,
+    position: 'relative',
+  },
+  backBtn: {
+    borderColor: '#bbb',
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 50,
+  },
+  pageTitle: {
+    fontSize: 20,
+    fontFamily: 'Poppins-Bold',
+  },
+  card: {
     backgroundColor: '#FFF5F0',
-  },
-  title: {
-    fontSize: 32,
-    marginTop: 45,
-    color: '#000000',
-    fontFamily: 'Poppins-SemiBold',
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#000000a3',
-    lineHeight: 20,
-    marginTop: -6,
+    marginTop: 20,
     marginBottom: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 16,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ffe3d9',
+  },
+  previewImage: {
+    width: '100%',
+    height: 120,
+    borderRadius: 12,
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
+    width: 50,
+    backgroundColor: '#ffe3d9',
+    padding: 12,
+    borderRadius: 100,
+  },
+  cardTitle: {
+    fontSize: 14,
+    fontFamily: 'Poppins-Medium',
+    marginTop: 16,
+    color: '#ff5b27',
+  },
+  cardText: {
+    fontSize: 12,
+    color: '#000000a3',
+    textAlign: 'center',
+    marginTop: -2,
     fontFamily: 'Poppins-Regular',
   },
   inputContainer: {
@@ -273,10 +319,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    borderRadius: 10,
+    borderRadius: 16,
     borderWidth: 1,
     borderColor: '#00000061',
-    paddingHorizontal: 10,
+    paddingHorizontal: 14,
     height: 50,
   },
   icon: {
@@ -287,10 +333,44 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Poppins-Regular',
   },
+
+  categoryRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  categoryBtn: {
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#00000061',
+  },
+  categoryBtnActive: {
+    backgroundColor: '#ff5b27',
+    borderColor: '#ff5b27',
+  },
+  categoryText: {
+    fontSize: 12,
+    fontFamily: 'Poppins-Regular',
+    color: '#000',
+  },
+  categoryTextActive: {
+    color: '#fff',
+  },
+  textAreaWrapper: {
+    height: 120,
+    alignItems: 'flex-start',
+  },
+  textArea: {
+    flex: 1,
+    fontSize: 14,
+    fontFamily: 'Poppins-Regular',
+  },
   button: {
     height: 60,
     backgroundColor: '#ff5b27',
-    borderRadius: 10,
+    borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 30,
@@ -300,125 +380,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Poppins-Regular',
   },
-  terms: {
-    fontSize: 13,
-    color: '#000000a3',
-    textAlign: 'center',
-    fontFamily: 'Poppins-Regular',
-  },
-  extraButtonWrapper: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignContent: 'center',
-    justifyContent: 'space-between',
-    height: 80,
-    marginTop: 30,
-  },
-  extraButton: {
-    width: '48%',
-    paddingVertical: 14,
-    borderRadius: 12,
-    borderWidth: 1,
-    alignItems: 'center',
-    marginBottom: 16,
-    backgroundColor: '#ffffff',
-    borderColor: '#00000016',
-  },
-  link: {
-    color: '#ff5b27',
-    fontWeight: '700',
-  },
-  card: {
-    backgroundColor: '#fff',
-    marginTop: 16,
-    marginBottom: 16,
-    paddingVertical: 26,
-    paddingHorizontal: 10,
-    borderRadius: 14,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ffe3d9',
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontFamily: 'Poppins-SemiBold',
-    marginTop: 12,
-  },
-  cardText: {
-    fontSize: 13,
-    color: '#000000a3',
-    textAlign: 'center',
-    marginTop: 0,
-    fontFamily: 'Poppins-Regular',
-  },
-  primaryBtn: {
-    marginTop: 20,
-    backgroundColor: '#ff5b27',
-    paddingVertical: 14,
-    paddingHorizontal: 26,
-    borderRadius: 10,
-  },
-  primaryBtnText: {
-    color: '#fff',
-    fontFamily: 'Poppins-SemiBold',
-  },
-  previewImage: {
-    width: '100%',
-    height: 120,
-    borderRadius: 12,
-  },
-
-  textAreaWrapper: {
-    height: 120,
-    alignItems: 'flex-start',
-  },
-
-  textArea: {
-    flex: 1,
-    fontSize: 14,
-    fontFamily: 'Poppins-Regular',
-  },
-  categoryRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10,
-  },
-
-  categoryChip: {
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#00000061',
-  },
-
-  categoryChipActive: {
-    backgroundColor: '#ff5b27',
-    borderColor: '#ff5b27',
-  },
-
-  categoryText: {
-    fontSize: 13,
-    fontFamily: 'Poppins-Medium',
-    color: '#000',
-  },
-
-  categoryTextActive: {
-    color: '#fff',
-  },
   screenView: {
     height: 160,
-  },
-  headerBtn: {
-    height: 40,
-    width: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#bbb',
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderRadius: 30,
   },
 });

@@ -8,10 +8,13 @@ import {
   Image,
   TextInput,
   FlatList,
+  Pressable,
 } from 'react-native';
 
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import Feather from 'react-native-vector-icons/Feather';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Product } from '../types/type';
@@ -31,7 +34,7 @@ const categories = [
   { label: 'Stationery', value: 'stationery' },
 ];
 
-const MyProducts = () => {
+const AllProducts = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('');
   const navigation = useNavigation<any>();
@@ -138,46 +141,43 @@ const MyProducts = () => {
 
       <View style={styles.gridContainer}>
         {filteredProducts?.map(product => (
-          <View key={product?.id} style={styles.productCard}>
-            <TouchableOpacity
-              style={styles.productImageContainer}
-              onPress={() =>
-                navigation.navigate('MyProduct', { id: product.id })
-              }
-            >
+          <Pressable
+            key={product?.id}
+            style={styles.productCard}
+            onPress={() => navigation.navigate('MyProduct', { id: product.id })}
+          >
+            <EvilIcons
+              name="heart"
+              size={22}
+              color="#000000a3"
+              style={styles.like}
+            />
+            <View style={styles.productImageContainer}>
               <Image
                 style={styles.productImage}
                 source={{
                   uri: `http://192.168.1.3:5000${product.image}`,
                 }}
               />
-            </TouchableOpacity>
+            </View>
             <View style={styles.productContentContainer}>
               <Text style={styles.productName}>{product.productName}</Text>
               <Text style={styles.productcategory}>{product.category}</Text>
               <View style={styles.productSubContainer}>
-                <Text style={styles.productPrice}>₹{product.price}.00</Text>
-
-                {product.stock <= 30 ? (
-                  <Text style={styles.outOfStockStatus}>Out of Stock</Text>
-                ) : product.stock > 30 && product.stock < 60 ? (
-                  <Text style={styles.lowStockStatus}>Low Stock</Text>
-                ) : (
-                  <Text style={styles.inStockStatus}>Active</Text>
-                )}
+                <Text style={styles.productPrice}>₹{product.price}</Text>
+                <TouchableOpacity style={styles.addButton}>
+                  <Ionicons name="cart-outline" size={20} color="#ff5b27" />
+                </TouchableOpacity>
               </View>
             </View>
-            <View style={styles.stockBadge}>
-              <Text style={styles.stockText}>{product.stock} in stock</Text>
-            </View>
-          </View>
+          </Pressable>
         ))}
       </View>
     </ScrollView>
   );
 };
 
-export default MyProducts;
+export default AllProducts;
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -254,17 +254,22 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   productCard: {
-    width: '48%',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    gap: 10,
     backgroundColor: '#ffffff',
-    borderWidth: 1,
-    borderColor: '#ffe3d9',
+    width: '48%',
     borderRadius: 12,
     padding: 10,
+    elevation: 0,
+    borderWidth: 1,
+    borderColor: '#ffe3d9',
+    gap: 10,
     marginTop: 16,
     position: 'relative',
+  },
+  like: {
+    position: 'absolute',
+    top: 6,
+    left: 6,
+    zIndex: 999,
   },
   productImageContainer: {
     alignItems: 'center',
@@ -301,37 +306,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
     color: '#ff5b27',
   },
-  stockBadge: {
-    backgroundColor: '#ddd',
-    paddingVertical: 2,
-    paddingHorizontal: 6,
-    width: 80,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    position: 'absolute',
-    top: 10,
-    left: 10,
-  },
-  stockText: {
-    marginTop: 2,
-    fontFamily: 'Poppins-Medium',
-    fontSize: 10,
-  },
-  outOfStockStatus: {
-    fontSize: 10,
-    fontFamily: 'Poppins-Medium',
-    color: '#ff0000',
-  },
-  lowStockStatus: {
-    fontSize: 10,
-    fontFamily: 'Poppins-Medium',
-    color: '#fda500',
-  },
-  inStockStatus: {
-    fontSize: 10,
-    fontFamily: 'Poppins-Medium',
-    color: '#277a00',
+  addButton: {
+    backgroundColor: '#FFF5F0',
+    padding: 10,
+    borderRadius: 30,
   },
 });
