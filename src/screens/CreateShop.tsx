@@ -21,7 +21,7 @@ import axios from 'axios';
 
 const categories = ['Grocery', 'Medicine', 'Electronics', 'Clothing', 'Food'];
 
-const CreateShopScreen = () => {
+const CreateShop = () => {
   const navigation = useNavigation<any>();
   const [store, setStore] = useState({
     storeName: '',
@@ -50,7 +50,7 @@ const CreateShopScreen = () => {
     );
   };
 
-  const createShop = async () => {
+  const onCreateShop = async () => {
     const formData = new FormData();
 
     formData.append('storeName', store.storeName);
@@ -208,7 +208,7 @@ const CreateShopScreen = () => {
           </View>
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={createShop}>
+        <TouchableOpacity style={styles.button} onPress={onCreateShop}>
           <Text style={styles.buttonText}>
             {loading ? 'Loading...' : 'Launch Shop'}
           </Text>
@@ -218,7 +218,7 @@ const CreateShopScreen = () => {
   );
 };
 
-export default CreateShopScreen;
+export default CreateShop;
 
 const styles = StyleSheet.create({
   container: {

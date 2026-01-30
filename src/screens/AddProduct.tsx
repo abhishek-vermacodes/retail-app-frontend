@@ -37,7 +37,7 @@ const AddProductScreen = () => {
   const navigation = useNavigation<any>();
 
   const [product, setProduct] = useState({
-    name: '',
+    productName: '',
     price: '',
     stock: '',
     category: '',
@@ -65,7 +65,7 @@ const AddProductScreen = () => {
   const createProduct = async () => {
     const formData = new FormData();
 
-    formData.append('name', product.name);
+    formData.append('productName', product.productName);
     formData.append('price', product.price);
     formData.append('stock', product.stock);
     formData.append('category', product.category);
@@ -76,23 +76,27 @@ const AddProductScreen = () => {
       name: product.image.fileName || 'product.jpg',
     } as any);
 
+    const token = await AsyncStorage.getItem('token');
+    console.log('token', token);
     try {
-      const token = await AsyncStorage.getItem('authToken');
-
-      await axios.post(
-        'http://192.168.1.3:5000/api/product/add-products',
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data',
-          },
+      await axios.post('http://192.168.1.3:5000/api/products', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
         },
-      );
-      console.log('Product created successfully');
+      });
+
+      setProduct({
+        productName: '',
+        price: '',
+        stock: '',
+        category: '',
+        description: '',
+        image: '',
+      });
       Alert.alert('Success', 'Product created successfully');
       setTimeout(() => {
-        navigation.navigate('Inventory');
+        navigation.navigate('MyProducts');
       }, 3000);
     } catch (error) {
       console.error('Product creation failed', error);
@@ -136,8 +140,8 @@ const AddProductScreen = () => {
             style={styles.input}
             placeholder="e.g. Parle-G"
             placeholderTextColor="#00000061"
-            value={product.name}
-            onChangeText={text => setProduct({ ...product, name: text })}
+            value={product.productName}
+            onChangeText={text => setProduct({ ...product, productName: text })}
           />
         </View>
       </View>

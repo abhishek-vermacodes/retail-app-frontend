@@ -84,7 +84,10 @@ const MyProducts = () => {
       <StatusBar barStyle={'dark-content'} />
 
       <View style={styles.headerContainer}>
-        <TouchableOpacity style={styles.backBtn}>
+        <TouchableOpacity
+          style={styles.backBtn}
+          onPress={() => navigation.goBack()}
+        >
           <FontAwesome6 name="arrow-left" size={18} color="#000000" />
         </TouchableOpacity>
         <Text style={styles.pageTitle}>My Products</Text>
@@ -141,9 +144,7 @@ const MyProducts = () => {
           <Pressable
             key={product?.id}
             style={styles.productCard}
-            onPress={() =>
-              navigation.navigate('ProductDetail', { id: product.id })
-            }
+            onPress={() => navigation.navigate('MyProduct', { id: product.id })}
           >
             <EvilIcons
               name="heart"
