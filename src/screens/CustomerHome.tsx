@@ -1,8 +1,6 @@
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-// import axios from 'axios';
-// import { useEffect, useState } from 'react';
 import {
-  // Image,
+  FlatList,
+  Image,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -13,217 +11,237 @@ import {
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome6';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import HomeBanner from '../components/HomeBanner';
+import { useState } from 'react';
+import NearbyShopCard from '../components/ShopCard';
+import ProductCard from '../components/ProductCard';
 import { useNavigation } from '@react-navigation/native';
-import { useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
 
-const CustomerHomeScreen = () => {
-  const { signOut } = useContext(AuthContext);
-  // const [user, setUser] = useState<User | null>(null);
-  // const [products, setProducts] = useState<Product[] | null>(null);
+const categories = [
+  {
+    label: 'Grocery',
+    key: 'grocery',
+    value: require('../assets/icons/grocery.png'),
+  },
+  { label: 'Fresh', key: 'fresh', value: require('../assets/icons/fresh.png') },
+  {
+    label: 'Personal',
+    key: 'personal',
+    value: require('../assets/icons/personal.png'),
+  },
+  {
+    label: 'Household',
+    key: 'household',
+    value: require('../assets/icons/home.png'),
+  },
+  {
+    label: 'Babycare',
+    key: 'babycare',
+    value: require('../assets/icons/baby.png'),
+  },
+  {
+    label: 'Healthcare',
+    key: 'healthcare',
+    value: require('../assets/icons/health.png'),
+  },
+  {
+    label: 'Fashion',
+    key: 'fashion',
+    value: require('../assets/icons/fashion.png'),
+  },
+  {
+    label: 'Electronic',
+    key: 'electronic',
+    value: require('../assets/icons/electronic.png'),
+  },
+  {
+    label: 'Stationery',
+    key: 'stationery',
+    value: require('../assets/icons/stationery.png'),
+  },
+];
 
+const nearbyShops = [
+  {
+    id: '1',
+    name: 'Fresh Mart Daily',
+    rating: 4.8,
+    distance: 0.5,
+    image: require('../assets/images/bag.jpeg'),
+  },
+  {
+    id: '2',
+    name: 'The Bread Basket',
+    rating: 4.5,
+    distance: 1.2,
+    image: require('../assets/images/bag.jpeg'),
+  },
+  {
+    id: '3',
+    name: 'The Bread Basket',
+    rating: 4.5,
+    distance: 1.2,
+    image: require('../assets/images/bag.jpeg'),
+  },
+];
+
+const products = [
+  {
+    id: '1',
+    name: 'Fresh Red Apple (1kg)',
+    price: 3.5,
+    image: require('../assets/images/bag.jpeg'),
+  },
+  {
+    id: '2',
+    name: 'Organic Whole Milk',
+    price: 1.2,
+    image: require('../assets/images/bag.jpeg'),
+  },
+  {
+    id: '3',
+    name: 'Whole Wheat Bread',
+    price: 2.0,
+    image: require('../assets/images/bag.jpeg'),
+  },
+  {
+    id: '4',
+    name: 'Farm Fresh Eggs (12)',
+    price: 4.5,
+    image: require('../assets/images/bag.jpeg'),
+  },
+];
+
+function CustomerHomeScreen() {
+  const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const navigation = useNavigation<any>();
 
-  // useEffect(() => {
-  //   const getProfile = async () => {
-  //     const token = await AsyncStorage.getItem('authToken');
-  //     try {
-  //       const response = await axios.get(
-  //         'http://192.168.1.3:5000/api/auth/profile',
-  //         {
-  //           headers: { Authorization: `Bearer ${token}` },
-  //         },
-  //       );
-  //       setUser(response.data.user);
-  //     } catch (error) {
-  //       console.log('error', error);
-  //     }
-  //   };
-
-  //   const getProducts = async () => {
-  //     const token = await AsyncStorage.getItem('authToken');
-  //     try {
-  //       const response = await axios.get(
-  //         'http://192.168.1.3:5000/api/product/get-products',
-  //         {
-  //           headers: { Authorization: `Bearer ${token}` },
-  //         },
-  //       );
-
-  //       const latestFive = response.data.data.slice(-5).reverse();
-
-  //       setProducts(latestFive);
-  //       console.log('response', latestFive);
-  //     } catch (error) {
-  //       console.log('Fetch products failed', error);
-  //     }
-  //   };
-
-  //   getProfile();
-  //   getProducts();
-  // }, []);
-
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
 
+      {/* FIXED HEADER */}
       <SafeAreaView style={styles.header}>
         <View style={styles.brandRow}>
-          <Icon name="cart-shopping" color={'black'} size={24} />
+          <Icon name="cart-shopping" color="black" size={24} />
           <Text style={styles.headerTitle}>Retail Pro</Text>
         </View>
 
         <View style={styles.headerRight}>
-          <Icon name="bell" size={22} color="#000000" />
-
-          <View style={styles.profile}>
-            <Text style={styles.profileText}>
-              {/* {user?.username?.charAt(0).toUpperCase()} */}
-            </Text>
+          <Icon name="bell" size={22} color="#000" />
+          <View style={styles.avatarContainer}>
+            <Image
+              source={{ uri: 'https://i.pravatar.cc/150?img=12' }}
+              style={styles.avatar}
+            />
           </View>
         </View>
       </SafeAreaView>
 
-      <View style={styles.greeting}>
-        {/* <Text style={styles.greetingTitle}>Good morning, {user?.username}</Text> */}
-        <Text style={styles.greetingSub}>
-          Here is today’s snapshot of your store performance.
-        </Text>
-      </View>
+      {/* SCROLLABLE CONTENT */}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 160 }}
+      >
+        <HomeBanner />
 
-      <View style={styles.statsRow}>
-        <View style={styles.statCard}>
-          <Text style={styles.statLabel}>Today’s sales</Text>
-          <Text style={styles.statValue}>$2,430</Text>
-          <View style={styles.statBadge}>
-            <Text style={styles.statBadgeText}>+18% vs yesterday</Text>
+        {/* Categories */}
+        <View>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Categories</Text>
+            <Text style={styles.sectionLink}>See All</Text>
           </View>
+
+          <FlatList
+            data={categories}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.categoryContainer}
+            keyExtractor={item => item.key}
+            renderItem={({ item }) => {
+              const isActive = selectedCategory === item.key;
+
+              return (
+                <View style={styles.categoryBtnContainer}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSelectedCategory(item.key);
+                      navigation.navigate('CategoryScreen', {
+                        categoryKey: item.key,
+                        categoryLabel: item.label,
+                      });
+                    }}
+                    style={[
+                      styles.categoryBtn,
+                      isActive && styles.categoryBtnActive,
+                    ]}
+                  >
+                    <Image source={item.value} style={styles.categoryImage} />
+                  </TouchableOpacity>
+
+                  <Text style={styles.categoryText}>{item.label}</Text>
+                </View>
+              );
+            }}
+          />
         </View>
 
-        <View style={styles.statCard}>
-          <Text style={styles.statLabel}>Low stock items</Text>
-          <Text style={styles.statValue}>7</Text>
-          <TouchableOpacity>
-            <Text style={styles.reviewText}>Review now</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+        {/* Nearby Shops */}
+        <View>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Nearby Shops</Text>
+            <Text style={styles.sectionLink}>View All</Text>
+          </View>
 
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Quick actions</Text>
-        <View style={styles.quickRow}>
-          <TouchableOpacity
-            style={styles.primaryAction}
-            // onPress={() => navigation.navigate('Product')}
-            onPress={signOut}
-          >
-            <Ionicons name="add" size={18} color="#fff" />
-            <Text style={styles.primaryActionText}>New product</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.secondaryAction}>
-            <Ionicons name="scan-outline" size={18} color="#ff5b27" />
-            <Text style={styles.secondaryActionText}>Scan barcode</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={styles.sectionRow}>
-        <Text style={styles.sectionTitle}>Top products</Text>
-        <Text
-          style={styles.link}
-          onPress={() => navigation.navigate('Inventory')}
-        >
-          View all
-        </Text>
-      </View>
-
-      {/* {products?.map(product => (
-        <View key={product?.id} style={styles.productRow}>
-          <View style={styles.productIcon}>
-            {product.category === 'grocery' ? (
-              <Image
-                source={require('../assets/icons/grocery.png')}
-                style={styles.categoryImage}
+          <FlatList
+            data={nearbyShops}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={item => item.id}
+            contentContainerStyle={{ paddingHorizontal: 20, marginTop: 16 }}
+            renderItem={({ item }) => (
+              <NearbyShopCard
+                image={item.image}
+                name={item.name}
+                rating={item.rating}
+                distance={item.distance}
               />
-            ) : product.category === 'fresh' ? (
-              <Image
-                source={require('../assets/icons/fresh-produce.png')}
-                style={styles.categoryImage}
-              />
-            ) : product.category === 'personal' ? (
-              <Image
-                source={require('../assets/icons/personal-hygiene.png')}
-                style={styles.categoryImage}
-              />
-            ) : product.category === 'home' ? (
-              <Image
-                source={require('../assets/icons/home.png')}
-                style={styles.categoryImage}
-              />
-            ) : product.category === 'baby' ? (
-              <Image
-                source={require('../assets/icons/baby.png')}
-                style={styles.categoryImage}
-              />
-            ) : product.category === 'health' ? (
-              <Image
-                source={require('../assets/icons/healthcare.png')}
-                style={styles.categoryImage}
-              />
-            ) : product.category === 'fashion' ? (
-              <Image
-                source={require('../assets/icons/tshirt.png')}
-                style={styles.categoryImage}
-              />
-            ) : product.category === 'electronic' ? (
-              <Image
-                source={require('../assets/icons/responsive.png')}
-                style={styles.categoryImage}
-              />
-            ) : product.category === 'stationery' ? (
-              <Image
-                source={require('../assets/icons/stationery.png')}
-                style={styles.categoryImage}
-              />
-            ) : (
-              <Ionicons name="cube-outline" size={26} color={'#ff5b27'} />
             )}
-          </View>
-
-          <View style={styles.productCard}>
-            <Text style={styles.productName}>{product.name}</Text>
-            <Text style={styles.productMeta}>{product.category}</Text>
-          </View>
-
-          <View style={styles.stockBadge}>
-            <Text style={styles.stockText}>{product.stock} in stock</Text>
-          </View>
+          />
         </View>
-      ))} */}
 
-      <View style={styles.sectionRow}>
-        <Text style={styles.sectionTitle}>Today’s activity</Text>
-        <Text style={styles.link}>See all</Text>
-      </View>
+        {/* Recommended */}
+        <View>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Recommended</Text>
+            <Text style={styles.sectionLink}>View All</Text>
+          </View>
 
-      <View style={styles.activityCard}>
-        <Ionicons name="cart-outline" color={'#ff5b27'} size={24} />
-        <Text style={styles.activityText}>12 orders completed</Text>
-        <Text style={styles.activityValue}>$640</Text>
-      </View>
-
-      <View style={styles.activityCard}>
-        <Ionicons name="warning-outline" color={'#ff5b27'} size={24} />
-        <Text style={styles.activityText}>3 items low in stock</Text>
-        <Text style={styles.review}>Review</Text>
-      </View>
-
-      <View style={styles.screenView} />
-    </ScrollView>
+          <FlatList
+            data={products}
+            keyExtractor={item => item.id}
+            numColumns={2}
+            scrollEnabled={false}
+            removeClippedSubviews={false}
+            columnWrapperStyle={{ gap: 16 }}
+            contentContainerStyle={{
+              paddingHorizontal: 20,
+              paddingTop: 16,
+            }}
+            renderItem={({ item }) => (
+              <ProductCard
+                image={item.image}
+                name={item.name}
+                price={item.price}
+                onAddToCart={() => console.log(item.name)}
+              />
+            )}
+          />
+        </View>
+      </ScrollView>
+    </View>
   );
-};
+}
 
 export default CustomerHomeScreen;
 
@@ -237,7 +255,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16,
-    marginTop: 14,
+
+    paddingBottom: 10,
+    backgroundColor: '#FFF5F0',
+    zIndex: 10,
+    // elevation: 4,
   },
   brandRow: {
     flexDirection: 'row',
@@ -246,7 +268,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 18,
-    color: '#000000',
+    color: '#000',
     fontFamily: 'Poppins-SemiBold',
   },
   headerRight: {
@@ -254,220 +276,63 @@ const styles = StyleSheet.create({
     gap: 14,
     alignItems: 'center',
   },
+  avatarContainer: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    padding: 2,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#bbb',
+  },
   avatar: {
     width: 32,
     height: 32,
     borderRadius: 16,
   },
-  greeting: {
-    paddingHorizontal: 16,
-    marginTop: 12,
-  },
-  greetingTitle: {
-    fontSize: 22,
-    color: '#000000',
-    fontFamily: 'Poppins-SemiBold',
-  },
-  greetingSub: {
-    marginTop: -4,
-    color: '#000000a3',
-    fontSize: 13,
-    fontFamily: 'Poppins-Regular',
-  },
-  statsRow: {
+  sectionHeader: {
     flexDirection: 'row',
-    paddingHorizontal: 16,
-    marginTop: 26,
-    gap: 16,
-  },
-  statCard: {
-    flex: 1,
     justifyContent: 'space-between',
-    backgroundColor: '#ffffff',
-    borderColor: '#ffe3d9',
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 16,
-  },
-  statLabel: {
-    color: '#000000a3',
-    fontSize: 14,
-    fontFamily: 'Poppins-SemiBold',
-  },
-  statValue: {
-    fontSize: 22,
-    fontFamily: 'Poppins-SemiBold',
-    marginTop: 6,
-  },
-  statBadge: {
-    marginTop: 6,
-    backgroundColor: '#DCFCE7',
-    alignSelf: 'flex-start',
-    borderRadius: 30,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-  },
-  statBadgeText: {
-    fontFamily: 'Poppins-SemiBold',
-    fontSize: 11,
-    color: '#166534',
-  },
-  reviewText: {
-    color: '#ff5b27',
-    fontWeight: '600',
-    fontSize: 12,
-    fontFamily: 'Poppins-SemiBold',
+    alignItems: 'center',
+    marginTop: 20,
+    paddingHorizontal: 20,
   },
   sectionTitle: {
-    marginTop: 22,
-    marginBottom: 10,
     fontSize: 16,
-    color: '#000000',
     fontFamily: 'Poppins-SemiBold',
   },
-  quickRow: {
-    flexDirection: 'row',
-    gap: 16,
+  sectionLink: {
+    fontSize: 12,
+    color: '#ff6a32',
+    fontFamily: 'Poppins-Medium',
   },
-  primaryAction: {
-    flex: 1,
-    backgroundColor: '#ff5927',
-    borderRadius: 10,
-    paddingVertical: 14,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 6,
+  categoryContainer: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+    gap: 20,
   },
-  primaryActionText: {
-    fontFamily: 'Poppins-SemiBold',
-    color: '#ffffff',
-  },
-  secondaryAction: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#ffe3d9',
-    borderRadius: 14,
-    paddingVertical: 14,
-    flexDirection: 'row',
-    justifyContent: 'center',
+  categoryBtnContainer: {
+    alignItems: 'center',
     gap: 8,
+  },
+  categoryBtn: {
+    padding: 20,
     backgroundColor: '#fff',
-  },
-  secondaryActionText: {
-    color: '#ff5b27',
-    fontFamily: 'Poppins-SemiBold',
-  },
-  sectionHeader: {
-    paddingHorizontal: 16,
-  },
-  link: {
-    color: '#ff5b27',
-    fontFamily: 'Poppins-SemiBold',
-  },
-  productRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    marginHorizontal: 16,
-    marginBottom: 10,
-    padding: 8,
-    borderRadius: 10,
-    gap: 12,
-    borderColor: '#ffe3d9',
+    borderRadius: 100,
     borderWidth: 1,
-    position: 'relative',
-  },
-  productIcon: {
-    backgroundColor: '#FFF5F0',
-    padding: 14,
-    borderRadius: 10,
-  },
-  productName: {
-    color: '#000000',
-    fontFamily: 'Poppins-SemiBold',
-  },
-  productMeta: {
-    fontSize: 12,
-    marginTop: -4,
-    color: '#000000a3',
-    fontFamily: 'Poppins-Regular',
-  },
-  stockBadge: {
-    backgroundColor: '#DCFCE7',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 0,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    borderTopRightRadius: 10,
-    borderBottomLeftRadius: 10,
-  },
-  stockText: {
-    fontSize: 10,
-    fontFamily: 'Poppins-SemiBold',
-    color: '#166534',
-  },
-  activityCard: {
-    backgroundColor: '#fff',
-    marginHorizontal: 16,
-    marginTop: 10,
-    padding: 14,
-    borderRadius: 10,
-    flexDirection: 'row',
-    gap: 12,
-    alignItems: 'center',
-    position: 'relative',
     borderColor: '#ffe3d9',
-    borderWidth: 1,
   },
-  activityText: {
-    color: '#111827',
-    fontFamily: 'Poppins-SemiBold',
-  },
-  activityValue: {
-    fontFamily: 'Poppins-SemiBold',
-    position: 'absolute',
-    right: 14,
-  },
-  sectionRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-  },
-  review: {
-    position: 'absolute',
-    right: 14,
-    color: '#ff5b27',
-    fontSize: 12,
-    fontFamily: 'Poppins-SemiBold',
-  },
-  screenView: {
-    height: 160,
-  },
-  productCard: {
-    flex: 1,
+  categoryBtnActive: {
+    backgroundColor: '#ffe3d9',
+    borderColor: '#ff5b27',
   },
   categoryImage: {
-    width: 24,
-    height: 24,
+    width: 30,
+    height: 30,
   },
-  profile: {
-    width: 50,
-    height: 50,
-    backgroundColor: '#ff5b27',
-    borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#ff5b27',
-    shadowOpacity: 0.4,
-    shadowRadius: 10,
-    elevation: 12,
-  },
-  profileText: {
-    fontSize: 18,
-    fontFamily: 'Poppins_Regular',
-    color: '#ffffff',
+  categoryText: {
+    fontSize: 12,
+    color: '#000000a3',
+    fontFamily: 'Poppins-Regular',
   },
 });

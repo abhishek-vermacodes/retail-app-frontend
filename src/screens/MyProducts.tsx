@@ -74,10 +74,7 @@ const MyProducts = () => {
   }, []);
 
   return (
-    <ScrollView
-      style={styles.mainContainer}
-      showsVerticalScrollIndicator={false}
-    >
+    <View style={styles.mainContainer}>
       <StatusBar barStyle={'dark-content'} />
 
       <View style={styles.headerContainer}>
@@ -110,70 +107,80 @@ const MyProducts = () => {
         </View>
       )}
 
-      <FlatList
-        data={categories}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.categoryContainer}
-        renderItem={({ item }) => {
-          const isActive = selectedCategory === item.value;
+      <View>
+        <FlatList
+          data={categories}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.categoryContainer}
+          renderItem={({ item }) => {
+            const isActive = selectedCategory === item.value;
 
-          return (
-            <TouchableOpacity
-              onPress={() => setSelectedCategory(item.value)}
-              style={[styles.categoryBtn, isActive && styles.categoryBtnActive]}
-            >
-              <Text
+            return (
+              <TouchableOpacity
+                onPress={() => setSelectedCategory(item.value)}
                 style={[
-                  styles.categoryText,
-                  isActive && styles.categoryTextActive,
+                  styles.categoryBtn,
+                  isActive && styles.categoryBtnActive,
                 ]}
               >
-                {item.label}
-              </Text>
-            </TouchableOpacity>
-          );
-        }}
-      />
+                <Text
+                  style={[
+                    styles.categoryText,
+                    isActive && styles.categoryTextActive,
+                  ]}
+                >
+                  {item.label}
+                </Text>
+              </TouchableOpacity>
+            );
+          }}
+        />
+      </View>
 
-      <View style={styles.gridContainer}>
-        {filteredProducts?.map(product => (
-          <View key={product?.id} style={styles.productCard}>
-            <TouchableOpacity
-              style={styles.productImageContainer}
-              onPress={() =>
-                navigation.navigate('MyProduct', { id: product.id })
-              }
-            >
-              <Image
-                style={styles.productImage}
-                source={{
-                  uri: `http://192.168.1.3:5000${product.image}`,
-                }}
-              />
-            </TouchableOpacity>
-            <View style={styles.productContentContainer}>
-              <Text style={styles.productName}>{product.productName}</Text>
-              <Text style={styles.productcategory}>{product.category}</Text>
-              <View style={styles.productSubContainer}>
-                <Text style={styles.productPrice}>₹{product.price}.00</Text>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 200 }}
+      >
+        <View style={styles.gridContainer}>
+          {filteredProducts?.map(product => (
+            <View key={product?.id} style={styles.productCard}>
+              <TouchableOpacity
+                style={styles.productImageContainer}
+                onPress={() =>
+                  navigation.navigate('MyProduct', { id: product.id })
+                }
+              >
+                <Image
+                  style={styles.productImage}
+                  source={{
+                    uri: `http://192.168.1.3:5000${product.image}`,
+                  }}
+                />
+              </TouchableOpacity>
+              <View style={styles.productContentContainer}>
+                <Text style={styles.productName}>{product.productName}</Text>
+                <Text style={styles.productcategory}>{product.category}</Text>
+                <View style={styles.productSubContainer}>
+                  <Text style={styles.productPrice}>₹{product.price}.00</Text>
 
-                {product.stock <= 30 ? (
-                  <Text style={styles.outOfStockStatus}>Out of Stock</Text>
-                ) : product.stock > 30 && product.stock < 60 ? (
-                  <Text style={styles.lowStockStatus}>Low Stock</Text>
-                ) : (
-                  <Text style={styles.inStockStatus}>Active</Text>
-                )}
+                  {product.stock <= 30 ? (
+                    <Text style={styles.outOfStockStatus}>Out of Stock</Text>
+                  ) : product.stock > 30 && product.stock < 60 ? (
+                    <Text style={styles.lowStockStatus}>Low Stock</Text>
+                  ) : (
+                    <Text style={styles.inStockStatus}>Active</Text>
+                  )}
+                </View>
+              </View>
+              <View style={styles.stockBadge}>
+                <Text style={styles.stockText}>{product.stock} in stock</Text>
               </View>
             </View>
-            <View style={styles.stockBadge}>
-              <Text style={styles.stockText}>{product.stock} in stock</Text>
-            </View>
-          </View>
-        ))}
-      </View>
-    </ScrollView>
+          ))}
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -225,6 +232,7 @@ const styles = StyleSheet.create({
   },
   categoryContainer: {
     marginTop: 20,
+    paddingBottom:20,
   },
   categoryBtn: {
     paddingHorizontal: 30,

@@ -1,12 +1,17 @@
 import React, { useContext } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthContext } from '../context/AuthContext';
-import CustomerHomeScreen from '../screens/CustomerHome';
 
 import BottomTabNavigator from './BottomTabNavForCustomer';
 import MyProducts from '../screens/MyProducts';
 import MyProduct from '../screens/MyProduct';
 import CreateShop from '../screens/CreateShop';
+import UserBottomTabNavigator from './UserBottomTabNavigator';
+import CategoryProductsScreen from '../screens/CategoryScreen';
+import ProductDetailsScreen from '../screens/ProductDetails';
+
+import RetailerHelpScreen from '../screens/RetailerHelpScreen';
+import CustomerHelpScreen from '../screens/CustomerHelpScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,11 +26,23 @@ export default function AppNavigator() {
           <Stack.Screen name="CreateShop" component={CreateShop} />
           <Stack.Screen name="MyProducts" component={MyProducts} />
           <Stack.Screen name="MyProduct" component={MyProduct} />
+          <Stack.Screen name="HelpCenter" component={RetailerHelpScreen} />
         </>
       )}
 
       {user?.role === 'customer' && (
-        <Stack.Screen name="Customer" component={CustomerHomeScreen} />
+        <>
+          <Stack.Screen name="Customer" component={UserBottomTabNavigator} />
+          <Stack.Screen
+            name="CategoryScreen"
+            component={CategoryProductsScreen}
+          />
+          <Stack.Screen
+            name="ProductDetails"
+            component={ProductDetailsScreen}
+          />
+          <Stack.Screen name="HelpCenter" component={CustomerHelpScreen} />
+        </>
       )}
     </Stack.Navigator>
   );
