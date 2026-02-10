@@ -36,3 +36,14 @@ export interface Product {
   image: string;
   createdAt: string;
 }
+
+export interface Store {
+  id: string;
+  storeName: string;
+  category: string;
+  description: string;
+  address: string;
+  image: string;
+  phone: string;
+  createdAt: string; 
+}

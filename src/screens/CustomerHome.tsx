@@ -12,10 +12,13 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import HomeBanner from '../components/HomeBanner';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NearbyShopCard from '../components/ShopCard';
 import ProductCard from '../components/ProductCard';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { Product, Store } from '../types/type';
 
 const categories = [
   {
@@ -61,66 +64,75 @@ const categories = [
   },
 ];
 
-const nearbyShops = [
-  {
-    id: '1',
-    name: 'Fresh Mart Daily',
-    rating: 4.8,
-    distance: 0.5,
-    image: require('../assets/images/bag.jpeg'),
-  },
-  {
-    id: '2',
-    name: 'The Bread Basket',
-    rating: 4.5,
-    distance: 1.2,
-    image: require('../assets/images/bag.jpeg'),
-  },
-  {
-    id: '3',
-    name: 'The Bread Basket',
-    rating: 4.5,
-    distance: 1.2,
-    image: require('../assets/images/bag.jpeg'),
-  },
-];
-
-const products = [
-  {
-    id: '1',
-    name: 'Fresh Red Apple (1kg)',
-    price: 3.5,
-    image: require('../assets/images/bag.jpeg'),
-  },
-  {
-    id: '2',
-    name: 'Organic Whole Milk',
-    price: 1.2,
-    image: require('../assets/images/bag.jpeg'),
-  },
-  {
-    id: '3',
-    name: 'Whole Wheat Bread',
-    price: 2.0,
-    image: require('../assets/images/bag.jpeg'),
-  },
-  {
-    id: '4',
-    name: 'Farm Fresh Eggs (12)',
-    price: 4.5,
-    image: require('../assets/images/bag.jpeg'),
-  },
-];
+// const products = [
+//   {
+//     id: '1',
+//     name: 'Fresh Red Apple (1kg)',
+//     price: 3.5,
+//     image: require('../assets/images/bag.jpeg'),
+//   },
+//   {
+//     id: '2',
+//     name: 'Organic Whole Milk',
+//     price: 1.2,
+//     image: require('../assets/images/bag.jpeg'),
+//   },
+//   {
+//     id: '3',
+//     name: 'Whole Wheat Bread',
+//     price: 2.0,
+//     image: require('../assets/images/bag.jpeg'),
+//   },
+//   {
+//     id: '4',
+//     name: 'Farm Fresh Eggs (12)',
+//     price: 4.5,
+//     image: require('../assets/images/bag.jpeg'),
+//   },
+// ];
 
 function CustomerHomeScreen() {
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const navigation = useNavigation<any>();
+  const [shops, setShop] = useState<Store[] | null>(null);
+  const [products, setProducts] = useState<Product[] | null>(null);
+
+  const fetchItems = async () => {
+    const token = await AsyncStorage.getItem('token');
+    try {
+      const storeResponse = await axios.get(
+        'http://192.168.1.3:5000/api/store/get-all-stores?limit=10',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const productResponse = await axios.get(
+        'http://192.168.1.3:5000/api/products/get-all-products?limit=10',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log('prduct response', productResponse);
+      setShop(storeResponse.data.stores);
+      setProducts(productResponse.data.products);
+    } catch (error) {
+      console.log('Failed to fetch shops', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
 
-      {/* FIXED HEADER */}
       <SafeAreaView style={styles.header}>
         <View style={styles.brandRow}>
           <Icon name="cart-shopping" color="black" size={24} />
@@ -138,14 +150,12 @@ function CustomerHomeScreen() {
         </View>
       </SafeAreaView>
 
-      {/* SCROLLABLE CONTENT */}
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 160 }}
+        contentContainerStyle={styles.scrollViewcontentContainerStyle}
       >
         <HomeBanner />
 
-        {/* Categories */}
         <View>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Categories</Text>
@@ -186,7 +196,6 @@ function CustomerHomeScreen() {
           />
         </View>
 
-        {/* Nearby Shops */}
         <View>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Nearby Shops</Text>
@@ -194,27 +203,25 @@ function CustomerHomeScreen() {
           </View>
 
           <FlatList
-            data={nearbyShops}
+            data={shops}
             horizontal
             showsHorizontalScrollIndicator={false}
             keyExtractor={item => item.id}
-            contentContainerStyle={{ paddingHorizontal: 20, marginTop: 16 }}
+            contentContainerStyle={styles.shopFlatListcontentContainerStyle}
             renderItem={({ item }) => (
               <NearbyShopCard
                 image={item.image}
-                name={item.name}
-                rating={item.rating}
-                distance={item.distance}
+                storeName={item.storeName}
+                category={item.category}
+                address={item.address}
               />
             )}
           />
         </View>
 
-        {/* Recommended */}
         <View>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Recommended</Text>
-            <Text style={styles.sectionLink}>View All</Text>
           </View>
 
           <FlatList
@@ -223,17 +230,14 @@ function CustomerHomeScreen() {
             numColumns={2}
             scrollEnabled={false}
             removeClippedSubviews={false}
-            columnWrapperStyle={{ gap: 16 }}
-            contentContainerStyle={{
-              paddingHorizontal: 20,
-              paddingTop: 16,
-            }}
+            columnWrapperStyle={styles.productFlatListColumnWrapperStyle}
+            contentContainerStyle={styles.productFlatListcontentContainerStyle}
             renderItem={({ item }) => (
               <ProductCard
                 image={item.image}
-                name={item.name}
+                name={item.productName}
                 price={item.price}
-                onAddToCart={() => console.log(item.name)}
+                // onAddToCart={() => console.log(item.name)}
               />
             )}
           />
@@ -255,11 +259,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16,
-
     paddingBottom: 10,
     backgroundColor: '#FFF5F0',
     zIndex: 10,
-    // elevation: 4,
   },
   brandRow: {
     flexDirection: 'row',
@@ -289,6 +291,9 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
+  },
+  scrollViewcontentContainerStyle: {
+    paddingBottom: 200,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -334,5 +339,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#000000a3',
     fontFamily: 'Poppins-Regular',
+  },
+  shopFlatListcontentContainerStyle: {
+    paddingHorizontal: 20,
+    marginTop: 16,
+  },
+  productFlatListColumnWrapperStyle: {
+    gap: 16,
+  },
+  productFlatListcontentContainerStyle: {
+    paddingHorizontal: 20,
+    paddingTop: 10,
   },
 });

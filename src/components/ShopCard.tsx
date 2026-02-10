@@ -1,42 +1,45 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome6';
 
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 interface NearbyShopCardProps {
-  image: any;
-  name: string;
-  rating: number;
-  distance: number;
+  storeName: string;
+  category: string;
+  address: string;
+  image: string;
 }
 
 const NearbyShopCard = ({
   image,
-  name,
-  rating,
-  distance,
+  storeName,
+  category,
+  address,
 }: NearbyShopCardProps) => {
   return (
     <View style={styles.card}>
-      <Image source={image} style={styles.image} />
+      <View style={styles.shopCategory}>
+        <Text style={styles.shopCategorytext}>{category}</Text>
+      </View>
+      <Image
+        source={{
+          uri: `http://192.168.1.3:5000${image}`,
+        }}
+        style={styles.image}
+      />
 
       <View style={styles.info}>
         <Text style={styles.name} numberOfLines={1}>
-          {name}
+          {storeName}
         </Text>
 
-        <View style={styles.metaRow}>
-          <View style={styles.ratingRow}>
-            <Icon name="star" size={12} color="#ffb703"  />
-            <Text style={styles.ratingText}>{rating}</Text>
-          </View>
-
-          <Text style={styles.dot}>•</Text>
-          <Text style={styles.distance}>{distance} km</Text>
+        <View style={styles.addressContainer}>
+          <Ionicons name="location-outline" size={18   } color={'#ff6a32'} />
+          <Text style={styles.addressText}>{address}</Text>
         </View>
       </View>
     </View>
   );
-}
+};
 
 export default NearbyShopCard;
 
@@ -48,6 +51,22 @@ const styles = StyleSheet.create({
     marginRight: 16,
     borderWidth: 1,
     borderColor: '#ffe3d9',
+    position: 'relative',
+  },
+  shopCategory: {
+    position: 'absolute',
+    right: 8,
+    top: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    backgroundColor: 'white',
+    zIndex: 9999,
+    borderRadius: 6,
+  },
+  shopCategorytext: {
+    fontSize: 12,
+    fontFamily: 'Poppins-Medium',
+    bottom: -1,
   },
   image: {
     width: '100%',
@@ -57,44 +76,29 @@ const styles = StyleSheet.create({
     backgroundColor: '#f2f2f2',
   },
   info: {
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   },
   name: {
     fontSize: 14,
-    fontFamily: 'Poppins-Medium',
+    fontFamily: 'Poppins-SemiBold',
     color: '#000',
   },
   metaRow: {
     flexDirection: 'row',
     alignItems: 'center',
-   
   },
-  rating: {
-    fontSize: 12,
-    fontFamily: 'Poppins-Regular',
-    color: '#444',
+  addressContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: -2,
+    marginLeft: -4
   },
-  dot: {
-    marginHorizontal: 6,
-    color: '#aaa',
-    marginTop: 4,
-  },
-  distance: {
+  addressText: {
     fontSize: 12,
     fontFamily: 'Poppins-Regular',
     color: '#666',
-    marginTop: 4,
-  },
-  ratingRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-
-    gap: 4,
-  },
-  ratingText: {
-    fontSize: 12,
-    fontFamily: 'Poppins-Regular',
-    color: '#444',
     marginTop: 4,
   },
 });

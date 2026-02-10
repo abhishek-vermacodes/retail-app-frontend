@@ -3,27 +3,32 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 interface ProductCardProps {
   image: any;
   name: string;
-  price: number;
+  price: string;
   onAddToCart?: () => void;
 }
 
 const ProductCard = ({ image, name, price, onAddToCart }: ProductCardProps) => {
   return (
     <View style={styles.card}>
-      <Image source={image} style={styles.image} />
+      <Image
+        source={{
+          uri: `http://192.168.1.3:5000${image}`,
+        }}
+        style={styles.image}
+      />
 
       <Text style={styles.name} numberOfLines={2}>
         {name}
       </Text>
 
-      <Text style={styles.price}>${price.toFixed(2)}</Text>
+      <Text style={styles.price}>${price}</Text>
 
-      <TouchableOpacity style={styles.button} onPress={onAddToCart}>
+      {/* <TouchableOpacity style={styles.button} onPress={onAddToCart}>
         <Text style={styles.buttonText}>Add to Cart</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
-}
+};
 
 export default ProductCard;
 
