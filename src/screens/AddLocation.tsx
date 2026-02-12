@@ -14,17 +14,50 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { WebView } from 'react-native-webview';
 import Geolocation from 'react-native-geolocation-service';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
 import Modal from 'react-native-modal';
 
+interface LocationProperties {
+  osm_type?: string;
+  osm_id?: number;
+  osm_key?: string;
+  osm_value?: string;
+  type?: string;
+  postcode?: string;
+  housenumber?: string;
+  countrycode?: string;
+  name?: string;
+  street?: string;
+  district?: string;
+  city?: string;
+  county?: string;
+  state?: string;
+  country?: string;
+}
+
+interface LocationGeometry {
+  type: string;
+  coordinates: [number, number];
+}
+
+interface LocationFeature {
+  type: string;
+  properties: LocationProperties;
+  geometry: LocationGeometry;
+}
+
+export interface PhotonResponse {
+  type: string;
+  features: LocationFeature[];
+}
+
 const AddLocation: React.FC = () => {
   const webViewRef = useRef<WebView>(null);
-  const navigation = useNavigation<any>();
 
+  const [location, setLocation] = useState<LocationProperties | null>(null);
   const [loading, setLoading] = useState(false);
   const [isDrawerVisible, setDrawerVisible] = useState(false);
+  const [mapLoading, setMapLoading] = useState(false);
 
   const [selectedLocation, setSelectedLocation] = useState<{
     lat: number;
@@ -78,34 +111,27 @@ const AddLocation: React.FC = () => {
   };
 
   const handleSetLocation = async () => {
-    setDrawerVisible(true);
     if (!selectedLocation) {
       Alert.alert('Please select a location');
       return;
     }
 
+    setDrawerVisible(true);
+    setMapLoading(true);
+
     try {
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${selectedLocation.lat}&lon=${selectedLocation.lng}&addressdetails=1`,
+        `https://photon.komoot.io/reverse?lat=${selectedLocation.lat}&lon=${selectedLocation.lng}`,
       );
 
-      console.log('data', response);
       const data = await response.json();
-
-      const locationData = {
-        lat: selectedLocation.lat,
-        lng: selectedLocation.lng,
-        address: data.display_name || 'Address not found',
-      };
-
-      await AsyncStorage.setItem('userLocation', JSON.stringify(locationData));
-
-      console.log('Saved Location:', locationData);
-
-      navigation.navigate('Home');
+      setLocation(data.features[0].properties);
+      console.log('data', data.features[0].properties);
     } catch (error) {
       Alert.alert('Error saving location');
       console.log('Failed to fetch map', error);
+    } finally {
+      setMapLoading(false);
     }
   };
 
@@ -126,7 +152,7 @@ const AddLocation: React.FC = () => {
       }
 
       Geolocation.getCurrentPosition(
-        position => {
+        async position => {
           const { latitude, longitude } = position.coords;
 
           setSelectedLocation({ lat: latitude, lng: longitude });
@@ -137,7 +163,15 @@ const AddLocation: React.FC = () => {
           true;
         `);
 
+          const response = await fetch(
+            `https://photon.komoot.io/reverse?lat=${latitude}&lon=${longitude}`,
+          );
+
+          const data = await response.json();
+          setLocation(data.features[0].properties);
+
           setLoading(false);
+          setDrawerVisible(true);
         },
         error => {
           Alert.alert('Error', error.message);
@@ -168,7 +202,7 @@ const AddLocation: React.FC = () => {
       <View style={styles.searchContainer}>
         <Feather name="search" color={'#000000a3'} size={20} />
         <TextInput
-          placeholder="Search for Products..."
+          placeholder="Search Location"
           placeholderTextColor={'#000000a3'}
           style={styles.searchText}
         />
@@ -196,8 +230,14 @@ const AddLocation: React.FC = () => {
           style={styles.primaryBtnContainer}
           onPress={handleSetLocation}
         >
-          <Ionicons name="location-outline" size={20} color="#ff6a32" />
-          <Text style={styles.primaryBtnText}>Set Location on Map</Text>
+          {mapLoading ? (
+            <ActivityIndicator size="small" color="#ff6a32" />
+          ) : (
+            <>
+              <Ionicons name="location-outline" size={20} color="#ff6a32" />
+              <Text style={styles.primaryBtnText}>Set Location on Map</Text>
+            </>
+          )}
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -221,30 +261,29 @@ const AddLocation: React.FC = () => {
 
           <Text style={styles.drawerTitle}>Selected Location</Text>
 
-          {selectedLocation && (
-            <Text style={styles.drawerText}>
-              Lat: {selectedLocation.lat}
-              {'\n'}
-              Lng: {selectedLocation.lng}
-            </Text>
-          )}
-
           <View style={styles.locationContainer}>
-            <View style={styles.streetAddressContainer}>
-              <Ionicons name="location-outline" size={20} color="#ff6a32" />
-              <Text style={styles.streetText}>Rail Nagar</Text>
-            </View>
-            <Text style={styles.addressText}>
-              Alkapuri, Near Mahesh, Nagar Garden, Ratlam, Madhya Pradesh,
-              457001
-            </Text>
+            {mapLoading ? (
+              <Text>Getting Location...</Text>
+            ) : (
+              <>
+                <View style={styles.streetAddressContainer}>
+                  <Ionicons name="location-outline" size={20} color="#ff6a32" />
+                  <Text style={styles.streetText}>
+                    {location?.city || location?.county}
+                  </Text>
+                </View>
+                <Text style={styles.addressText}>
+                  {location?.name}, {location?.state}, {location?.postcode}
+                </Text>
+              </>
+            )}
           </View>
 
           <View style={styles.inputContainer}>
             <View style={styles.inputWrapper}>
               <TextInput
                 style={styles.input}
-                placeholder="Flat, House no, Building name"
+                placeholder="Flat, House no, Building name (Optional)"
                 placeholderTextColor="#00000061"
                 autoCapitalize="none"
               />
@@ -254,7 +293,7 @@ const AddLocation: React.FC = () => {
             <View style={styles.inputWrapper}>
               <TextInput
                 style={styles.input}
-                placeholder="Area, Street, Sector, Village"
+                placeholder="Area, Street, Sector, Village (Optional)"
                 placeholderTextColor="#00000061"
                 autoCapitalize="none"
               />
@@ -265,7 +304,7 @@ const AddLocation: React.FC = () => {
             <View style={styles.inputWrapper}>
               <TextInput
                 style={styles.input}
-                placeholder="Landmark"
+                placeholder="Landmark (Optional)"
                 placeholderTextColor="#00000061"
                 autoCapitalize="none"
               />
