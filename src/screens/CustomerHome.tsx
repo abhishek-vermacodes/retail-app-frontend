@@ -91,11 +91,14 @@ const categories = [
 //   },
 // ];
 
+
+
 function CustomerHomeScreen() {
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const navigation = useNavigation<any>();
   const [shops, setShop] = useState<Store[] | null>(null);
   const [products, setProducts] = useState<Product[] | null>(null);
+  const [userLocation, setUserLocation] = useState<any>(null);
 
   const fetchItems = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -125,8 +128,24 @@ function CustomerHomeScreen() {
     }
   };
 
+   const loadUserLocation = async () => {
+     try {
+       const location = await AsyncStorage.getItem('userLocation');
+       if (location) {
+         const parsed = JSON.parse(location);
+         setUserLocation(parsed);
+         console.log('Loaded Location:', parsed);
+       }
+     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+     } catch (error) {
+       console.log('Error loading location');
+     }
+   };
+
+
   useEffect(() => {
     fetchItems();
+      loadUserLocation();
   }, []);
 
   return (
@@ -137,6 +156,11 @@ function CustomerHomeScreen() {
         <View style={styles.brandRow}>
           <Icon name="cart-shopping" color="black" size={24} />
           <Text style={styles.headerTitle}>Retail Pro</Text>
+          {userLocation && (
+            <Text style={styles.locationText} numberOfLines={1}>
+              📍 {userLocation.address}
+            </Text>
+          )}
         </View>
 
         <View style={styles.headerRight}>
@@ -277,6 +301,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 14,
     alignItems: 'center',
+  },
+  locationText: {
+    fontSize: 11,
+    color: '#666',
+    fontFamily: 'Poppins-Regular',
+    width: 220,
   },
   avatarContainer: {
     width: 36,
