@@ -16,6 +16,7 @@ import { WebView } from 'react-native-webview';
 import Geolocation from 'react-native-geolocation-service';
 import Feather from 'react-native-vector-icons/Feather';
 import Modal from 'react-native-modal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface LocationProperties {
   osm_type?: string;
@@ -51,13 +52,20 @@ export interface PhotonResponse {
   features: LocationFeature[];
 }
 
-const AddLocation: React.FC = () => {
+const AddLocation = () => {
   const webViewRef = useRef<WebView>(null);
 
   const [location, setLocation] = useState<LocationProperties | null>(null);
   const [loading, setLoading] = useState(false);
-  const [isDrawerVisible, setDrawerVisible] = useState(false);
+  const [isPriDrawerVisible, setPriDrawerVisible] = useState(false);
+  const [isSecDrawerVisible, setSecDrawerVisible] = useState(false);
+
   const [mapLoading, setMapLoading] = useState(false);
+  const [extraFields, setExtraFields] = useState({
+    houseNo: '',
+    area: '',
+    landmark: '',
+  });
 
   const [selectedLocation, setSelectedLocation] = useState<{
     lat: number;
@@ -116,7 +124,7 @@ const AddLocation: React.FC = () => {
       return;
     }
 
-    setDrawerVisible(true);
+    setPriDrawerVisible(true);
     setMapLoading(true);
 
     try {
@@ -126,7 +134,8 @@ const AddLocation: React.FC = () => {
 
       const data = await response.json();
       setLocation(data.features[0].properties);
-      console.log('data', data.features[0].properties);
+
+      await AsyncStorage.setItem('selectedLocation', JSON.stringify(data));
     } catch (error) {
       Alert.alert('Error saving location');
       console.log('Failed to fetch map', error);
@@ -171,7 +180,8 @@ const AddLocation: React.FC = () => {
           setLocation(data.features[0].properties);
 
           setLoading(false);
-          setDrawerVisible(true);
+          setSecDrawerVisible(true);
+          await AsyncStorage.setItem('currentLocation', JSON.stringify(data));
         },
         error => {
           Alert.alert('Error', error.message);
@@ -230,14 +240,8 @@ const AddLocation: React.FC = () => {
           style={styles.primaryBtnContainer}
           onPress={handleSetLocation}
         >
-          {mapLoading ? (
-            <ActivityIndicator size="small" color="#ff6a32" />
-          ) : (
-            <>
-              <Ionicons name="location-outline" size={20} color="#ff6a32" />
-              <Text style={styles.primaryBtnText}>Set Location on Map</Text>
-            </>
-          )}
+          <Ionicons name="location-outline" size={20} color="#ff6a32" />
+          <Text style={styles.primaryBtnText}>Set Location on Map</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -245,15 +249,103 @@ const AddLocation: React.FC = () => {
           onPress={handleUseCurrentLocation}
           disabled={loading}
         >
-          <Text style={styles.secondaryBtnText}>
-            {loading ? 'Getting Location...' : 'Use Current Location'}
-          </Text>
+          <Text style={styles.secondaryBtnText}>Use Current Location</Text>
         </TouchableOpacity>
       </View>
 
       <Modal
-        isVisible={isDrawerVisible}
-        onBackdropPress={() => setDrawerVisible(false)}
+        isVisible={isPriDrawerVisible}
+        onBackdropPress={() => setPriDrawerVisible(false)}
+        style={styles.modal}
+      >
+        <View style={styles.drawer}>
+          <View style={styles.drawerHandle} />
+
+          <Text style={styles.drawerTitle}>Selected Location</Text>
+
+          <View style={styles.locationContainer}>
+            {mapLoading ? (
+              <Text>Getting Location...</Text>
+            ) : (
+              <>
+                <View style={styles.streetAddressContainer}>
+                  <Ionicons name="location-outline" size={20} color="#ff6a32" />
+                  <Text style={styles.streetText}>
+                    {location?.city || location?.county}
+                  </Text>
+                </View>
+                <Text style={styles.addressText}>
+                  {[
+                    extraFields.houseNo,
+                    extraFields.area,
+                    extraFields.landmark,
+                    location?.name,
+                    location?.state,
+                    location?.postcode,
+                  ]
+                    .filter(Boolean)
+                    .join(', ')}
+                </Text>
+              </>
+            )}
+          </View>
+
+          <View style={styles.inputContainer}>
+            <View style={styles.inputWrapper}>
+              <TextInput
+                style={styles.input}
+                placeholder="Flat, House no, Building name (Optional)"
+                placeholderTextColor="#00000061"
+                autoCapitalize="none"
+                value={extraFields.houseNo}
+                onChangeText={text =>
+                  setExtraFields({ ...extraFields, houseNo: text })
+                }
+              />
+            </View>
+          </View>
+          <View style={styles.inputContainer}>
+            <View style={styles.inputWrapper}>
+              <TextInput
+                style={styles.input}
+                placeholder="Area, Street, Sector, Village (Optional)"
+                placeholderTextColor="#00000061"
+                autoCapitalize="none"
+                value={extraFields.area}
+                onChangeText={text =>
+                  setExtraFields({ ...extraFields, area: text })
+                }
+              />
+            </View>
+          </View>
+
+          <View style={styles.inputContainer}>
+            <View style={styles.inputWrapper}>
+              <TextInput
+                style={styles.input}
+                placeholder="Landmark (Optional)"
+                placeholderTextColor="#00000061"
+                autoCapitalize="none"
+                value={extraFields.landmark}
+                onChangeText={text =>
+                  setExtraFields({ ...extraFields, landmark: text })
+                }
+              />
+            </View>
+          </View>
+
+          <TouchableOpacity
+            style={styles.secondaryBtnContainer}
+            onPress={handleSetLocation}
+          >
+            <Text style={styles.secondaryBtnText}>Confirm Location</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+
+      <Modal
+        isVisible={isSecDrawerVisible}
+        onBackdropPress={() => setSecDrawerVisible(false)}
         style={styles.modal}
       >
         <View style={styles.drawer}>
@@ -279,41 +371,9 @@ const AddLocation: React.FC = () => {
             )}
           </View>
 
-          <View style={styles.inputContainer}>
-            <View style={styles.inputWrapper}>
-              <TextInput
-                style={styles.input}
-                placeholder="Flat, House no, Building name (Optional)"
-                placeholderTextColor="#00000061"
-                autoCapitalize="none"
-              />
-            </View>
-          </View>
-          <View style={styles.inputContainer}>
-            <View style={styles.inputWrapper}>
-              <TextInput
-                style={styles.input}
-                placeholder="Area, Street, Sector, Village (Optional)"
-                placeholderTextColor="#00000061"
-                autoCapitalize="none"
-              />
-            </View>
-          </View>
-
-          <View style={styles.inputContainer}>
-            <View style={styles.inputWrapper}>
-              <TextInput
-                style={styles.input}
-                placeholder="Landmark (Optional)"
-                placeholderTextColor="#00000061"
-                autoCapitalize="none"
-              />
-            </View>
-          </View>
-
           <TouchableOpacity
             style={styles.secondaryBtnContainer}
-            onPress={handleSetLocation}
+            // onPress={handleSetLocation}
           >
             <Text style={styles.secondaryBtnText}>Confirm Location</Text>
           </TouchableOpacity>
@@ -420,7 +480,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    minHeight: 420,
+    height: 'auto',
   },
   drawerHandle: {
     width: 50,
