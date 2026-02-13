@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-// import axios from 'axios';
+
 import React, { useContext, useState } from 'react';
 import {
   View,
@@ -7,7 +7,6 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  // Alert,
   KeyboardAvoidingView,
   Image,
   Alert,
@@ -20,7 +19,6 @@ const SignupScreen = () => {
   const navigation = useNavigation<any>();
 
   const [isVisible, setIsVisible] = useState(false);
-  // const [loading, setLoading] = useState(false);
   const [role, setRole] = useState('customer');
   const [user, setUser] = useState({
     username: '',
@@ -48,34 +46,6 @@ const SignupScreen = () => {
       Alert.alert('error', 'Signup Failed');
     }
   };
-
-  // const onSignup = async () => {
-  //   if (!user.username || !user.email || !user.password) {
-  //     Alert.alert('Error', 'All fields are required');
-  //     return;
-  //   }
-
-  //   try {
-  //     setLoading(true);
-
-  //     await axios.post('http://192.168.1.3:5000/api/auth/signup', user);
-  //     Alert.alert('success', 'Signup successful');
-  //     console.log('Signup successful', user);
-
-  //     const email = user.email;
-  //     setUser({ username: '', email: '', password: '', role: 'customer' });
-  //     setRole('customer');
-
-  //     navigation.navigate('Verification', {
-  //       email,
-  //     });
-  //   } catch (error) {
-  //     Alert.alert('Error', 'Signup failed');
-  //     console.log('Signup failed', error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -160,11 +130,6 @@ const SignupScreen = () => {
                 role === 'retailer' && styles.iconContainerActive,
               ]}
             >
-              {/* <Feather
-                name="shopping-bag"
-                size={18}
-                color={role === 'retailer' ? '#000000' : '#949494'}
-              /> */}
               {role === 'retailer' ? (
                 <Image
                   source={require('../assets/icons/shopBlack.png')}
@@ -261,17 +226,6 @@ const SignupScreen = () => {
           {loading ? 'Loading...' : 'Sign Up'}
         </Text>
       </TouchableOpacity>
-
-      {/* <Text style={styles.terms}>Or continue with</Text> */}
-
-      {/* <View style={styles.extraButtonWrapper}>
-        <TouchableOpacity style={styles.extraButton}>
-          <FontAwesome6 name="google" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.extraButton}>
-          <Fontisto name="apple" size={24} color="black" />
-        </TouchableOpacity>
-      </View> */}
 
       <Text style={styles.terms}>
         Already have an account?{' '}

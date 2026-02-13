@@ -6,7 +6,6 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  // Alert,
   KeyboardAvoidingView,
 } from 'react-native';
 
@@ -14,7 +13,6 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import { AuthContext } from '../context/AuthContext';
-// import axios from 'axios';
 
 const SigninScreen = () => {
   const navigation = useNavigation<any>();
@@ -26,29 +24,11 @@ const SigninScreen = () => {
   });
 
   const [isVisible, setIsVisible] = useState(false);
+
   const handleSignin = () => {
     signIn(user.email, user.password);
+    
   };
-  // const [loading, setLoading] = useState(false);
-
-  // const onSignin = async () => {
-  //   if (!user.email || !user.password) {
-  //     Alert.alert('Error', 'All fields are required');
-  //     return;
-  //   }
-
-  //   try {
-  //     setLoading(true);
-  //     await axios.post('http://192.168.1.3:5000/api/auth/signin', user);
-  //     Alert.alert('success', 'Signin successful');
-  //     setUser({ email: '', password: '' });
-  //   } catch (error) {
-  //     Alert.alert('Error', 'Signup failed');
-  //     console.log('Signin failed', error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -125,17 +105,6 @@ const SigninScreen = () => {
         </Text>
       </TouchableOpacity>
 
-      {/* <Text style={styles.terms}>Or continue with</Text> */}
-
-      {/* <View style={styles.extraButtonWrapper}>
-        <TouchableOpacity style={styles.extraButton}>
-          <FontAwesome6 name="google" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.extraButton}>
-          <Fontisto name="apple" size={24} color="black" />
-        </TouchableOpacity>
-      </View> */}
-
       <Text style={styles.terms}>
         Dont have an account?{' '}
         <Text onPress={() => navigation.navigate('Signup')} style={styles.link}>
@@ -194,7 +163,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 16,
-    color: '#000'
+    color: '#000',
   },
   button: {
     height: 50,

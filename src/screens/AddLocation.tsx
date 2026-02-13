@@ -17,6 +17,7 @@ import Geolocation from 'react-native-geolocation-service';
 import Feather from 'react-native-vector-icons/Feather';
 import Modal from 'react-native-modal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 interface LocationProperties {
   osm_type?: string;
@@ -56,6 +57,7 @@ const AddLocation = () => {
   const webViewRef = useRef<WebView>(null);
 
   const [location, setLocation] = useState<LocationProperties | null>(null);
+
   const [loading, setLoading] = useState(false);
   const [isPriDrawerVisible, setPriDrawerVisible] = useState(false);
   const [isSecDrawerVisible, setSecDrawerVisible] = useState(false);
@@ -124,8 +126,8 @@ const AddLocation = () => {
       return;
     }
 
-    setPriDrawerVisible(true);
     setMapLoading(true);
+    setPriDrawerVisible(true);
 
     try {
       const response = await fetch(
@@ -134,8 +136,6 @@ const AddLocation = () => {
 
       const data = await response.json();
       setLocation(data.features[0].properties);
-
-      await AsyncStorage.setItem('selectedLocation', JSON.stringify(data));
     } catch (error) {
       Alert.alert('Error saving location');
       console.log('Failed to fetch map', error);
@@ -181,7 +181,25 @@ const AddLocation = () => {
 
           setLoading(false);
           setSecDrawerVisible(true);
-          await AsyncStorage.setItem('currentLocation', JSON.stringify(data));
+
+          const token = await AsyncStorage.getItem('token');
+          const locationString = [
+            location?.name,
+            location?.state,
+            location?.postcode,
+          ]
+            .filter(Boolean)
+            .join(', ');
+
+          await axios.post(
+            'http://192.168.1.3:5000/api/auth/setAddress',
+            { location: locationString },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          );
         },
         error => {
           Alert.alert('Error', error.message);

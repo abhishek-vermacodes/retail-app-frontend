@@ -6,7 +6,6 @@ import SplashScreen from '../screens/SplashScreen';
 import IntroScreen from '../screens/IntroScreen';
 import ForgotPasswordScreen from '../screens/ForgotPassword';
 import VerificationScreen from '../screens/Verification';
-import AddLocation from '../screens/AddLocation';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,8 +18,6 @@ export default function AuthNavigator() {
       <Stack.Screen name="Signin" component={SigninScreen} />
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
       <Stack.Screen name="Verification" component={VerificationScreen} />
-      <Stack.Screen name="Location" component={AddLocation} />
-      
     </Stack.Navigator>
   );
 }
