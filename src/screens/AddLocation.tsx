@@ -217,6 +217,37 @@ const AddLocation = () => {
     }
   };
 
+  const handleSetSelectedLocation = async () => {
+    const token = await AsyncStorage.getItem('token');
+    try {
+      const locationString = [
+        location?.name,
+        location?.state,
+        location?.postcode,
+        extraFields.houseNo,
+        extraFields.area,
+        extraFields.landmark,
+      ]
+        .filter(Boolean)
+        .join(', ');
+      await axios.post(
+        'http://192.168.1.3:5000/api/auth/setAddress',
+        {
+          location: locationString,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      Alert.alert('Location added successfully');
+    } catch (error) {
+      Alert.alert('Failed to add Location');
+      console.log('Failed to add Location', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle={'dark-content'} />
@@ -354,7 +385,7 @@ const AddLocation = () => {
 
           <TouchableOpacity
             style={styles.secondaryBtnContainer}
-            onPress={handleSetLocation}
+            onPress={handleSetSelectedLocation}
           >
             <Text style={styles.secondaryBtnText}>Confirm Location</Text>
           </TouchableOpacity>
@@ -389,10 +420,7 @@ const AddLocation = () => {
             )}
           </View>
 
-          <TouchableOpacity
-            style={styles.secondaryBtnContainer}
-            // onPress={handleSetLocation}
-          >
+          <TouchableOpacity style={styles.secondaryBtnContainer}>
             <Text style={styles.secondaryBtnText}>Confirm Location</Text>
           </TouchableOpacity>
         </View>
