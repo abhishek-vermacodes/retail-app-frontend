@@ -18,6 +18,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import Modal from 'react-native-modal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import API from '../api/authApi';
 
 interface LocationProperties {
   osm_type?: string;
@@ -135,6 +136,7 @@ const AddLocation = () => {
       );
 
       const data = await response.json();
+      console.log('data', data);
       setLocation(data.features[0].properties);
     } catch (error) {
       Alert.alert('Error saving location');
@@ -192,7 +194,7 @@ const AddLocation = () => {
             .join(', ');
 
           await axios.post(
-            'http://192.168.1.3:5000/api/auth/setAddress',
+            `${API}/auth/setAddress`,
             { location: locationString },
             {
               headers: {
@@ -231,9 +233,38 @@ const AddLocation = () => {
         .filter(Boolean)
         .join(', ');
       await axios.post(
-        'http://192.168.1.3:5000/api/auth/setAddress',
+        `${API}/auth/setAddress`,
         {
           location: locationString,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      Alert.alert('Location added successfully');
+    } catch (error) {
+      Alert.alert('Failed to add Location');
+      console.log('Failed to add Location', error);
+    }
+  };
+
+  const handleSetCurrentLocation = async () => {
+    const token = await AsyncStorage.getItem('token');
+
+    try {
+      const locationSharing = [
+        location?.name,
+        location?.state,
+        location?.postcode,
+      ]
+        .filter(Boolean)
+        .join(',');
+      await axios.post(
+        `${API}/auth/setAddress`,
+        {
+          location: locationSharing,
         },
         {
           headers: {
@@ -420,7 +451,10 @@ const AddLocation = () => {
             )}
           </View>
 
-          <TouchableOpacity style={styles.secondaryBtnContainer}>
+          <TouchableOpacity
+            style={styles.secondaryBtnContainer}
+            onPress={handleSetCurrentLocation}
+          >
             <Text style={styles.secondaryBtnText}>Confirm Location</Text>
           </TouchableOpacity>
         </View>

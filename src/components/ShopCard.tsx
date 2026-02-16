@@ -22,7 +22,7 @@ const NearbyShopCard = ({
       </View>
       <Image
         source={{
-          uri: `http://192.168.1.3:5000${image}`,
+          uri: `http://192.168.1.5:5000${image}`,
         }}
         style={styles.image}
       />

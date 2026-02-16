@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 
 interface ProductCardProps {
   image: any;
@@ -7,12 +7,12 @@ interface ProductCardProps {
   onAddToCart?: () => void;
 }
 
-const ProductCard = ({ image, name, price, onAddToCart }: ProductCardProps) => {
+const ProductCard = ({ image, name, price }: ProductCardProps) => {
   return (
     <View style={styles.card}>
       <Image
         source={{
-          uri: `http://192.168.1.3:5000${image}`,
+          uri: `http://192.168.1.5:5000${image}`,
         }}
         style={styles.image}
       />
@@ -23,9 +23,6 @@ const ProductCard = ({ image, name, price, onAddToCart }: ProductCardProps) => {
 
       <Text style={styles.price}>${price}</Text>
 
-      {/* <TouchableOpacity style={styles.button} onPress={onAddToCart}>
-        <Text style={styles.buttonText}>Add to Cart</Text>
-      </TouchableOpacity> */}
     </View>
   );
 };

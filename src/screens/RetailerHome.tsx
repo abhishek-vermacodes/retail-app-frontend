@@ -15,6 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Store } from '../types/type';
+import API from '../api/authApi';
 
 const RetailerHomeScreen = () => {
   const navigation = useNavigation<any>();
@@ -25,7 +26,7 @@ const RetailerHomeScreen = () => {
     try {
       const token = await AsyncStorage.getItem('token');
       const response = await axios.get(
-        'http://192.168.1.3:5000/api/store/my-store',
+        `${API}/store/my-store`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -102,19 +103,11 @@ const RetailerHomeScreen = () => {
         ) : (
           <View style={styles.banner}>
             <View style={styles.badge}>
-              {/* <Ionicons name="sparkles-outline" size={14} color="#fff" /> */}
               <Text style={styles.badgeText}>{store.category}</Text>
             </View>
 
-            <Text style={styles.storeTitle}>
-              {/* Launch your{'\n'}online store */}
-              {store.storeName}
-            </Text>
-            <Text style={styles.storeDesc}>
-              {/* Start selling products directly to{'\n'}customers with zero
-              commission. */}
-              {store.description}
-            </Text>
+            <Text style={styles.storeTitle}>{store.storeName}</Text>
+            <Text style={styles.storeDesc}>{store.description}</Text>
 
             <View style={styles.storeContainer}>
               <View style={styles.storeBadge}>
@@ -128,27 +121,10 @@ const RetailerHomeScreen = () => {
               </View>
             </View>
 
-            {/* <TouchableOpacity
-              style={styles.bannerBtn}
-              onPress={() => navigation.navigate('CreateShop')}
-            >
-              <Text style={styles.bannerBtnText}>Create Shop</Text>
-              <Ionicons name="arrow-forward" size={16} color="#ff6a32" />
-            </TouchableOpacity> */}
-
             <View style={styles.storeCircle} />
-            {/* <View style={styles.storeImageContainer}>
-              <Image
-                style={styles.storeImage}
-                source={{
-                  uri: `http://192.168.1.3:5000${store.image}`,
-                }}
-              />
-            </View> */}
             <Image
-              // source={require('../assets/images/bag.jpeg')}
               source={{
-                uri: `http://192.168.1.3:5000${store.image}`,
+                uri: `http://192.168.1.5:5000${store.image}`,
               }}
               style={styles.bagImage}
             />

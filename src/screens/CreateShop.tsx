@@ -18,6 +18,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import API from '../api/authApi';
 
 const categories = ['Grocery', 'Medicine', 'Electronics', 'Clothing', 'Food'];
 
@@ -70,7 +71,7 @@ const CreateShop = () => {
 
       const token = await AsyncStorage.getItem('token');
 
-      await axios.post('http://192.168.1.3:5000/api/store', formData, {
+      await axios.post(`${API}/store`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',

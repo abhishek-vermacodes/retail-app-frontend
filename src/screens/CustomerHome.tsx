@@ -19,6 +19,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Product, Store } from '../types/type';
+import API from '../api/authApi';
 
 const categories = [
   {
@@ -91,8 +92,6 @@ const categories = [
 //   },
 // ];
 
-
-
 function CustomerHomeScreen() {
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const navigation = useNavigation<any>();
@@ -104,7 +103,7 @@ function CustomerHomeScreen() {
     const token = await AsyncStorage.getItem('token');
     try {
       const storeResponse = await axios.get(
-        'http://192.168.1.3:5000/api/store/get-all-stores?limit=10',
+        `${API}/store/get-all-stores?limit=10`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -113,7 +112,7 @@ function CustomerHomeScreen() {
       );
 
       const productResponse = await axios.get(
-        'http://192.168.1.3:5000/api/products/get-all-products?limit=10',
+        `${API}/products/get-all-products?limit=10`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -128,24 +127,23 @@ function CustomerHomeScreen() {
     }
   };
 
-   const loadUserLocation = async () => {
-     try {
-       const location = await AsyncStorage.getItem('userLocation');
-       if (location) {
-         const parsed = JSON.parse(location);
-         setUserLocation(parsed);
-         console.log('Loaded Location:', parsed);
-       }
-     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-     } catch (error) {
-       console.log('Error loading location');
-     }
-   };
-
+  const loadUserLocation = async () => {
+    try {
+      const location = await AsyncStorage.getItem('userLocation');
+      if (location) {
+        const parsed = JSON.parse(location);
+        setUserLocation(parsed);
+        console.log('Loaded Location:', parsed);
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      console.log('Error loading location');
+    }
+  };
 
   useEffect(() => {
     fetchItems();
-      loadUserLocation();
+    loadUserLocation();
   }, []);
 
   return (

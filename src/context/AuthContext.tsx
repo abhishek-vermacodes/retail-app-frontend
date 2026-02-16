@@ -7,6 +7,7 @@ interface User {
   username: string;
   email: string;
   role: 'retailer' | 'customer';
+  address: string;
 }
 
 type AuthContextType = {
