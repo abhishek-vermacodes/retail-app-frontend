@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  StatusBar,
 } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -15,18 +16,21 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Store } from '../types/type';
-import API from '../api/authApi';
+import { AuthContext } from '../context/AuthContext';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 
 const RetailerHomeScreen = () => {
   const navigation = useNavigation<any>();
   const [store, setStore] = useState<Store | null>(null);
+  const { user } = useContext(AuthContext);
+
   console.log('Store', store);
 
   const getStore = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
       const response = await axios.get(
-        `${API}/store/my-store`,
+        `http://192.168.1.5:5000/api/store/my-store`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -39,6 +43,17 @@ const RetailerHomeScreen = () => {
     }
   };
 
+  const address = user?.address || '';
+  const minLength = 5;
+  const maxlength = 20;
+
+  const displayAddress =
+    address.length > maxlength
+      ? address.slice(0, maxlength) + '...'
+      : address.length < minLength
+      ? address
+      : address;
+
   useEffect(() => {
     getStore();
   }, []);
@@ -50,23 +65,26 @@ const RetailerHomeScreen = () => {
       locations={[0, 0.6]}
       style={styles.container}
     >
+      <StatusBar barStyle="dark-content" />
+
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <View>
-            <Text style={styles.welcome}>Welcome back,</Text>
-            <Text style={styles.username}>Retail Pro</Text>
-          </View>
-
-          <View style={styles.headerIcons}>
-            <View style={styles.notification}>
-              <Ionicons name="notifications-outline" size={18} />
-              <View style={styles.dot} />
-            </View>
-            <View style={styles.avatarContainer}>
-              <Image
-                source={{ uri: 'https://i.pravatar.cc/150?img=12' }}
-                style={styles.avatar}
+            <View style={styles.locationContainer}>
+              <Ionicons
+                name="location"
+                size={20}
+                color="#ff6a32"
+                style={styles.locationIcon}
               />
+              <Text style={styles.priLocationText}>Home</Text>
+            </View>
+            <Text style={styles.secLocationText}>{displayAddress}</Text>
+          </View>
+          <View style={styles.profileContainer}>
+            <Fontisto name="bell" size={20} color="#000" />
+            <View style={styles.avatarContainer}>
+              <Text style={styles.avatarText}>{user?.username?.charAt(0)}</Text>
             </View>
           </View>
         </View>
@@ -153,8 +171,9 @@ const RetailerHomeScreen = () => {
           </View>
         </View>
 
-        {/* Get Started */}
-        <Text style={styles.sectionTitle}>Get Started</Text>
+        <View style={styles.overviewHeader}>
+          <Text style={styles.sectionTitle}>Get Started</Text>
+        </View>
 
         <View style={styles.getStartedSection}>
           <TouchableOpacity style={styles.actionCard}>
@@ -195,44 +214,52 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     paddingTop: 60,
-    paddingHorizontal: 20,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    gap: 2,
+    paddingBottom: 26,
+    zIndex: 10,
+    paddingHorizontal: 20,
+  },
+  locationContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
   },
-  welcome: { color: '#888', fontFamily: 'Poppins-Regular', fontSize: 12 },
-  username: { fontSize: 20, fontFamily: 'Poppins-Bold' },
-  headerIcons: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  notification: {
-    position: 'relative',
-    backgroundColor: '#fff',
-    padding: 7,
-    borderRadius: 50,
-    borderWidth: 1,
-    borderColor: '#bbb',
+  locationIcon: {
+    left: -6,
+    zIndex: 9999,
   },
-  dot: {
-    position: 'absolute',
-    right: 10,
-    top: 10,
-    height: 8,
-    width: 8,
-    borderRadius: 4,
-    backgroundColor: 'red',
+  priLocationText: {
+    fontFamily: 'Poppins-Bold',
+    marginBottom: -2,
+    fontSize: 14,
+  },
+  secLocationText: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 12,
+  },
+  profileContainer: {
+    flexDirection: 'row',
+    gap: 14,
+    alignItems: 'center',
   },
   avatarContainer: {
     width: 36,
     height: 36,
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 18,
     padding: 2,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#bbb',
+    backgroundColor: '#ff6a32',
   },
-  avatar: { width: '100%', height: '100%', borderRadius: 18 },
+  avatarText: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: 16,
+    marginBottom: -4,
+    color: '#ffe3d9',
+  },
   banner: {
     borderRadius: 22,
     backgroundColor: '#ff6a32',
@@ -240,6 +267,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     position: 'relative',
     overflow: 'hidden',
+    marginHorizontal: 20,
   },
   badge: {
     flexDirection: 'row',
@@ -281,78 +309,6 @@ const styles = StyleSheet.create({
     color: '#ff6a32',
     fontFamily: 'Poppins-Medium',
     fontSize: 12,
-  },
-  overviewHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontFamily: 'Poppins-SemiBold',
-  },
-  viewReport: {
-    fontSize: 12,
-    color: '#ff6a32',
-    fontFamily: 'Poppins-Medium',
-  },
-  statsRow: {
-    flexDirection: 'row',
-    gap: 14,
-    marginBottom: 24,
-    marginTop: 12,
-  },
-  statCard: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#eee',
-    borderRadius: 16,
-    padding: 16,
-  },
-  statNumber: { fontSize: 22, fontFamily: 'Poppins-SemiBold', marginTop: 8 },
-  statLabel: {
-    fontSize: 12,
-    color: '#888',
-    marginTop: 4,
-    fontFamily: 'Poppins-Regular',
-  },
-  growth: {
-    fontSize: 14,
-    color: 'green',
-    marginTop: 6,
-    fontFamily: 'Poppins-Medium',
-  },
-  muted: {
-    fontSize: 14,
-    color: '#bbb',
-    marginTop: 6,
-    fontFamily: 'Poppins-Medium',
-  },
-  actionCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 12,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: '#eee',
-    marginBottom: 12,
-    gap: 14,
-  },
-  iconBox: {
-    backgroundColor: '#ffe7dd',
-    padding: 16,
-    borderRadius: 12,
-  },
-  iconBoxGray: {
-    backgroundColor: '#f3f3f3',
-    padding: 16,
-    borderRadius: 12,
-  },
-  actionTitle: { fontSize: 13, fontFamily: 'Poppins-Medium' },
-  actionDesc: { fontSize: 11, color: '#888', fontFamily: 'Poppins-Regular' },
-  getStartedSection: {
-    marginTop: 12,
-    flexDirection: 'column',
   },
   circle: {
     backgroundColor: 'rgba(255,255,255,0.2)',
@@ -406,21 +362,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontFamily: 'Poppins-Regular',
   },
-  storeImageContainer: {
-    position: 'absolute',
-    right: 10,
-    top: 10,
-    width: 86,
-    height: 86,
-    padding: 4,
-    backgroundColor: 'rgba(255, 255, 255, 0.334)',
-    borderRadius: 50,
-  },
-  storeImage: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 50,
-  },
   storeCircle: {
     backgroundColor: 'rgba(255,255,255,0.2)',
     height: 160,
@@ -429,5 +370,80 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -50,
     right: -50,
+  },
+  overviewHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontFamily: 'Poppins-SemiBold',
+  },
+  viewReport: {
+    fontSize: 12,
+    color: '#ff6a32',
+    fontFamily: 'Poppins-Medium',
+  },
+  statsRow: {
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    gap: 14,
+    marginBottom: 24,
+    marginTop: 12,
+  },
+  statCard: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#eee',
+    borderRadius: 16,
+    padding: 16,
+  },
+  statNumber: { fontSize: 22, fontFamily: 'Poppins-SemiBold', marginTop: 8 },
+  statLabel: {
+    fontSize: 12,
+    color: '#888',
+    marginTop: 4,
+    fontFamily: 'Poppins-Regular',
+  },
+  growth: {
+    fontSize: 14,
+    color: 'green',
+    marginTop: 6,
+    fontFamily: 'Poppins-Medium',
+  },
+  muted: {
+    fontSize: 14,
+    color: '#bbb',
+    marginTop: 6,
+    fontFamily: 'Poppins-Medium',
+  },
+  getStartedSection: {
+    marginTop: 12,
+    flexDirection: 'column',
+    paddingHorizontal: 20
+  },
+  actionCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#eee',
+    marginBottom: 12,
+    gap: 14,
+  },
+  iconBox: {
+    backgroundColor: '#ffe7dd',
+    padding: 16,
+    borderRadius: 12,
+  },
+  actionTitle: { fontSize: 13, fontFamily: 'Poppins-Medium' },
+  actionDesc: { fontSize: 11, color: '#888', fontFamily: 'Poppins-Regular' },
+  iconBoxGray: {
+    backgroundColor: '#f3f3f3',
+    padding: 16,
+    borderRadius: 12,
   },
 });

@@ -58,7 +58,6 @@ export default HomeBanner;
 
 const styles = StyleSheet.create({
   Container: {
-    marginHorizontal: 20,
     padding: 10,
     borderRadius: 12,
     borderWidth: 1,

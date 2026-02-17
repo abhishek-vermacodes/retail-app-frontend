@@ -16,9 +16,8 @@ import { WebView } from 'react-native-webview';
 import Geolocation from 'react-native-geolocation-service';
 import Feather from 'react-native-vector-icons/Feather';
 import Modal from 'react-native-modal';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import API from '../api/authApi';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 interface LocationProperties {
   osm_type?: string;
@@ -56,7 +55,10 @@ export interface PhotonResponse {
 
 const AddLocation = () => {
   const webViewRef = useRef<WebView>(null);
+  const navigation = useNavigation<any>();
 
+  const route = useRoute<any>();
+  const { email } = route.params;
   const [location, setLocation] = useState<LocationProperties | null>(null);
 
   const [loading, setLoading] = useState(false);
@@ -184,24 +186,24 @@ const AddLocation = () => {
           setLoading(false);
           setSecDrawerVisible(true);
 
-          const token = await AsyncStorage.getItem('token');
-          const locationString = [
-            location?.name,
-            location?.state,
-            location?.postcode,
-          ]
-            .filter(Boolean)
-            .join(', ');
+          // const token = await AsyncStorage.getItem('token');
+          // const locationString = [
+          //   location?.name,
+          //   location?.state,
+          //   location?.postcode,
+          // ]
+          //   .filter(Boolean)
+          //   .join(', ');
 
-          await axios.post(
-            `${API}/auth/setAddress`,
-            { location: locationString },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            },
-          );
+          // await axios.post(
+          //   `http://192.168.1.5:5000/api/auth/setAddress`,
+          //   { location: locationString },
+          //   {
+          //     headers: {
+          //       Authorization: `Bearer ${token}`,
+          //     },
+          //   },
+          // );
         },
         error => {
           Alert.alert('Error', error.message);
@@ -220,7 +222,6 @@ const AddLocation = () => {
   };
 
   const handleSetSelectedLocation = async () => {
-    const token = await AsyncStorage.getItem('token');
     try {
       const locationString = [
         location?.name,
@@ -232,18 +233,12 @@ const AddLocation = () => {
       ]
         .filter(Boolean)
         .join(', ');
-      await axios.post(
-        `${API}/auth/setAddress`,
-        {
-          location: locationString,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      await axios.post(`http://192.168.1.5:5000/api/auth/setAddress`, {
+        location: locationString,
+        email: email,
+      });
       Alert.alert('Location added successfully');
+      navigation.navigate('Signin');
     } catch (error) {
       Alert.alert('Failed to add Location');
       console.log('Failed to add Location', error);
@@ -251,8 +246,6 @@ const AddLocation = () => {
   };
 
   const handleSetCurrentLocation = async () => {
-    const token = await AsyncStorage.getItem('token');
-
     try {
       const locationSharing = [
         location?.name,
@@ -261,18 +254,12 @@ const AddLocation = () => {
       ]
         .filter(Boolean)
         .join(',');
-      await axios.post(
-        `${API}/auth/setAddress`,
-        {
-          location: locationSharing,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      await axios.post(`http://192.168.1.5:5000/api/auth/setAddress`, {
+        location: locationSharing,
+        email: email
+      });
       Alert.alert('Location added successfully');
+      navigation.navigate('Signin');
     } catch (error) {
       Alert.alert('Failed to add Location');
       console.log('Failed to add Location', error);

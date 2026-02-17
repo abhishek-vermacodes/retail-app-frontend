@@ -9,17 +9,17 @@ import {
   View,
 } from 'react-native';
 
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/FontAwesome6';
 import HomeBanner from '../components/HomeBanner';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import NearbyShopCard from '../components/ShopCard';
 import ProductCard from '../components/ProductCard';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Product, Store } from '../types/type';
-import API from '../api/authApi';
+import { AuthContext } from '../context/AuthContext';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 
 const categories = [
   {
@@ -65,45 +65,18 @@ const categories = [
   },
 ];
 
-// const products = [
-//   {
-//     id: '1',
-//     name: 'Fresh Red Apple (1kg)',
-//     price: 3.5,
-//     image: require('../assets/images/bag.jpeg'),
-//   },
-//   {
-//     id: '2',
-//     name: 'Organic Whole Milk',
-//     price: 1.2,
-//     image: require('../assets/images/bag.jpeg'),
-//   },
-//   {
-//     id: '3',
-//     name: 'Whole Wheat Bread',
-//     price: 2.0,
-//     image: require('../assets/images/bag.jpeg'),
-//   },
-//   {
-//     id: '4',
-//     name: 'Farm Fresh Eggs (12)',
-//     price: 4.5,
-//     image: require('../assets/images/bag.jpeg'),
-//   },
-// ];
-
 function CustomerHomeScreen() {
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const navigation = useNavigation<any>();
   const [shops, setShop] = useState<Store[] | null>(null);
   const [products, setProducts] = useState<Product[] | null>(null);
-  const [userLocation, setUserLocation] = useState<any>(null);
+  const { user } = useContext(AuthContext);
 
   const fetchItems = async () => {
     const token = await AsyncStorage.getItem('token');
     try {
       const storeResponse = await axios.get(
-        `${API}/store/get-all-stores?limit=10`,
+        `http://192.168.1.5:5000/api/store/get-all-stores?limit=10`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -112,7 +85,7 @@ function CustomerHomeScreen() {
       );
 
       const productResponse = await axios.get(
-        `${API}/products/get-all-products?limit=10`,
+        `http://192.168.1.5:5000/api/products/get-all-products?limit=10`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -127,50 +100,36 @@ function CustomerHomeScreen() {
     }
   };
 
-  const loadUserLocation = async () => {
-    try {
-      const location = await AsyncStorage.getItem('userLocation');
-      if (location) {
-        const parsed = JSON.parse(location);
-        setUserLocation(parsed);
-        console.log('Loaded Location:', parsed);
-      }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      console.log('Error loading location');
-    }
-  };
-
   useEffect(() => {
     fetchItems();
-    loadUserLocation();
   }, []);
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
 
-      <SafeAreaView style={styles.header}>
-        <View style={styles.brandRow}>
-          <Icon name="cart-shopping" color="black" size={24} />
-          <Text style={styles.headerTitle}>Retail Pro</Text>
-          {userLocation && (
-            <Text style={styles.locationText} numberOfLines={1}>
-              📍 {userLocation.address}
-            </Text>
-          )}
-        </View>
-
-        <View style={styles.headerRight}>
-          <Icon name="bell" size={22} color="#000" />
-          <View style={styles.avatarContainer}>
-            <Image
-              source={{ uri: 'https://i.pravatar.cc/150?img=12' }}
-              style={styles.avatar}
+      <View style={styles.header}>
+        <View>
+          <View style={styles.locationContainer}>
+            <Ionicons
+              name="location"
+              size={20}
+              color="#ff6a32"
+              style={styles.locationIcon}
             />
+            <Text style={styles.priLocationText}>
+              {user?.address?.split(',')[0]}
+            </Text>
+          </View>
+          <Text style={styles.secLocationText}>{user?.address}</Text>
+        </View>
+        <View style={styles.profileContainer}>
+          <Fontisto name="bell" size={20} color="#000" />
+          <View style={styles.avatarContainer}>
+            <Text style={styles.avatarText}>{user?.username?.charAt(0)}</Text>
           </View>
         </View>
-      </SafeAreaView>
+      </View>
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -259,7 +218,6 @@ function CustomerHomeScreen() {
                 image={item.image}
                 name={item.productName}
                 price={item.price}
-                // onAddToCart={() => console.log(item.name)}
               />
             )}
           />
@@ -275,50 +233,53 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFF5F0',
+    paddingVertical: 70,
+    paddingHorizontal: 20,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingBottom: 10,
+    gap: 2,
+    paddingBottom: 26,
     backgroundColor: '#FFF5F0',
     zIndex: 10,
   },
-  brandRow: {
+  locationContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
   },
-  headerTitle: {
-    fontSize: 18,
-    color: '#000',
-    fontFamily: 'Poppins-SemiBold',
+  locationIcon: {
+    left: -6,
   },
-  headerRight: {
+  priLocationText: {
+    fontFamily: 'Poppins-Bold',
+    marginBottom: -2,
+    fontSize: 14,
+  },
+  secLocationText: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 12,
+  },
+  profileContainer: {
     flexDirection: 'row',
     gap: 14,
     alignItems: 'center',
   },
-  locationText: {
-    fontSize: 11,
-    color: '#666',
-    fontFamily: 'Poppins-Regular',
-    width: 220,
-  },
+
   avatarContainer: {
     width: 36,
     height: 36,
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 18,
     padding: 2,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#bbb',
+    backgroundColor: '#ff6a32',
   },
-  avatar: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+  avatarText: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: 16,
+    marginBottom: -4,
+    color: '#ffe3d9',
   },
   scrollViewcontentContainerStyle: {
     paddingBottom: 200,
@@ -328,7 +289,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 20,
-    paddingHorizontal: 20,
   },
   sectionTitle: {
     fontSize: 16,
@@ -340,8 +300,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Medium',
   },
   categoryContainer: {
-    marginTop: 20,
-    paddingHorizontal: 20,
+    marginTop: 14,
     gap: 20,
   },
   categoryBtnContainer: {
@@ -360,8 +319,8 @@ const styles = StyleSheet.create({
     borderColor: '#ff5b27',
   },
   categoryImage: {
-    width: 30,
-    height: 30,
+    width: 26,
+    height: 26,
   },
   categoryText: {
     fontSize: 12,

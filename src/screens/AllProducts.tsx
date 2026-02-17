@@ -20,7 +20,6 @@ import { useNavigation } from '@react-navigation/native';
 import { Product } from '../types/type';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import API from '../api/authApi';
 
 const categories = [
   { label: 'All', value: '' },
@@ -46,7 +45,7 @@ const AllProducts = () => {
     const token = await AsyncStorage.getItem('token');
     try {
       const response = await axios.get(
-        `${API}/products/my-products`,
+        `http://192.168.1.5:5000/api/products/my-products`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

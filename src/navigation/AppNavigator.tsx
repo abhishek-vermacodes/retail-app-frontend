@@ -12,7 +12,6 @@ import ProductDetailsScreen from '../screens/ProductDetails';
 
 import RetailerHelpScreen from '../screens/RetailerHelpScreen';
 import CustomerHelpScreen from '../screens/CustomerHelpScreen';
-import AddLocation from '../screens/AddLocation';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,8 +20,6 @@ export default function AppNavigator() {
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="AddLocation" component={AddLocation} />
-
       {user?.role === 'retailer' ? (
         <>
           <Stack.Screen name="Retailer" component={BottomTabNavigator} />

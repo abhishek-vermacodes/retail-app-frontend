@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import API from '../api/authApi';
 
 const OTP_LENGTH = 6;
 
@@ -62,12 +61,14 @@ const VerificationScreen = () => {
 
     try {
       setLoading(true);
-      await axios.post(`${API}/auth/verification`, {
+      await axios.post(`http://192.168.1.5:5000/api/auth/verification`, {
         email,
         otp: otpValue,
       });
       Alert.alert('Success', 'Email verified successfully');
-      navigation.navigate('Signin');
+      navigation.navigate('AddLocation', {
+        email,
+      });
     } catch (error: any) {
       Alert.alert(
         'Error',

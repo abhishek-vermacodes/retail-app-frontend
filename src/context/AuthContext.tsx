@@ -42,6 +42,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
         try {
           const res = await API.get('/user/me');
+          console.log("res", res)
           setUser(res.data.user);
         } catch (err) {
           await removeToken();

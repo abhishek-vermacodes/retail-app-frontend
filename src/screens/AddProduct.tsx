@@ -20,7 +20,7 @@ import { Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import API from '../api/authApi';
+
 
 const categories = [
   { label: 'Select category', value: '' },
@@ -81,7 +81,7 @@ const AddProductScreen = () => {
     const token = await AsyncStorage.getItem('token');
     console.log('token', token);
     try {
-      await axios.post(`${API}/api/products`, formData, {
+      await axios.post(`http://192.168.1.5:5000/api/products`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
