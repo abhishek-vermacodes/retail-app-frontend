@@ -10,10 +10,12 @@ import {
   KeyboardAvoidingView,
   Image,
   Alert,
+  StatusBar,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { AuthContext } from '../context/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignupScreen = () => {
   const navigation = useNavigation<any>();
@@ -29,7 +31,7 @@ const SignupScreen = () => {
 
   const { signUp, loading } = useContext(AuthContext);
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     try {
       signUp(user.username, user.email, user.password, user.role);
       Alert.alert('success', 'Signup successful');
@@ -38,9 +40,9 @@ const SignupScreen = () => {
       setUser({ username: '', email: '', password: '', role: 'customer' });
       setRole('customer');
 
-      navigation.navigate('Verification', {
-        email,
-      });
+      await AsyncStorage.setItem('email', email);
+
+      navigation.navigate('Verification');
     } catch (error) {
       console.log('Signup Failed', error);
       Alert.alert('error', 'Signup Failed');
@@ -49,6 +51,8 @@ const SignupScreen = () => {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <StatusBar barStyle={'dark-content'} />
+
       <Text style={styles.title}>Create Account</Text>
       <Text style={styles.subtitle}>
         Join Retail Pro to manage your business efficiently.

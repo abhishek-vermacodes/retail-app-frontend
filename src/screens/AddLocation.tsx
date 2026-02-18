@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -17,7 +17,11 @@ import Geolocation from 'react-native-geolocation-service';
 import Feather from 'react-native-vector-icons/Feather';
 import Modal from 'react-native-modal';
 import axios from 'axios';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import {
+  useNavigation,
+  // useRoute
+} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface LocationProperties {
   osm_type?: string;
@@ -57,8 +61,9 @@ const AddLocation = () => {
   const webViewRef = useRef<WebView>(null);
   const navigation = useNavigation<any>();
 
-  const route = useRoute<any>();
-  const { email } = route.params;
+
+  const [email, setEmail] = useState<string | null>(null);
+
   const [location, setLocation] = useState<LocationProperties | null>(null);
 
   const [loading, setLoading] = useState(false);
@@ -76,6 +81,16 @@ const AddLocation = () => {
     lat: number;
     lng: number;
   } | null>(null);
+
+  useEffect(() => {
+    const getEmail = async () => {
+      const storedEmail = await AsyncStorage.getItem('email');
+      console.log('get email in addlocation screen', storedEmail);
+
+      setEmail(storedEmail);
+    };
+    getEmail();
+  }, []);
 
   const defaultLat = 23.3303;
   const defaultLng = 75.0403;
@@ -185,25 +200,6 @@ const AddLocation = () => {
 
           setLoading(false);
           setSecDrawerVisible(true);
-
-          // const token = await AsyncStorage.getItem('token');
-          // const locationString = [
-          //   location?.name,
-          //   location?.state,
-          //   location?.postcode,
-          // ]
-          //   .filter(Boolean)
-          //   .join(', ');
-
-          // await axios.post(
-          //   `http://192.168.1.5:5000/api/auth/setAddress`,
-          //   { location: locationString },
-          //   {
-          //     headers: {
-          //       Authorization: `Bearer ${token}`,
-          //     },
-          //   },
-          // );
         },
         error => {
           Alert.alert('Error', error.message);
@@ -235,7 +231,7 @@ const AddLocation = () => {
         .join(', ');
       await axios.post(`http://192.168.1.5:5000/api/auth/setAddress`, {
         location: locationString,
-        email: email,
+        email,
       });
       Alert.alert('Location added successfully');
       navigation.navigate('Signin');
@@ -256,9 +252,10 @@ const AddLocation = () => {
         .join(',');
       await axios.post(`http://192.168.1.5:5000/api/auth/setAddress`, {
         location: locationSharing,
-        email: email
+        email,
       });
       Alert.alert('Location added successfully');
+
       navigation.navigate('Signin');
     } catch (error) {
       Alert.alert('Failed to add Location');

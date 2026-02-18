@@ -10,7 +10,7 @@ import UserProfileScreen from '../screens/UserProfile';
 
 const Tab = createBottomTabNavigator();
 
-const UserBottomTabNavigator = () => {
+const CustomerBottomTabNavigator = () => {
   return (
     <Tab.Navigator
       tabBar={props => <CustomTabBar {...props} role="user" />}
@@ -24,4 +24,4 @@ const UserBottomTabNavigator = () => {
   );
 };
 
-export default UserBottomTabNavigator;
+export default CustomerBottomTabNavigator;

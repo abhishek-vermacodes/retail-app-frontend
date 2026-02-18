@@ -19,7 +19,7 @@ export default function AuthNavigator() {
       <Stack.Screen name="Signin" component={SigninScreen} />
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
       <Stack.Screen name="Verification" component={VerificationScreen} />
-      <Stack.Screen name='AddLocation' component={AddLocation}/>
+      <Stack.Screen name="AddLocation" component={AddLocation} />
     </Stack.Navigator>
   );
 }

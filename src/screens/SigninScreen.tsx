@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   KeyboardAvoidingView,
+  StatusBar,
 } from 'react-native';
 
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
@@ -26,12 +27,18 @@ const SigninScreen = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   const handleSignin = () => {
-    signIn(user.email, user.password);
-    
+    try {
+      signIn(user.email, user.password);
+      // navigation.navigate('RetailerApp');
+    } catch (error) {
+      console.log("error", error)
+    }
   };
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
+      <StatusBar barStyle={'dark-content'} />
+
       <TouchableOpacity
         style={styles.headerBtn}
         onPress={() => navigation.goBack()}
@@ -101,7 +108,7 @@ const SigninScreen = () => {
 
       <TouchableOpacity style={styles.button} onPress={handleSignin}>
         <Text style={styles.buttonText}>
-          {loading ? 'loading...' : 'Sign Up'}
+          {loading ? 'loading...' : 'Sign In'}
         </Text>
       </TouchableOpacity>
 

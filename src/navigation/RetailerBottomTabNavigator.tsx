@@ -9,7 +9,7 @@ import MyProducts from '../screens/MyProducts';
 
 const Tab = createBottomTabNavigator();
 
-const BottomTabNavigator = () => {
+const RetailerBottomTabNavigator = () => {
   return (
     <Tab.Navigator
       tabBar={props => <CustomTabBar {...props} role="retailer" />}
@@ -24,4 +24,4 @@ const BottomTabNavigator = () => {
   );
 };
 
-export default BottomTabNavigator;
+export default RetailerBottomTabNavigator;

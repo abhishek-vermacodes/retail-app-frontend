@@ -155,7 +155,7 @@ const MyProducts = () => {
                 <Image
                   style={styles.productImage}
                   source={{
-                    uri: `http://192.168.1.5:5000${product.image}`,
+                    uri: `http://192.168.1.12:5000${product.image}`,
                   }}
                 />
               </TouchableOpacity>

@@ -1,4 +1,8 @@
-import { useNavigation, useRoute } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  useNavigation,
+  //  useRoute
+} from '@react-navigation/native';
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import {
@@ -8,6 +12,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  StatusBar,
 } from 'react-native';
 
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
@@ -16,14 +21,23 @@ const OTP_LENGTH = 6;
 
 const VerificationScreen = () => {
   const navigation = useNavigation<any>();
-  const route = useRoute<any>();
-  const { email } = route.params;
+  // const route = useRoute<any>();
+  // const { email } = route.params;
 
+  const [email, setEmail] = useState<string | null>(null);
   const [otp, setOtp] = useState<string[]>(Array(OTP_LENGTH).fill(''));
   const [loading, setLoading] = useState(false);
   const [timer, setTimer] = useState(30);
 
   const inputs = useRef<TextInput[]>([]);
+
+  useEffect(() => {
+    const getEmail = async () => {
+      const storedEmail = await AsyncStorage.getItem('email');
+      setEmail(storedEmail);
+    };
+    getEmail();
+  }, []);
 
   useEffect(() => {
     if (timer === 0) return;
@@ -66,9 +80,7 @@ const VerificationScreen = () => {
         otp: otpValue,
       });
       Alert.alert('Success', 'Email verified successfully');
-      navigation.navigate('AddLocation', {
-        email,
-      });
+      navigation.navigate('AddLocation');
     } catch (error: any) {
       Alert.alert(
         'Error',
@@ -85,12 +97,14 @@ const VerificationScreen = () => {
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle={'dark-content'} />
+
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <FontAwesome6 name="arrow-left" size={20} color="#000000a3" />
       </TouchableOpacity>
 
       <Text style={styles.title}>Verification</Text>
-      <Text style={styles.subtitle}>Enter the 4-digit code sent to</Text>
+      <Text style={styles.subtitle}>Enter the 6-digit code sent to</Text>
       <Text style={styles.email}>{email}</Text>
 
       <View style={styles.otpContainer}>

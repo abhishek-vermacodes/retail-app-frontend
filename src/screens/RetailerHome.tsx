@@ -142,7 +142,7 @@ const RetailerHomeScreen = () => {
             <View style={styles.storeCircle} />
             <Image
               source={{
-                uri: `http://192.168.1.5:5000${store.image}`,
+                uri: `http://192.168.1.12:5000${store.image}`,
               }}
               style={styles.bagImage}
             />

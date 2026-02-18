@@ -2,45 +2,26 @@ import React, { useContext } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthContext } from '../context/AuthContext';
 
-import BottomTabNavigator from './BottomTabNavForCustomer';
-import MyProducts from '../screens/MyProducts';
-import MyProduct from '../screens/MyProduct';
-import CreateShop from '../screens/CreateShop';
-import UserBottomTabNavigator from './UserBottomTabNavigator';
-import CategoryProductsScreen from '../screens/CategoryScreen';
-import ProductDetailsScreen from '../screens/ProductDetails';
-
-import RetailerHelpScreen from '../screens/RetailerHelpScreen';
-import CustomerHelpScreen from '../screens/CustomerHelpScreen';
+import RetailerNavigator from './RetailerNavigator';
+import CustomerNavigator from './CustomerNavigator';
+import AuthNavigator from './AuthNavigator';
 
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
+  console.log('user on app', user)
+
+  if (loading) return null;
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {user?.role === 'retailer' ? (
-        <>
-          <Stack.Screen name="Retailer" component={BottomTabNavigator} />
-          <Stack.Screen name="CreateShop" component={CreateShop} />
-          <Stack.Screen name="MyProducts" component={MyProducts} />
-          <Stack.Screen name="MyProduct" component={MyProduct} />
-          <Stack.Screen name="HelpCenter" component={RetailerHelpScreen} />
-        </>
+      {!user ? (
+        <Stack.Screen name="Auth" component={AuthNavigator} />
+      ) : user.role === 'retailer' ? (
+        <Stack.Screen name="RetailerApp" component={RetailerNavigator} />
       ) : (
-        <>
-          <Stack.Screen name="Customer" component={UserBottomTabNavigator} />
-          <Stack.Screen
-            name="CategoryScreen"
-            component={CategoryProductsScreen}
-          />
-          <Stack.Screen
-            name="ProductDetails"
-            component={ProductDetailsScreen}
-          />
-          <Stack.Screen name="HelpCenter" component={CustomerHelpScreen} />
-        </>
+        <Stack.Screen name="CustomerApp" component={CustomerNavigator} />
       )}
     </Stack.Navigator>
   );
