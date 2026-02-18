@@ -36,7 +36,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const bootstrapAuth = async () => {
       const token = await getToken();
-      console.log('token', token);
 
       if (!token) {
         setLoading(false);
@@ -44,16 +43,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       }
 
       if (token) {
-        API.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        API.defaults.headers.common.Authorization = `Bearer ${token}`;
 
         try {
           const res = await API.get('/user/me');
-          console.log('res for user', res);
-
           const loggedUser = res.data.user;
-          console.log('logged user', loggedUser);
 
-          // setUser(res.data.user);
           setUser({
             id: loggedUser.id,
             username: loggedUser.username,
@@ -79,9 +74,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const signIn = async (email: string, password: string) => {
     try {
       const res = await signin({ email, password });
-      console.log('res for signin', res.data);
+
       await setToken(res.data.token);
-      API.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
+      API.defaults.headers.common.Authorization = `Bearer ${res.data.token}`;
       setUser(res.data.user);
     } catch (error) {
       console.error('Failed to signin', error);

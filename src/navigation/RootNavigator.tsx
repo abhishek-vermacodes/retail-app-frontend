@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator();
 
 const RootNavigator = () => {
   const { user, loading } = useContext(AuthContext);
-  console.log('user on root', user);
+
 
 
   if (loading) {

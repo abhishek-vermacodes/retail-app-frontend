@@ -17,18 +17,10 @@ import Geolocation from 'react-native-geolocation-service';
 import Feather from 'react-native-vector-icons/Feather';
 import Modal from 'react-native-modal';
 import axios from 'axios';
-import {
-  useNavigation,
-  // useRoute
-} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface LocationProperties {
-  osm_type?: string;
-  osm_id?: number;
-  osm_key?: string;
-  osm_value?: string;
-  type?: string;
   postcode?: string;
   housenumber?: string;
   countrycode?: string;
@@ -61,9 +53,7 @@ const AddLocation = () => {
   const webViewRef = useRef<WebView>(null);
   const navigation = useNavigation<any>();
 
-
   const [email, setEmail] = useState<string | null>(null);
-
   const [location, setLocation] = useState<LocationProperties | null>(null);
 
   const [loading, setLoading] = useState(false);
@@ -85,7 +75,6 @@ const AddLocation = () => {
   useEffect(() => {
     const getEmail = async () => {
       const storedEmail = await AsyncStorage.getItem('email');
-      console.log('get email in addlocation screen', storedEmail);
 
       setEmail(storedEmail);
     };
@@ -153,7 +142,7 @@ const AddLocation = () => {
       );
 
       const data = await response.json();
-      console.log('data', data);
+
       setLocation(data.features[0].properties);
     } catch (error) {
       Alert.alert('Error saving location');

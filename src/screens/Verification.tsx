@@ -21,8 +21,6 @@ const OTP_LENGTH = 6;
 
 const VerificationScreen = () => {
   const navigation = useNavigation<any>();
-  // const route = useRoute<any>();
-  // const { email } = route.params;
 
   const [email, setEmail] = useState<string | null>(null);
   const [otp, setOtp] = useState<string[]>(Array(OTP_LENGTH).fill(''));

@@ -27,12 +27,7 @@ const SigninScreen = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   const handleSignin = () => {
-    try {
-      signIn(user.email, user.password);
-      // navigation.navigate('RetailerApp');
-    } catch (error) {
-      console.log("error", error)
-    }
+    signIn(user.email, user.password);
   };
 
   return (

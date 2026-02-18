@@ -24,8 +24,6 @@ const RetailerHomeScreen = () => {
   const [store, setStore] = useState<Store | null>(null);
   const { user } = useContext(AuthContext);
 
-  console.log('Store', store);
-
   const getStore = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -422,7 +420,7 @@ const styles = StyleSheet.create({
   getStartedSection: {
     marginTop: 12,
     flexDirection: 'column',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   actionCard: {
     flexDirection: 'row',
