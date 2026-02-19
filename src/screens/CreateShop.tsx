@@ -86,7 +86,7 @@ const CreateShop = () => {
         phone: '',
         image: '',
       });
-      navigation.navigate('Retailer');
+      navigation.navigate('RetailerHome');
     } catch (error) {
       console.log('Failed to create shop', error);
       Alert.alert('error', 'Failed to Create Shop');

@@ -328,7 +328,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
   },
   shopFlatListcontentContainerStyle: {
-    paddingHorizontal: 20,
     marginTop: 16,
   },
   productFlatListColumnWrapperStyle: {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,25 @@ import {
   Image,
   ScrollView,
   StatusBar,
+  ActivityIndicator,
+  Platform,
+  PermissionsAndroid,
+  Alert,
+  TextInput,
 } from 'react-native';
+
+interface LocationProperties {
+  postcode?: string;
+  housenumber?: string;
+  countrycode?: string;
+  name?: string;
+  street?: string;
+  district?: string;
+  city?: string;
+  county?: string;
+  state?: string;
+  country?: string;
+}
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -18,12 +36,131 @@ import axios from 'axios';
 import { Store } from '../types/type';
 import { AuthContext } from '../context/AuthContext';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Modal from 'react-native-modal';
+import WebView from 'react-native-webview';
+import Geolocation from 'react-native-geolocation-service';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const RetailerHomeScreen = () => {
   const navigation = useNavigation<any>();
   const [store, setStore] = useState<Store | null>(null);
   const { user } = useContext(AuthContext);
+  const [openLocation, setOpenLocation] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [location, setLocation] = useState<LocationProperties | null>(null);
+  const [mapLoading, setMapLoading] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
+  const [extraFields, setExtraFields] = useState({
+    houseNo: '',
+    area: '',
+    landmark: '',
+  });
+  const [selectAddress, setSelectAddress] = useState(false);
 
+  const webViewRef = useRef<WebView>(null);
+
+  const defaultLat = 23.3303;
+  const defaultLng = 75.0403;
+
+  const mapHtml = useMemo(() => {
+    return `
+      <!DOCTYPE html>
+      <html>
+      <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
+        <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+        <style>
+          html, body { margin:0; padding:0; height:100%; }
+          #map { height:100%; width:100%; }
+        </style>
+      </head>
+      <body>
+        <div id="map"></div>
+        <script>
+          window.map = L.map('map').setView([${defaultLat}, ${defaultLng}], 15);
+  
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+          }).addTo(window.map);
+  
+          window.marker = L.marker([${defaultLat}, ${defaultLng}]).addTo(window.map);
+          
+          window.map.on('click', function(e) {
+            var lat = e.latlng.lat;
+            var lng = e.latlng.lng;
+            window.marker.setLatLng([lat, lng]);
+            window.ReactNativeWebView.postMessage(
+              JSON.stringify({ lat: lat, lng: lng })
+              );
+              });
+              </script>
+              </body>
+              </html>
+              `;
+  }, []);
+
+  const handleUseCurrentLocation = async () => {
+    setLoading(true);
+
+    try {
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        );
+
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+          Alert.alert('Permission denied');
+          setLoading(false);
+          return;
+        }
+      }
+
+      Geolocation.getCurrentPosition(
+        async position => {
+          const { latitude, longitude } = position.coords;
+
+          setSelectedLocation({ lat: latitude, lng: longitude });
+
+          webViewRef.current?.injectJavaScript(`
+            window.map.setView([${latitude}, ${longitude}], 15);
+            window.marker.setLatLng([${latitude}, ${longitude}]);
+            true;
+          `);
+
+          const response = await fetch(
+            `https://photon.komoot.io/reverse?lat=${latitude}&lon=${longitude}`,
+          );
+
+          const data = await response.json();
+          setLocation(data.features[0].properties);
+
+          setLoading(false);
+        },
+        error => {
+          Alert.alert('Error', error.message);
+          setLoading(false);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 20000,
+          maximumAge: 0,
+        },
+      );
+    } catch (err) {
+      setLoading(false);
+      console.log('Failed to fetch location', err);
+    }
+  };
+
+  const handleMessage = (event: any) => {
+    const data = JSON.parse(event.nativeEvent.data);
+    setSelectedLocation(data);
+  };
   const getStore = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -43,7 +180,7 @@ const RetailerHomeScreen = () => {
 
   const address = user?.address || '';
   const minLength = 5;
-  const maxlength = 20;
+  const maxlength = 40;
 
   const displayAddress =
     address.length > maxlength
@@ -55,6 +192,56 @@ const RetailerHomeScreen = () => {
   useEffect(() => {
     getStore();
   }, []);
+
+  const handleSetAddress = async () => {
+    try {
+      const locationSharing = [
+        location?.name,
+        location?.state,
+        location?.postcode,
+      ]
+        .filter(Boolean)
+        .join(', ');
+
+      const res = await axios.post(
+        'http://192.168.1.5:5000/api/auth/setAddress',
+        {
+          location: locationSharing,
+          email: user?.email,
+        },
+      );
+      console.log('res', res);
+    } catch (error) {
+      console.log('Failed to add location', error);
+      Alert.alert('error', 'Failed to add location');
+    }
+  };
+
+  const handleSelectLocation = async () => {
+    if (!selectedLocation) {
+      Alert.alert('Please select a location');
+      return;
+    }
+
+    setMapLoading(true);
+    setSelectAddress(true);
+
+    try {
+      const response = await fetch(
+        `https://photon.komoot.io/reverse?lat=${selectedLocation.lat}&lon=${selectedLocation.lng}`,
+      );
+
+      const data = await response.json();
+
+      setLocation(data.features[0].properties);
+      console.log('location', data.features[0].properties);
+    } catch (error) {
+      Alert.alert('Error saving location');
+      console.log('Failed to fetch map', error);
+    } finally {
+      setMapLoading(false);
+    }
+  };
   return (
     <LinearGradient
       start={{ x: 1.2, y: 0 }}
@@ -67,7 +254,7 @@ const RetailerHomeScreen = () => {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <View>
+          <TouchableOpacity onPress={() => setOpenLocation(true)}>
             <View style={styles.locationContainer}>
               <Ionicons
                 name="location"
@@ -75,10 +262,19 @@ const RetailerHomeScreen = () => {
                 color="#ff6a32"
                 style={styles.locationIcon}
               />
-              <Text style={styles.priLocationText}>Home</Text>
+              <Text style={styles.priLocationText}>
+                {user?.address?.split(',')[0]}
+              </Text>
+              <MaterialIcons
+                name="keyboard-arrow-down"
+                size={22}
+                color={'#000'}
+                style={{ marginLeft: 2, marginTop: -2 }}
+              />
             </View>
             <Text style={styles.secLocationText}>{displayAddress}</Text>
-          </View>
+          </TouchableOpacity>
+
           <View style={styles.profileContainer}>
             <Fontisto name="bell" size={20} color="#000" />
             <View style={styles.avatarContainer}>
@@ -117,33 +313,41 @@ const RetailerHomeScreen = () => {
             />
           </View>
         ) : (
-          <View style={styles.banner}>
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>{store.category}</Text>
+          <View style={styles.storeBanner}>
+            <TouchableOpacity style={styles.editBtn}>
+              <Entypo name="dots-three-vertical" color="#ff6a32" size={14} />
+            </TouchableOpacity>
+            <View style={styles.storeImgContainer}>
+              <Image
+                source={{
+                  uri: `http://192.168.1.5:5000${store.image}`,
+                }}
+                style={styles.storeImg}
+              />
             </View>
-
-            <Text style={styles.storeTitle}>{store.storeName}</Text>
-            <Text style={styles.storeDesc}>{store.description}</Text>
-
-            <View style={styles.storeContainer}>
-              <View style={styles.storeBadge}>
-                <Feather name="map-pin" size={14} color="#fff" />
-                <Text style={styles.storeAddress}>{store.address}</Text>
+            <View style={styles.storeContentContainer}>
+              <View style={styles.storeContentSubContainer}>
+                <Text style={styles.storeName}>{store.storeName}</Text>
+                <View style={styles.storeCategory}>
+                  <Text style={styles.storeCatgoryText}>{store.category}</Text>
+                </View>
               </View>
-              <View style={styles.storeBadge}>
-                <Feather name="phone" size={14} color={'#fff'} />
-
-                <Text style={styles.storeNumber}>+91 {store.phone}</Text>
+              <View>
+                <View style={styles.storeAddressContainer}>
+                  <Ionicons
+                    name="location-outline"
+                    size={18}
+                    color="#ff6a32"
+                    style={styles.storeLocationIcon}
+                  />
+                  <Text style={styles.storeAddress}>{store.address}</Text>
+                </View>
+                <View style={styles.storeAddressContainer}>
+                  <Feather name="phone" size={14} color="#ff6a32" />
+                  <Text style={styles.storeAddress}>+91 {store.phone}</Text>
+                </View>
               </View>
             </View>
-
-            <View style={styles.storeCircle} />
-            <Image
-              source={{
-                uri: `http://192.168.1.12:5000${store.image}`,
-              }}
-              style={styles.bagImage}
-            />
           </View>
         )}
 
@@ -201,6 +405,115 @@ const RetailerHomeScreen = () => {
           </TouchableOpacity>
         </View>
       </ScrollView>
+      <Modal
+        isVisible={openLocation}
+        onBackdropPress={() => setOpenLocation(false)}
+        style={styles.modal}
+      >
+        <View style={styles.drawer}>
+          <View style={styles.mapContainer}>
+            {loading && (
+              <View style={styles.loadingContainer}>
+                <ActivityIndicator size={'small'} color={'#ff6a32'} />
+                <Text style={styles.primaryBtnText}>Getting Location...</Text>
+              </View>
+            )}
+            <WebView
+              ref={webViewRef}
+              originWhitelist={['*']}
+              source={{ html: mapHtml }}
+              javaScriptEnabled
+              domStorageEnabled
+              onMessage={handleMessage}
+            />
+          </View>
+          <View style={styles.addressContainer}>
+            {mapLoading ? (
+              <Text>Getting Location...</Text>
+            ) : (
+              <>
+                <View style={styles.streetAddressContainer}>
+                  <Ionicons name="location-outline" size={20} color="#ff6a32" />
+                  <Text style={styles.streetText}>
+                    {selectAddress
+                      ? location?.name || location?.county
+                      : user?.address.split(',')[0]}
+                  </Text>
+                </View>
+                <Text style={styles.addressText}>
+                  {selectAddress
+                    ? `${location?.name}, ${location?.state}, ${location?.postcode}`
+                    : user?.address}
+                </Text>
+              </>
+            )}
+          </View>
+          <TouchableOpacity
+            style={styles.primaryBtnContainer}
+            onPress={handleSelectLocation}
+          >
+            <Ionicons name="location-outline" size={20} color="#ff6a32" />
+            <Text style={styles.primaryBtnText}>Set Location on Map</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.secondaryBtnContainer}
+            onPress={handleUseCurrentLocation}
+            disabled={loading}
+          >
+            <Text style={styles.secondaryBtnText}>Use Current Location</Text>
+          </TouchableOpacity>
+          <View style={styles.inputContainer}>
+            <View style={styles.inputWrapper}>
+              <TextInput
+                style={styles.input}
+                placeholder="Flat, House no, Building name (Optional)"
+                placeholderTextColor="#00000061"
+                autoCapitalize="none"
+                value={extraFields.houseNo}
+                onChangeText={text =>
+                  setExtraFields({ ...extraFields, houseNo: text })
+                }
+              />
+            </View>
+          </View>
+          <View style={styles.inputContainer}>
+            <View style={styles.inputWrapper}>
+              <TextInput
+                style={styles.input}
+                placeholder="Area, Street, Sector, Village (Optional)"
+                placeholderTextColor="#00000061"
+                autoCapitalize="none"
+                value={extraFields.area}
+                onChangeText={text =>
+                  setExtraFields({ ...extraFields, area: text })
+                }
+              />
+            </View>
+          </View>
+
+          <View style={styles.inputContainer}>
+            <View style={styles.inputWrapper}>
+              <TextInput
+                style={styles.input}
+                placeholder="Landmark (Optional)"
+                placeholderTextColor="#00000061"
+                autoCapitalize="none"
+                value={extraFields.landmark}
+                onChangeText={text =>
+                  setExtraFields({ ...extraFields, landmark: text })
+                }
+              />
+            </View>
+          </View>
+
+          <TouchableOpacity
+            style={styles.secondaryBtnContainer}
+            onPress={handleSetAddress}
+          >
+            <Text style={styles.secondaryBtnText}>Confirm Location</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </LinearGradient>
   );
 };
@@ -211,7 +524,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: 60,
+    paddingVertical: 80,
   },
   header: {
     flexDirection: 'row',
@@ -325,49 +638,81 @@ const styles = StyleSheet.create({
     right: -14,
     transform: [{ rotate: '-14deg' }],
   },
-  storeTitle: {
-    width: '75%',
-    fontSize: 24,
-    color: '#fff',
-    marginTop: 14,
-    fontFamily: 'Poppins-Bold',
-    lineHeight: 32,
+  storeBanner: {
+    height: 300,
+    marginHorizontal: 20,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#ffe3d9',
+    backgroundColor: '#fff',
+    position: 'relative',
+    marginBottom: 20,
   },
-  storeDesc: {
-    width: '80%',
-    color: '#ffe7dd',
-    fontSize: 12,
-    marginTop: 10,
-    lineHeight: 18,
-    fontFamily: 'Poppins-Medium',
+  editBtn: {
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    backgroundColor: '#ffe3d9',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    zIndex: 9999,
+    right: 10,
+    top: 10,
   },
-  storeContainer: {
+  storeImgContainer: {
+    height: '64%',
+    width: 'auto',
+  },
+  storeImg: {
+    height: '100%',
+    borderTopLeftRadius: 14,
+    borderTopRightRadius: 14,
+  },
+  storeContentContainer: {
+    paddingHorizontal: 14,
+    paddingVertical: 10,
     flexDirection: 'column',
-    gap: 4,
+    gap: 6,
   },
-  storeBadge: {
+  storeContentSubContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  storeName: {
+    fontSize: 20,
+    fontFamily: 'Poppins-Bold',
+    color: '#ff6a32',
+  },
+  storeCategory: {
+    backgroundColor: '#ff6a32',
+    paddingHorizontal: 16,
+    paddingVertical: 6,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  storeCatgoryText: {
+    fontSize: 12,
+    fontFamily: 'Poppins-Medium',
+    color: '#fff',
+    marginBottom: -1,
+  },
+  storeAddressContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
+    marginBottom: 4,
+  },
+  storeLocationIcon: {
+    marginLeft: -2,
+    marginTop: -4,
   },
   storeAddress: {
     fontSize: 12,
-    color: '#fff',
     fontFamily: 'Poppins-Regular',
-  },
-  storeNumber: {
-    fontSize: 12,
-    color: '#fff',
-    fontFamily: 'Poppins-Regular',
-  },
-  storeCircle: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    height: 160,
-    width: 160,
-    borderRadius: 100,
-    position: 'absolute',
-    top: -50,
-    right: -50,
   },
   overviewHeader: {
     flexDirection: 'row',
@@ -443,5 +788,111 @@ const styles = StyleSheet.create({
     backgroundColor: '#f3f3f3',
     padding: 16,
     borderRadius: 12,
+  },
+  modal: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
+  drawer: {
+    backgroundColor: '#fff',
+    paddingVertical: 26,
+    paddingHorizontal: 18,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    height: 'auto',
+  },
+  mapContainer: {
+    backgroundColor: '#fff',
+    height: 200,
+    borderWidth: 1,
+    borderColor: '#ffe3d9',
+    borderRadius: 20,
+    marginBottom: 20,
+    overflow: 'hidden',
+    position: 'relative',
+    justifyContent: 'center',
+  },
+  loadingContainer: {
+    position: 'absolute',
+    right: '30%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 10,
+    zIndex: 9999,
+  },
+  primaryBtnContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#ff5b27',
+    borderRadius: 14,
+    paddingVertical: 16,
+    gap: 6,
+    marginBottom: 20,
+  },
+  primaryBtnText: {
+    color: '#ff5b27',
+    fontFamily: 'Poppins-Regular',
+    marginBottom: -2,
+  },
+  secondaryBtnContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ff5b27',
+    borderRadius: 14,
+    paddingVertical: 16,
+    marginBottom: 20,
+  },
+  secondaryBtnText: {
+    color: '#fff',
+    fontFamily: 'Poppins-Regular',
+  },
+  streetAddressContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginLeft: -6,
+  },
+  streetText: {
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 14,
+    color: '#000000',
+    marginBottom: -2,
+  },
+  addressText: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 12,
+    color: '#000000',
+  },
+  inputContainer: {
+    marginBottom: 20,
+  },
+  inputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#00000061',
+    paddingHorizontal: 14,
+    height: 56,
+  },
+  input: {
+    flex: 1,
+    fontSize: 14,
+    fontFamily: 'Poppins-Regular',
+  },
+  addressContainer: {
+    flexDirection: 'column',
+    gap: 6,
+    borderWidth: 1,
+    borderColor: '#ffe3d9',
+    backgroundColor: '#fff5f0',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    marginBottom: 20,
   },
 });

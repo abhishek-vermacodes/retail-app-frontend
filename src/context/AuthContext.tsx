@@ -47,6 +47,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
         try {
           const res = await API.get('/user/me');
+          console.log('res', res);
           const loggedUser = res.data.user;
 
           setUser({
