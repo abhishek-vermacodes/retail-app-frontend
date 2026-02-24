@@ -13,8 +13,8 @@ import { useNavigation } from '@react-navigation/native';
 
 const RetailerHelpScreen = () => {
   const navigation = useNavigation<any>();
-    const [isVisible, setIsVisible] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
+  const [isVisible, setIsVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <View style={styles.mainContainer}>
@@ -27,27 +27,27 @@ const RetailerHelpScreen = () => {
           <FontAwesome6 name="arrow-left" size={18} color="#000" />
         </TouchableOpacity>
         <Text style={styles.pageTitle}>Retailer Help</Text>
-      <Feather
-              name="search"
-              size={22}
-              color={'#000'}
-              style={styles.searchBtn}
-              onPress={() => setIsVisible(prev => !prev)}
-            />
-          </View>
-    
-          {isVisible && (
-            <View style={styles.searchContainer}>
-              <Feather name="search" color={'#000000a3'} size={20} />
-              <TextInput
-                placeholder="Search for Products..."
-                placeholderTextColor={'#000000a3'}
-                style={styles.searchText}
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-              />
-            </View>
-          )}
+        <Feather
+          name="search"
+          size={22}
+          color={'#000'}
+          style={styles.searchBtn}
+          onPress={() => setIsVisible(prev => !prev)}
+        />
+      </View>
+
+      {isVisible && (
+        <View style={styles.searchContainer}>
+          <Feather name="search" color={'#000000a3'} size={20} />
+          <TextInput
+            placeholder="Search for Products..."
+            placeholderTextColor={'#000000a3'}
+            style={styles.searchText}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+        </View>
+      )}
 
       <ScrollView contentContainerStyle={styles.scrollView}>
         <Text style={styles.cardHeaderTitle}>Quick Help</Text>
@@ -78,11 +78,8 @@ const RetailerHelpScreen = () => {
   );
 };
 
-
 const HelpRow = ({ title, icon }: { title: string; icon: string }) => (
-    
   <TouchableOpacity style={styles.row}>
-
     <View style={styles.rowLeft}>
       <View style={styles.iconContainer}>
         <FontAwesome6 name={icon as any} size={16} color="#ff6a32" />
@@ -93,7 +90,6 @@ const HelpRow = ({ title, icon }: { title: string; icon: string }) => (
   </TouchableOpacity>
 );
 export default RetailerHelpScreen;
-
 
 const styles = StyleSheet.create({
   mainContainer: {

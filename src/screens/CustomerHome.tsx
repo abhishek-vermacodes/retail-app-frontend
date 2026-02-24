@@ -9,17 +9,20 @@ import {
   View,
 } from 'react-native';
 
-import HomeBanner from '../components/HomeBanner';
+import { Store } from '../types/type';
+import { AuthContext } from '../context/AuthContext';
 import { useContext, useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { CustomerStackParamList } from '../navigation/CustomerNavigator';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+import API from '../api/authApi';
+import HomeBanner from '../components/HomeBanner';
 import NearbyShopCard from '../components/ShopCard';
 import ProductCard from '../components/ProductCard';
-import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import { Product, Store } from '../types/type';
-import { AuthContext } from '../context/AuthContext';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const categories = [
   {
@@ -65,64 +68,118 @@ const categories = [
   },
 ];
 
+const recommendedProducts = [
+  {
+    id: '1',
+    productName: 'Fresh Apples',
+    price: 120,
+    image:
+      'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?w=400&h=400&fit=crop',
+  },
+  {
+    id: '2',
+    productName: 'Basmati Rice',
+    price: 450,
+    image:
+      'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=400&fit=crop',
+  },
+  {
+    id: '3',
+    productName: 'Milk 1L',
+    price: 60,
+    image:
+      'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&h=400&fit=crop',
+  },
+  {
+    id: '4',
+    productName: 'Shampoo',
+    price: 199,
+    image:
+      'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&h=400&fit=crop',
+  },
+  {
+    id: '5',
+    productName: 'Bread',
+    price: 40,
+    image:
+      'https://images.unsplash.com/photo-1608198093002-ad4e005484ec?w=400&h=400&fit=crop',
+  },
+  {
+    id: '6',
+    productName: 'Laptop ',
+    price: 55000,
+    image:
+      'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=400&fit=crop',
+  },
+];
+
 function CustomerHomeScreen() {
-  const [selectedCategory, setSelectedCategory] = useState<any>(null);
-  const navigation = useNavigation<any>();
-  const [shops, setShop] = useState<Store[] | null>(null);
-  const [products, setProducts] = useState<Product[] | null>(null);
   const { user } = useContext(AuthContext);
 
-  const fetchItems = async () => {
-    const token = await AsyncStorage.getItem('token');
-    try {
-      const storeResponse = await axios.get(
-        `http://192.168.1.5:5000/api/store/get-all-stores?limit=10`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+  const navigation = useNavigation<NavigationProp>();
 
-      const productResponse = await axios.get(
-        `http://192.168.1.5:5000/api/products/get-all-products?limit=10`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+  const [allShops, setAllShops] = useState<Store[]>([]);
+  const [filteredShops, setFilteredShops] = useState<Store[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  type NavigationProp = NativeStackNavigationProp<
+    CustomerStackParamList,
+    'CustomerHome'
+  >;
+
+  const fetchShops = async () => {
+    const token = await AsyncStorage.getItem('token');
+
+    try {
+      const response = await API.get('/store/get-all-stores?limit=10', {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
-      console.log('prduct response', productResponse);
-      setShop(storeResponse.data.stores);
-      setProducts(productResponse.data.products);
+      });
+
+      const stores = response.data.stores || [];
+      setAllShops(stores);
+      setFilteredShops(stores);
     } catch (error) {
       console.log('Failed to fetch shops', error);
     }
   };
 
   useEffect(() => {
-    fetchItems();
+    fetchShops();
   }, []);
+
+  const handleCategorySelect = (categoryKey: string) => {
+    if (selectedCategory === categoryKey) {
+      setSelectedCategory(null);
+      setFilteredShops(allShops);
+      return;
+    }
+
+    setSelectedCategory(categoryKey);
+
+    const filtered = allShops.filter(
+      shop => shop.category?.toLowerCase() === categoryKey.toLowerCase(),
+    );
+
+    setFilteredShops(filtered);
+  };
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
 
       <View style={styles.header}>
-        <View>
+        <TouchableOpacity>
           <View style={styles.locationContainer}>
-            <Ionicons
-              name="location"
-              size={20}
-              color="#ff6a32"
-              style={styles.locationIcon}
-            />
+            <Ionicons name="location" size={20} color="#ff6a32" />
             <Text style={styles.priLocationText}>
               {user?.address?.split(',')[0]}
             </Text>
           </View>
           <Text style={styles.secLocationText}>{user?.address}</Text>
-        </View>
+        </TouchableOpacity>
+
         <View style={styles.profileContainer}>
           <Fontisto name="bell" size={20} color="#000" />
           <View style={styles.avatarContainer}>
@@ -133,14 +190,14 @@ function CustomerHomeScreen() {
 
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollViewcontentContainerStyle}
+        contentContainerStyle={styles.scrollContent}
       >
         <HomeBanner />
 
         <View>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Categories</Text>
-            <Text style={styles.sectionLink}>See All</Text>
+            <Text style={styles.viewLink}>See All</Text>
           </View>
 
           <FlatList
@@ -155,13 +212,7 @@ function CustomerHomeScreen() {
               return (
                 <View style={styles.categoryBtnContainer}>
                   <TouchableOpacity
-                    onPress={() => {
-                      setSelectedCategory(item.key);
-                      navigation.navigate('CategoryScreen', {
-                        categoryKey: item.key,
-                        categoryLabel: item.label,
-                      });
-                    }}
+                    onPress={() => handleCategorySelect(item.key)}
                     style={[
                       styles.categoryBtn,
                       isActive && styles.categoryBtnActive,
@@ -169,7 +220,6 @@ function CustomerHomeScreen() {
                   >
                     <Image source={item.value} style={styles.categoryImage} />
                   </TouchableOpacity>
-
                   <Text style={styles.categoryText}>{item.label}</Text>
                 </View>
               );
@@ -180,45 +230,66 @@ function CustomerHomeScreen() {
         <View>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Nearby Shops</Text>
-            <Text style={styles.sectionLink}>View All</Text>
+            <Text style={styles.viewLink}>See All</Text>
           </View>
 
-          <FlatList
-            data={shops}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={item => item.id}
-            contentContainerStyle={styles.shopFlatListcontentContainerStyle}
-            renderItem={({ item }) => (
-              <NearbyShopCard
-                image={item.image}
-                storeName={item.storeName}
-                category={item.category}
-                address={item.address}
-              />
-            )}
-          />
+          {filteredShops.length === 0 ? (
+            <View
+              style={{
+                height: 100,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Text style={styles.secLocationText}>No shops found</Text>
+            </View>
+          ) : (
+            <FlatList
+              data={filteredShops}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={item => item.id}
+              contentContainerStyle={styles.shopFlatListcontentContainerStyle}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() =>
+                    navigation.navigate('ShopDetails', { shop: item })
+                  }
+                >
+                  <NearbyShopCard
+                    image={item.image}
+                    storeName={item.storeName}
+                    category={item.category}
+                    address={item.address}
+                  />
+                </TouchableOpacity>
+              )}
+            />
+          )}
         </View>
 
         <View>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Recommended</Text>
+            <Text style={styles.viewLink}>See All</Text>
           </View>
 
           <FlatList
-            data={products}
+            data={recommendedProducts}
             keyExtractor={item => item.id}
             numColumns={2}
             scrollEnabled={false}
-            removeClippedSubviews={false}
-            columnWrapperStyle={styles.productFlatListColumnWrapperStyle}
-            contentContainerStyle={styles.productFlatListcontentContainerStyle}
+            columnWrapperStyle={styles.productRow}
+            contentContainerStyle={styles.productContainer}
             renderItem={({ item }) => (
-              <ProductCard
-                image={item.image}
-                name={item.productName}
-                price={item.price}
-              />
+              <View style={styles.productItem}>
+                <ProductCard
+                  image={item.image}
+                  name={item.productName}
+                  price={item.price}
+                />
+              </View>
             )}
           />
         </View>
@@ -239,21 +310,15 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 2,
-    paddingBottom: 26,
-    backgroundColor: '#FFF5F0',
-    zIndex: 10,
+    paddingBottom: 20,
   },
   locationContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-  },
-  locationIcon: {
-    left: -6,
+    marginLeft: -6,
+    gap: 4,
   },
   priLocationText: {
     fontFamily: 'Poppins-Bold',
-    marginBottom: -2,
     fontSize: 14,
   },
   secLocationText: {
@@ -265,39 +330,45 @@ const styles = StyleSheet.create({
     gap: 14,
     alignItems: 'center',
   },
-
   avatarContainer: {
-    width: 36,
-    height: 36,
-    justifyContent: 'center',
+    width: 38,
+    height: 38,
     alignItems: 'center',
-    borderRadius: 18,
-    padding: 2,
+    justifyContent: 'center',
+    alignContent: 'center',
+    borderRadius: 30,
     backgroundColor: '#ff6a32',
   },
   avatarText: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'Poppins-SemiBold',
     fontSize: 16,
-    marginBottom: -4,
     color: '#ffe3d9',
+    marginBottom: -2,
   },
-  scrollViewcontentContainerStyle: {
+  scrollContent: {
     paddingBottom: 200,
   },
   sectionHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginTop: 20,
   },
   sectionTitle: {
     fontSize: 16,
     fontFamily: 'Poppins-SemiBold',
   },
-  sectionLink: {
-    fontSize: 12,
-    color: '#ff6a32',
+  viewLink: {
+    fontSize: 14,
     fontFamily: 'Poppins-Medium',
+    color: '#ff5b27',
+    marginBottom: -2,
+  },
+  shopnotFound: {
+    marginTop: 20,
+  },
+  shopFlatListcontentContainerStyle: {
+    marginTop: 16,
   },
   categoryContainer: {
     marginTop: 14,
@@ -327,14 +398,14 @@ const styles = StyleSheet.create({
     color: '#000000a3',
     fontFamily: 'Poppins-Regular',
   },
-  shopFlatListcontentContainerStyle: {
+  productContainer: {
     marginTop: 16,
   },
-  productFlatListColumnWrapperStyle: {
-    gap: 16,
+  productRow: {
+    justifyContent: 'space-between',
+    marginBottom: 16,
   },
-  productFlatListcontentContainerStyle: {
-    paddingHorizontal: 20,
-    paddingTop: 10,
+  productItem: {
+    width: '48%',
   },
 });

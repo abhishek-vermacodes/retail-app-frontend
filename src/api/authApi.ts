@@ -1,7 +1,10 @@
 import axios from 'axios';
 
+export const IMAGEAPI = 'http://192.168.1.5:5000';
+
 const API = axios.create({
-  baseURL: 'http://192.168.1.5:5000/api',
+  // baseURL: 'http://192.168.1.5:5000/api',
+  baseURL: 'http://192.168.1.12:5000/api',
 });
 
 export const signin = (data: { email: string; password: string }) =>

@@ -45,12 +45,12 @@ const ProductDetailsScreen = () => {
 
         {/* STATUS */}
         <View style={styles.statusRow}>
-           <View style={styles.stockStatusBadge}>
-                       <Text style={styles.stockStatusBadgeText}>Active</Text>
-                     </View>
-                     <View style={styles.stockBadge}>
-                       <Text style={styles.stockBadgeText}>140 in Stock</Text>
-                     </View>
+          <View style={styles.stockStatusBadge}>
+            <Text style={styles.stockStatusBadgeText}>Active</Text>
+          </View>
+          <View style={styles.stockBadge}>
+            <Text style={styles.stockBadgeText}>140 in Stock</Text>
+          </View>
         </View>
 
         {/* INFO CARDS */}

@@ -47,3 +47,16 @@ export interface Store {
   phone: string;
   createdAt: string; 
 }
+
+export interface LocationProperties {
+  postcode?: string;
+  housenumber?: string;
+  countrycode?: string;
+  name?: string;
+  street?: string;
+  district?: string;
+  city?: string;
+  county?: string;
+  state?: string;
+  country?: string;
+}

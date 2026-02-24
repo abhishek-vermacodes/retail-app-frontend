@@ -16,9 +16,10 @@ import { WebView } from 'react-native-webview';
 import Geolocation from 'react-native-geolocation-service';
 import Feather from 'react-native-vector-icons/Feather';
 import Modal from 'react-native-modal';
-import axios from 'axios';
+// import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import API from '../api/authApi';
 
 interface LocationProperties {
   postcode?: string;
@@ -75,6 +76,7 @@ const AddLocation = () => {
   useEffect(() => {
     const getEmail = async () => {
       const storedEmail = await AsyncStorage.getItem('email');
+      console.log('store email', storedEmail);
 
       setEmail(storedEmail);
     };
@@ -186,6 +188,7 @@ const AddLocation = () => {
 
           const data = await response.json();
           setLocation(data.features[0].properties);
+          console.log('get location', data.features[0].properties);
 
           setLoading(false);
           setSecDrawerVisible(true);
@@ -218,7 +221,7 @@ const AddLocation = () => {
       ]
         .filter(Boolean)
         .join(', ');
-      await axios.post(`http://192.168.1.5:5000/api/auth/setAddress`, {
+      await API.post('/auth/setAddress', {
         location: locationString,
         email,
       });
@@ -239,7 +242,8 @@ const AddLocation = () => {
       ]
         .filter(Boolean)
         .join(',');
-      await axios.post(`http://192.168.1.5:5000/api/auth/setAddress`, {
+
+      await API.post('/auth/setAddress', {
         location: locationSharing,
         email,
       });

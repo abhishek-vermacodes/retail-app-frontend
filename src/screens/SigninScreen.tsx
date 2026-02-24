@@ -26,7 +26,7 @@ const SigninScreen = () => {
 
   const [isVisible, setIsVisible] = useState(false);
 
-  const handleSignin = () => {
+  const handleSignin = async () => {
     signIn(user.email, user.password);
   };
 

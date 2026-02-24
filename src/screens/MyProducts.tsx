@@ -16,8 +16,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Product } from '../types/type';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-
+// import axios from 'axios';
+import API from '../api/authApi';
 
 const categories = [
   { label: 'All', value: '' },
@@ -42,14 +42,19 @@ const MyProducts = () => {
   const getProducts = async () => {
     const token = await AsyncStorage.getItem('token');
     try {
-      const response = await axios.get(
-        `http://192.168.1.5:5000/api/products/my-products`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      // const response = await axios.get(
+      //   `http://192.168.1.5:5000/api/products/my-products`,
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   },
+      // );
+      const response = await API.get('/products/my-products', {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
       setProducts(response.data.products);
     } catch (error) {
       console.log('Failed to fetch products', error);
@@ -233,7 +238,7 @@ const styles = StyleSheet.create({
   },
   categoryContainer: {
     marginTop: 20,
-    paddingBottom:20,
+    paddingBottom: 20,
   },
   categoryBtn: {
     paddingHorizontal: 30,

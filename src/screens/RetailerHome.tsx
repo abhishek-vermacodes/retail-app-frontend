@@ -1,4 +1,3 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -14,57 +13,61 @@ import {
   TextInput,
 } from 'react-native';
 
-interface LocationProperties {
-  postcode?: string;
-  housenumber?: string;
-  countrycode?: string;
-  name?: string;
-  street?: string;
-  district?: string;
-  city?: string;
-  county?: string;
-  state?: string;
-  country?: string;
-}
-
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Feather from 'react-native-vector-icons/Feather';
-import LinearGradient from 'react-native-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import { Store } from '../types/type';
-import { AuthContext } from '../context/AuthContext';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import Entypo from 'react-native-vector-icons/Entypo';
 import Modal from 'react-native-modal';
 import WebView from 'react-native-webview';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import LinearGradient from 'react-native-linear-gradient';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import Geolocation from 'react-native-geolocation-service';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+import { AuthContext } from '../context/AuthContext';
+import { useNavigation } from '@react-navigation/native';
+import { LocationProperties, Store } from '../types/type';
+
+import API, { IMAGEAPI } from '../api/authApi';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 const RetailerHomeScreen = () => {
   const navigation = useNavigation<any>();
-  const [store, setStore] = useState<Store | null>(null);
-  const { user } = useContext(AuthContext);
-  const [openLocation, setOpenLocation] = useState(false);
+
+  const { user, refreshUser } = useContext(AuthContext);
+
   const [loading, setLoading] = useState(false);
-  const [location, setLocation] = useState<LocationProperties | null>(null);
   const [mapLoading, setMapLoading] = useState(false);
+  const [openLocation, setOpenLocation] = useState(false);
+  const [selectAddress, setSelectAddress] = useState(false);
+  const [store, setStore] = useState<Store | null>(null);
+  const [location, setLocation] = useState<LocationProperties | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<{
     lat: number;
     lng: number;
   } | null>(null);
+
   const [extraFields, setExtraFields] = useState({
     houseNo: '',
     area: '',
     landmark: '',
   });
-  const [selectAddress, setSelectAddress] = useState(false);
 
   const webViewRef = useRef<WebView>(null);
 
   const defaultLat = 23.3303;
   const defaultLng = 75.0403;
+
+  const address = user?.address || '';
+  const minLength = 5;
+  const maxlength = 40;
+
+  const displayAddress =
+    address.length > maxlength
+      ? address.slice(0, maxlength) + '...'
+      : address.length < minLength
+      ? address
+      : address;
 
   const mapHtml = useMemo(() => {
     return `
@@ -104,6 +107,56 @@ const RetailerHomeScreen = () => {
               `;
   }, []);
 
+  const handleMessage = (event: any) => {
+    const data = JSON.parse(event.nativeEvent.data);
+    setSelectedLocation(data);
+  };
+
+  const getStore = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+
+      const response = await API.get('/store/my-store', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setStore(response.data.store);
+    } catch (error) {
+      console.log('Failed to fetch', error);
+    }
+  };
+
+  useEffect(() => {
+    getStore();
+  }, []);
+
+  const handleSelectLocation = async () => {
+    if (!selectedLocation) {
+      Alert.alert('Please select a location');
+      return;
+    }
+
+    setMapLoading(true);
+    setSelectAddress(true);
+
+    try {
+      const response = await fetch(
+        `https://photon.komoot.io/reverse?lat=${selectedLocation.lat}&lon=${selectedLocation.lng}`,
+      );
+
+      const data = await response.json();
+
+      setLocation(data.features[0].properties);
+      console.log('selected location', data.features[0].properties);
+    } catch (error) {
+      Alert.alert('Error saving location');
+      console.log('Failed to fetch map', error);
+    } finally {
+      setMapLoading(false);
+    }
+  };
+
   const handleUseCurrentLocation = async () => {
     setLoading(true);
 
@@ -138,6 +191,7 @@ const RetailerHomeScreen = () => {
 
           const data = await response.json();
           setLocation(data.features[0].properties);
+          console.log('current location', data.features[0].properties);
 
           setLoading(false);
         },
@@ -157,89 +211,45 @@ const RetailerHomeScreen = () => {
     }
   };
 
-  const handleMessage = (event: any) => {
-    const data = JSON.parse(event.nativeEvent.data);
-    setSelectedLocation(data);
-  };
-  const getStore = async () => {
-    try {
-      const token = await AsyncStorage.getItem('token');
-      const response = await axios.get(
-        `http://192.168.1.5:5000/api/store/my-store`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      setStore(response.data.store);
-    } catch (error) {
-      console.log('Failed to fetch', error);
-    }
-  };
-
-  const address = user?.address || '';
-  const minLength = 5;
-  const maxlength = 40;
-
-  const displayAddress =
-    address.length > maxlength
-      ? address.slice(0, maxlength) + '...'
-      : address.length < minLength
-      ? address
-      : address;
-
-  useEffect(() => {
-    getStore();
-  }, []);
-
   const handleSetAddress = async () => {
     try {
-      const locationSharing = [
-        location?.name,
-        location?.state,
-        location?.postcode,
-      ]
-        .filter(Boolean)
-        .join(', ');
+      if (extraFields) {
+        const locationString = [
+          location?.name,
+          location?.state,
+          location?.postcode,
+          extraFields.houseNo,
+          extraFields.area,
+          extraFields.landmark,
+        ]
+          .filter(Boolean)
+          .join(', ');
 
-      const res = await axios.post(
-        'http://192.168.1.5:5000/api/auth/setAddress',
-        {
-          location: locationSharing,
+        const res = await API.post('/auth/setAddress', {
+          location: locationString,
           email: user?.email,
-        },
-      );
-      console.log('res', res);
+        });
+        console.log('res', res);
+      } else {
+        const locationString = [
+          location?.name,
+          location?.state,
+          location?.postcode,
+        ]
+          .filter(Boolean)
+          .join(', ');
+
+        const res = await API.post('/auth/setAddress', {
+          location: locationString,
+          email: user?.email,
+        });
+        console.log('res', res);
+      }
+      await refreshUser();
+      setOpenLocation(false);
     } catch (error) {
       console.log('Failed to add location', error);
       Alert.alert('error', 'Failed to add location');
-    }
-  };
-
-  const handleSelectLocation = async () => {
-    if (!selectedLocation) {
-      Alert.alert('Please select a location');
-      return;
-    }
-
-    setMapLoading(true);
-    setSelectAddress(true);
-
-    try {
-      const response = await fetch(
-        `https://photon.komoot.io/reverse?lat=${selectedLocation.lat}&lon=${selectedLocation.lng}`,
-      );
-
-      const data = await response.json();
-
-      setLocation(data.features[0].properties);
-      console.log('location', data.features[0].properties);
-    } catch (error) {
-      Alert.alert('Error saving location');
-      console.log('Failed to fetch map', error);
-    } finally {
-      setMapLoading(false);
     }
   };
   return (
@@ -256,12 +266,7 @@ const RetailerHomeScreen = () => {
         <View style={styles.header}>
           <TouchableOpacity onPress={() => setOpenLocation(true)}>
             <View style={styles.locationContainer}>
-              <Ionicons
-                name="location"
-                size={20}
-                color="#ff6a32"
-                style={styles.locationIcon}
-              />
+              <Ionicons name="location" size={20} color="#ff6a32" />
               <Text style={styles.priLocationText}>
                 {user?.address?.split(',')[0]}
               </Text>
@@ -269,7 +274,7 @@ const RetailerHomeScreen = () => {
                 name="keyboard-arrow-down"
                 size={22}
                 color={'#000'}
-                style={{ marginLeft: 2, marginTop: -2 }}
+                style={styles.arrowDownIcon}
               />
             </View>
             <Text style={styles.secLocationText}>{displayAddress}</Text>
@@ -320,7 +325,7 @@ const RetailerHomeScreen = () => {
             <View style={styles.storeImgContainer}>
               <Image
                 source={{
-                  uri: `http://192.168.1.5:5000${store.image}`,
+                  uri: `${IMAGEAPI}${store.image}`,
                 }}
                 style={styles.storeImg}
               />
@@ -351,7 +356,6 @@ const RetailerHomeScreen = () => {
           </View>
         )}
 
-        {/* Overview */}
         <View style={styles.overviewHeader}>
           <Text style={styles.sectionTitle}>Overview</Text>
           <Text style={styles.viewReport}>View Report</Text>
@@ -382,7 +386,7 @@ const RetailerHomeScreen = () => {
             <View style={styles.iconBox}>
               <Feather name="box" size={20} color="#ff6a32" />
             </View>
-            <View style={{ flex: 1 }}>
+            <View>
               <Text style={styles.actionTitle}>Add your first product</Text>
               <Text style={styles.actionDesc}>
                 Upload images and set prices to start selling.
@@ -395,7 +399,7 @@ const RetailerHomeScreen = () => {
             <View style={styles.iconBoxGray}>
               <Feather name="credit-card" size={20} />
             </View>
-            <View style={{ flex: 1 }}>
+            <View>
               <Text style={styles.actionTitle}>Set up payments</Text>
               <Text style={styles.actionDesc}>
                 Link your bank account to receive payouts.
@@ -536,11 +540,8 @@ const styles = StyleSheet.create({
   },
   locationContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-  },
-  locationIcon: {
-    left: -6,
-    zIndex: 9999,
+    marginLeft: -6,
+    gap: 4,
   },
   priLocationText: {
     fontFamily: 'Poppins-Bold',
@@ -566,10 +567,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff6a32',
   },
   avatarText: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'Poppins-SemiBold',
     fontSize: 16,
-    marginBottom: -4,
     color: '#ffe3d9',
+    marginBottom: -2,
   },
   banner: {
     borderRadius: 22,
@@ -894,5 +895,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 16,
     marginBottom: 20,
+  },
+  arrowDownIcon: {
+    marginLeft: 2,
   },
 });

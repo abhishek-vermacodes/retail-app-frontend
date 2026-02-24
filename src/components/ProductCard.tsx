@@ -1,28 +1,31 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
+import { IMAGEAPI } from '../api/authApi';
 
 interface ProductCardProps {
-  image: any;
+  image: string;
   name: string;
-  price: string;
+  price: number;
   onAddToCart?: () => void;
 }
 
 const ProductCard = ({ image, name, price }: ProductCardProps) => {
+  const imageUrl = image?.startsWith('http')
+    ? image
+    : `${IMAGEAPI}${image}`;
+
   return (
     <View style={styles.card}>
       <Image
-        source={{
-          uri: `http://192.168.1.5:5000${image}`,
-        }}
+        source={{ uri: imageUrl }}
         style={styles.image}
+        resizeMode="cover"
       />
 
       <Text style={styles.name} numberOfLines={2}>
         {name}
       </Text>
 
-      <Text style={styles.price}>${price}</Text>
-
+      <Text style={styles.price}>₹ {price}</Text>
     </View>
   );
 };
@@ -35,7 +38,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 14,
     padding: 10,
-    marginBottom: 16,
     borderWidth: 1,
     borderColor: '#ffe3d9',
   },
@@ -55,18 +57,6 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontSize: 14,
     fontFamily: 'Poppins-SemiBold',
-    color: '#ff5b27',
-  },
-  button: {
-    marginTop: 8,
-    backgroundColor: '#ffe3d9',
-    paddingVertical: 8,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  buttonText: {
-    fontSize: 12,
-    fontFamily: 'Poppins-Medium',
     color: '#ff5b27',
   },
 });
