@@ -13,6 +13,7 @@ import {
   TextInput,
 } from 'react-native';
 
+import API from '../api/authApi';
 import Modal from 'react-native-modal';
 import WebView from 'react-native-webview';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -27,8 +28,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 import { LocationProperties, Store } from '../types/type';
-
-import API, { IMAGEAPI } from '../api/authApi';
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 const RetailerHomeScreen = () => {
@@ -225,7 +224,7 @@ const RetailerHomeScreen = () => {
           .filter(Boolean)
           .join(', ');
 
-        const res = await API.post('/auth/setAddress', {
+        const res = await API.post('/api/auth/setAddress', {
           location: locationString,
           email: user?.email,
         });
@@ -239,7 +238,7 @@ const RetailerHomeScreen = () => {
           .filter(Boolean)
           .join(', ');
 
-        const res = await API.post('/auth/setAddress', {
+        const res = await API.post('/api/auth/setAddress', {
           location: locationString,
           email: user?.email,
         });
@@ -325,7 +324,7 @@ const RetailerHomeScreen = () => {
             <View style={styles.storeImgContainer}>
               <Image
                 source={{
-                  uri: `${IMAGEAPI}${store.image}`,
+                  uri: `${API}${store.image}`,
                 }}
                 style={styles.storeImg}
               />

@@ -5,11 +5,13 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import React, { useState } from 'react';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import Entypo from 'react-native-vector-icons/Entypo';
-import { useNavigation } from '@react-navigation/native';
+
 import CartItem from '../components/CartItem';
+import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+
+import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 const initialCart = [
   {
@@ -127,7 +129,6 @@ function CartScreen() {
           />
         ))}
 
-      
         <View style={styles.summaryCard}>
           <View style={styles.row}>
             <Text style={styles.label}>Subtotal</Text>
@@ -238,6 +239,6 @@ const styles = StyleSheet.create({
     height: '54%',
   },
   scrollViewStyle: {
-    paddingBottom: 200
-  }
+    paddingBottom: 200,
+  },
 });

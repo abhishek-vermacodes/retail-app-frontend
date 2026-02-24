@@ -1,4 +1,3 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -11,44 +10,18 @@ import {
   StatusBar,
   ActivityIndicator,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { WebView } from 'react-native-webview';
-import Geolocation from 'react-native-geolocation-service';
-import Feather from 'react-native-vector-icons/Feather';
-import Modal from 'react-native-modal';
-// import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import API from '../api/authApi';
+import Modal from 'react-native-modal';
+import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Geolocation from 'react-native-geolocation-service';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-interface LocationProperties {
-  postcode?: string;
-  housenumber?: string;
-  countrycode?: string;
-  name?: string;
-  street?: string;
-  district?: string;
-  city?: string;
-  county?: string;
-  state?: string;
-  country?: string;
-}
-
-interface LocationGeometry {
-  type: string;
-  coordinates: [number, number];
-}
-
-interface LocationFeature {
-  type: string;
-  properties: LocationProperties;
-  geometry: LocationGeometry;
-}
-
-export interface PhotonResponse {
-  type: string;
-  features: LocationFeature[];
-}
+import { WebView } from 'react-native-webview';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { LocationProperties } from '../types/type';
 
 const AddLocation = () => {
   const webViewRef = useRef<WebView>(null);
@@ -123,11 +96,6 @@ const AddLocation = () => {
     </html>
     `;
   }, []);
-
-  const handleMessage = (event: any) => {
-    const data = JSON.parse(event.nativeEvent.data);
-    setSelectedLocation(data);
-  };
 
   const handleSetLocation = async () => {
     if (!selectedLocation) {
@@ -221,7 +189,7 @@ const AddLocation = () => {
       ]
         .filter(Boolean)
         .join(', ');
-      await API.post('/auth/setAddress', {
+      await API.post('/api/auth/setAddress', {
         location: locationString,
         email,
       });
@@ -243,7 +211,7 @@ const AddLocation = () => {
         .filter(Boolean)
         .join(',');
 
-      await API.post('/auth/setAddress', {
+      await API.post('/api/auth/setAddress', {
         location: locationSharing,
         email,
       });
@@ -288,7 +256,6 @@ const AddLocation = () => {
           source={{ html: mapHtml }}
           javaScriptEnabled
           domStorageEnabled
-          onMessage={handleMessage}
         />
       </View>
 

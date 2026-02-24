@@ -11,7 +11,6 @@ const Stack = createNativeStackNavigator();
 export default function AppNavigator() {
   const { user, loading } = useContext(AuthContext);
 
-
   if (loading) return null;
 
   return (

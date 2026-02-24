@@ -45,7 +45,7 @@ export interface Store {
   address: string;
   image: string;
   phone: string;
-  createdAt: string; 
+  createdAt: string;
 }
 
 export interface LocationProperties {
@@ -60,3 +60,42 @@ export interface LocationProperties {
   state?: string;
   country?: string;
 }
+
+export interface LocationGeometry {
+  type: string;
+  coordinates: [number, number];
+}
+
+export interface LocationFeature {
+  type: string;
+  properties: LocationProperties;
+  geometry: LocationGeometry;
+}
+
+export interface PhotonResponse {
+  type: string;
+  features: LocationFeature[];
+}
+
+export const categories = [
+  { label: 'All', value: '' },
+  { label: 'Grocery', value: 'grocery' },
+  { label: 'Fresh Items', value: 'fresh' },
+  { label: 'Personalcare', value: 'personal' },
+  { label: 'Household', value: 'home' },
+  { label: 'Babycare', value: 'baby' },
+  { label: 'Healthcare', value: 'health' },
+  { label: 'Fashion', value: 'fashion' },
+  { label: 'Electronic', value: 'electronic' },
+  { label: 'Stationery', value: 'stationery' },
+];
+
+export const shopCategories = ['Grocery', 'Medicine', 'Electronics', 'Clothing', 'Food'];
+
+export const orderCategories = [
+  { label: 'All', value: '' },
+  { label: 'New Order', value: 'New Order' },
+  { label: 'Preparing', value: 'Preparing' },
+  { label: 'Out for Delivery', value: 'Out for Delivery' },
+  { label: 'Completed', value: 'Completed' },
+];

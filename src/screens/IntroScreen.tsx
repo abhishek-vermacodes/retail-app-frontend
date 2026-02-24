@@ -1,5 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
-import { useRef, useState } from 'react';
 import {
   FlatList,
   Image,
@@ -10,6 +8,9 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
+
+import { useRef, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 const SLIDES = [
   {
@@ -32,10 +33,10 @@ const SLIDES = [
 ];
 
 const IntroScreen = () => {
+  const { width } = useWindowDimensions();
   const navigation = useNavigation<any>();
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const { width } = useWindowDimensions();
   const CARD_PADDING = 24;
   const SLIDE_WIDTH = width - CARD_PADDING * 2;
 

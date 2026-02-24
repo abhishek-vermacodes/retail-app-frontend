@@ -12,7 +12,7 @@ interface CartItemProps {
   onDelete: () => void;
 }
 
-function CartItem({
+export default function CartItem({
   image,
   name,
   price,
@@ -53,8 +53,6 @@ function CartItem({
     </View>
   );
 }
-
-export default CartItem;
 
 const styles = StyleSheet.create({
   card: {

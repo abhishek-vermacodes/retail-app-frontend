@@ -1,7 +1,3 @@
-import React from 'react';
-
-import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
 import {
   Alert,
   ScrollView,
@@ -12,28 +8,20 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+
+import React from 'react';
+import API from '../api/authApi';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { launchImageLibrary } from 'react-native-image-picker';
-import { Image } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-// import axios from 'axios';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import API from '../api/authApi';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const categories = [
-  { label: 'Select category', value: '' },
-  { label: 'Grocery', value: 'grocery' },
-  { label: 'Fresh Items', value: 'fresh' },
-  { label: 'Personalcare', value: 'personal' },
-  { label: 'Household', value: 'home' },
-  { label: 'Babycare', value: 'baby' },
-  { label: 'Healthcare', value: 'health' },
-  { label: 'Fashion', value: 'fashion' },
-  { label: 'Electronic', value: 'electronic' },
-  { label: 'Stationery', value: 'stationery' },
-];
+import { useState } from 'react';
+import { Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { categories } from '../types/type';
 
 const AddProductScreen = () => {
   const navigation = useNavigation<any>();
@@ -81,14 +69,7 @@ const AddProductScreen = () => {
     const token = await AsyncStorage.getItem('token');
     console.log('token', token);
     try {
-      // await axios.post(`http://192.168.1.5:5000/api/products`, formData, {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // });
-
-      await API.post('/products', formData, {
+      await API.post('/api/products', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',

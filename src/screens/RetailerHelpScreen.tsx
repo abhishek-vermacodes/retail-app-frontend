@@ -6,9 +6,11 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
-import React, { useState } from 'react';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+
 import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 const RetailerHelpScreen = () => {

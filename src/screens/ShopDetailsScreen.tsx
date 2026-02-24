@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,12 +8,15 @@ import {
   TextInput,
   StatusBar,
 } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import Feather from 'react-native-vector-icons/Feather';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
-import { IMAGEAPI } from '../api/authApi';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+
+import React, { useState } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import API from '../api/authApi';
 
 const ShopDetailScreen = () => {
   const route = useRoute();
@@ -24,7 +26,6 @@ const ShopDetailScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    // <View style={styles.container}>
     <LinearGradient
       start={{ x: 1.2, y: 0 }}
       end={{ x: 0, y: 0.6 }}
@@ -71,8 +72,7 @@ const ShopDetailScreen = () => {
           <View style={styles.storeImgContainer}>
             <Image
               source={{
-                // uri: `http://192.168.1.5:5000${shop.image}`,
-                uri: `${IMAGEAPI}${shop.image}`
+                uri: `${API}${shop.image}`,
               }}
               style={styles.storeImg}
               resizeMode="cover"
@@ -108,7 +108,6 @@ const ShopDetailScreen = () => {
         </View>
       </ScrollView>
     </LinearGradient>
-    // </View>
   );
 };
 

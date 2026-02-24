@@ -14,8 +14,6 @@ const Stack = createNativeStackNavigator();
 const RootNavigator = () => {
   const { user, loading } = useContext(AuthContext);
 
-
-
   if (loading) {
     return (
       <View style={styles.LoadingContainer}>

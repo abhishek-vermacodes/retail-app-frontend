@@ -1,5 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useContext, useState } from 'react';
 import {
   View,
   Text,
@@ -10,10 +8,13 @@ import {
   StatusBar,
 } from 'react-native';
 
+import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Feather from 'react-native-vector-icons/Feather';
+
+import React, { useContext, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import { useNavigation } from '@react-navigation/native';
 
 const SigninScreen = () => {
   const navigation = useNavigation<any>();

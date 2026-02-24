@@ -9,20 +9,15 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import React, { useMemo, useState } from 'react';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Feather from 'react-native-vector-icons/Feather';
-import Entypo from 'react-native-vector-icons/Entypo';
-import { useNavigation } from '@react-navigation/native';
 
-const categories = [
-  { label: 'All', value: '' },
-  { label: 'New Order', value: 'New Order' },
-  { label: 'Preparing', value: 'Preparing' },
-  { label: 'Out for Delivery', value: 'Out for Delivery' },
-  { label: 'Completed', value: 'Completed' },
-];
+import Entypo from 'react-native-vector-icons/Entypo';
+import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+
+import React, { useMemo, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { orderCategories } from '../types/type';
 
 const orders = [
   {
@@ -88,8 +83,8 @@ const orders = [
 ];
 
 const OrdersScreen = () => {
-  const [isVisible, setIsVisible] = useState(false);
   const navigation = useNavigation<any>();
+  const [isVisible, setIsVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectStatus, setSelectedStatus] = useState('');
 
@@ -160,7 +155,7 @@ const OrdersScreen = () => {
 
       <View>
         <FlatList
-          data={categories}
+          data={orderCategories}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.categoryContainer}

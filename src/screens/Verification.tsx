@@ -1,10 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  useNavigation,
-  //  useRoute
-} from '@react-navigation/native';
-// import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -15,8 +8,12 @@ import {
   StatusBar,
 } from 'react-native';
 
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import API from '../api/authApi';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useRef, useState } from 'react';
 
 const OTP_LENGTH = 6;
 
@@ -75,12 +72,8 @@ const VerificationScreen = () => {
 
     try {
       setLoading(true);
-      // await axios.post(`http://192.168.1.5:5000/api/auth/verification`, {
-      //   email,
-      //   otp: otpValue,
-      // });
 
-      await API.post('/auth/verification', {
+      await API.post('/api/auth/verification', {
         email,
         otp: otpValue,
       });

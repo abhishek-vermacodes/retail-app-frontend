@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import {
   Image,
   ScrollView,
@@ -7,9 +6,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+
+import { useNavigation } from '@react-navigation/native';
 
 import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
 const MyProduct = () => {
   const navigation = useNavigation<any>();

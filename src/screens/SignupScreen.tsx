@@ -1,6 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
-
-import React, { useContext, useState } from 'react';
 import {
   View,
   Text,
@@ -12,10 +9,14 @@ import {
   Alert,
   StatusBar,
 } from 'react-native';
+
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { AuthContext } from '../context/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import React, { useContext, useState } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import { useNavigation } from '@react-navigation/native';
 
 const SignupScreen = () => {
   const navigation = useNavigation<any>();

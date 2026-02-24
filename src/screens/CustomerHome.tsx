@@ -13,25 +13,25 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+
+import API from '../api/authApi';
 import Modal from 'react-native-modal';
+import WebView from 'react-native-webview';
+import HomeBanner from '../components/HomeBanner';
+import NearbyShopCard from '../components/ShopCard';
+import ProductCard from '../components/ProductCard';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Geolocation from 'react-native-geolocation-service';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { LocationProperties, Store } from '../types/type';
 import { AuthContext } from '../context/AuthContext';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { CustomerStackParamList } from '../navigation/CustomerNavigator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
-import API from '../api/authApi';
-import HomeBanner from '../components/HomeBanner';
-import NearbyShopCard from '../components/ShopCard';
-import ProductCard from '../components/ProductCard';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import WebView from 'react-native-webview';
-
-import Geolocation from 'react-native-geolocation-service';
 
 const categories = [
   {
@@ -127,15 +127,14 @@ function CustomerHomeScreen() {
 
   const navigation = useNavigation<NavigationProp>();
 
-  const [allShops, setAllShops] = useState<Store[]>([]);
-  const [filteredShops, setFilteredShops] = useState<Store[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
   const [loading, setLoading] = useState(false);
   const [mapLoading, setMapLoading] = useState(false);
+  const [allShops, setAllShops] = useState<Store[]>([]);
   const [openLocation, setOpenLocation] = useState(false);
   const [selectAddress, setSelectAddress] = useState(false);
+  const [filteredShops, setFilteredShops] = useState<Store[]>([]);
   const [location, setLocation] = useState<LocationProperties | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<{
     lat: number;
     lng: number;
@@ -200,11 +199,6 @@ function CustomerHomeScreen() {
                     </html>
                     `;
   }, []);
-
-  const handleMessage = (event: any) => {
-    const data = JSON.parse(event.nativeEvent.data);
-    setSelectedLocation(data);
-  };
 
   const handleSelectLocation = async () => {
     if (!selectedLocation) {
@@ -300,7 +294,7 @@ function CustomerHomeScreen() {
           .filter(Boolean)
           .join(', ');
 
-        const res = await API.post('/auth/setAddress', {
+        const res = await API.post('/api/auth/setAddress', {
           location: locationString,
           email: user?.email,
         });
@@ -314,7 +308,7 @@ function CustomerHomeScreen() {
           .filter(Boolean)
           .join(', ');
 
-        const res = await API.post('/auth/setAddress', {
+        const res = await API.post('/api/auth/setAddress', {
           location: locationString,
           email: user?.email,
         });
@@ -337,7 +331,7 @@ function CustomerHomeScreen() {
     const token = await AsyncStorage.getItem('token');
 
     try {
-      const response = await API.get('/store/get-all-stores?limit=10', {
+      const response = await API.get('/api/store/get-all-stores?limit=10', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -525,7 +519,6 @@ function CustomerHomeScreen() {
               source={{ html: mapHtml }}
               javaScriptEnabled
               domStorageEnabled
-              onMessage={handleMessage}
             />
           </View>
           <View style={styles.addressContainer}>

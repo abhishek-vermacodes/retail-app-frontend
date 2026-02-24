@@ -9,18 +9,17 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import React, { useState } from 'react';
 
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Feather from 'react-native-vector-icons/Feather';
-import { launchImageLibrary } from 'react-native-image-picker';
-import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-// import axios from 'axios';
 import API from '../api/authApi';
+import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const categories = ['Grocery', 'Medicine', 'Electronics', 'Clothing', 'Food'];
+import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { shopCategories } from '../types/type';
 
 const CreateShop = () => {
   const navigation = useNavigation<any>();
@@ -71,14 +70,7 @@ const CreateShop = () => {
 
       const token = await AsyncStorage.getItem('token');
 
-      // await axios.post(`http://192.168.1.5:5000/api/store`, formData, {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // });
-
-      await API.post('/store', formData, {
+      await API.post('/api/store', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -153,7 +145,7 @@ const CreateShop = () => {
           <Text style={styles.InputLabel}>Category</Text>
 
           <View style={styles.categoryRow}>
-            {categories.map(item => (
+            {shopCategories.map(item => (
               <TouchableOpacity
                 key={item}
                 style={[

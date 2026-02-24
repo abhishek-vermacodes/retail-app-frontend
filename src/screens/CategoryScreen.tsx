@@ -7,11 +7,13 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+
 import ProductCard from '../components/ProductCard';
 import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+
 import { useState } from 'react';
+import { useRoute, useNavigation } from '@react-navigation/native';
 
 const products = [
   {
@@ -52,11 +54,11 @@ const products = [
 ];
 
 function CategoryProductsScreen() {
+  const route = useRoute<any>();
+  const navigation = useNavigation<any>();
+
   const [isVisible, setIsVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-
-  const navigation = useNavigation<any>();
-  const route = useRoute<any>();
 
   const { categoryKey, categoryLabel } = route.params;
 

@@ -47,8 +47,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         API.defaults.headers.common.Authorization = `Bearer ${token}`;
 
         try {
-          const response = await API.get('/user/me');
-          console.log('response', response);
+          const response = await API.get('/api/user/me');
+
           const loggedUser = response.data.user;
 
           setUser({
@@ -84,7 +84,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       }
 
       API.defaults.headers.common.Authorization = `Bearer ${token}`;
-      const response = await API.get('/user/me');
+      const response = await API.get('/api/user/me');
       setUser(response.data.user);
     } catch (error) {
       console.log('Failed to Get User', error);
@@ -102,8 +102,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const signIn = async (email: string, password: string) => {
     try {
       const res = await signin({ email, password });
-      console.log('signin response', res);
-
       await setToken(res.data.token);
       API.defaults.headers.common.Authorization = `Bearer ${res.data.token}`;
       setUser(res.data.user);

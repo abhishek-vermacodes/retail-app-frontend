@@ -1,7 +1,8 @@
-import { useNavigation } from '@react-navigation/native';
-import { useEffect } from 'react';
-import { StatusBar, StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome6';
+
+import { useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { StatusBar, StyleSheet, Text, View } from 'react-native';
 
 const SplashScreen = () => {
   const navigation = useNavigation<any>();

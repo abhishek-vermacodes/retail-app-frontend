@@ -6,19 +6,20 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
-import React, { useState } from 'react';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+
 import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 const CustomerHelpScreen = () => {
   const navigation = useNavigation<any>();
-    const [isVisible, setIsVisible] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
+  const [isVisible, setIsVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
   return (
     <View style={styles.mainContainer}>
-   
-   
       <View style={styles.headerContainer}>
         <TouchableOpacity
           style={styles.backBtn}
@@ -27,27 +28,27 @@ const CustomerHelpScreen = () => {
           <FontAwesome6 name="arrow-left" size={18} color="#000" />
         </TouchableOpacity>
         <Text style={styles.pageTitle}>Help Center</Text>
-      <Feather
-                   name="search"
-                   size={22}
-                   color={'#000'}
-                   style={styles.searchBtn}
-                   onPress={() => setIsVisible(prev => !prev)}
-                 />
-               </View>
-         
-               {isVisible && (
-                 <View style={styles.searchContainer}>
-                   <Feather name="search" color={'#000000a3'} size={20} />
-                   <TextInput
-                     placeholder="Search for Products..."
-                     placeholderTextColor={'#000000a3'}
-                     style={styles.searchText}
-                     value={searchQuery}
-                     onChangeText={setSearchQuery}
-                   />
-                 </View>
-               )}
+        <Feather
+          name="search"
+          size={22}
+          color={'#000'}
+          style={styles.searchBtn}
+          onPress={() => setIsVisible(prev => !prev)}
+        />
+      </View>
+
+      {isVisible && (
+        <View style={styles.searchContainer}>
+          <Feather name="search" color={'#000000a3'} size={20} />
+          <TextInput
+            placeholder="Search for Products..."
+            placeholderTextColor={'#000000a3'}
+            style={styles.searchText}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+        </View>
+      )}
 
       <ScrollView contentContainerStyle={styles.scrollView}>
         <Text style={styles.cardHeaderTitle}>Quick Help</Text>
@@ -78,11 +79,8 @@ const CustomerHelpScreen = () => {
   );
 };
 
-
 const HelpRow = ({ title, icon }: { title: string; icon: string }) => (
-    
   <TouchableOpacity style={styles.row}>
-
     <View style={styles.rowLeft}>
       <View style={styles.iconContainer}>
         <FontAwesome6 name={icon as any} size={16} color="#ff6a32" />
@@ -94,7 +92,6 @@ const HelpRow = ({ title, icon }: { title: string; icon: string }) => (
 );
 
 export default CustomerHelpScreen;
-
 
 const styles = StyleSheet.create({
   mainContainer: {

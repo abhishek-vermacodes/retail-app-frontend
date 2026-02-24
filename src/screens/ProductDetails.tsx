@@ -6,9 +6,11 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
+
 import React from 'react';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+
 import { useNavigation } from '@react-navigation/native';
 
 const ProductDetailsScreen = () => {

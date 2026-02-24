@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { IMAGEAPI } from '../api/authApi';
+import API from '../api/authApi';
 
 interface ProductCardProps {
   image: string;
@@ -9,9 +9,7 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ image, name, price }: ProductCardProps) => {
-  const imageUrl = image?.startsWith('http')
-    ? image
-    : `${IMAGEAPI}${image}`;
+  const imageUrl = image?.startsWith('http') ? image : `${API}${image}`;
 
   return (
     <View style={styles.card}>

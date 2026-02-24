@@ -11,49 +11,29 @@ import {
   Pressable,
 } from 'react-native';
 
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import API from '../api/authApi';
 import Feather from 'react-native-vector-icons/Feather';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { categories, Product } from '../types/type';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Product } from '../types/type';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-// import axios from 'axios';
-import API, { IMAGEAPI } from '../api/authApi';
-
-const categories = [
-  { label: 'All', value: '' },
-  { label: 'Grocery', value: 'grocery' },
-  { label: 'Fresh', value: 'fresh' },
-  { label: 'Personal', value: 'personal' },
-  { label: 'Household', value: 'home' },
-  { label: 'Babycare', value: 'baby' },
-  { label: 'Healthcare', value: 'health' },
-  { label: 'Fashion', value: 'fashion' },
-  { label: 'Electronic', value: 'electronic' },
-  { label: 'Stationery', value: 'stationery' },
-];
 
 const AllProducts = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('');
   const navigation = useNavigation<any>();
-  const [products, setProducts] = useState<Product[] | null>([]);
+
+  const [isVisible, setIsVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [products, setProducts] = useState<Product[] | null>([]);
 
   const getProducts = async () => {
     const token = await AsyncStorage.getItem('token');
     try {
-      // const response = await axios.get(
-      //   `http://192.168.1.5:5000/api/products/my-products`,
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   },
-      // );
-      const response = await API.get('/products/my-products', {
+      const response = await API.get('/api/products/my-products', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -162,8 +142,7 @@ const AllProducts = () => {
               <Image
                 style={styles.productImage}
                 source={{
-                  // uri: `http://192.168.1.12:5000${product.image}`,
-                  uri: `${IMAGEAPI}${product.image}`,
+                  uri: `${API}${product.image}`,
                 }}
               />
             </View>
