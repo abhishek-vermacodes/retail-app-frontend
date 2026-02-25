@@ -5,7 +5,7 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import AppNavigator from './AppNavigator';
 import AuthNavigator from './AuthNavigator';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import AddLocation from '../screens/AddLocation';
+import AddLocation from '../screens/addLocation/AddLocation';
 import { AuthContext } from '../context/AuthContext';
 import SigninScreen from '../screens/SigninScreen';
 

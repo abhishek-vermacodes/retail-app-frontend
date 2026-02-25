@@ -13,7 +13,7 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
 import { useNavigation } from '@react-navigation/native';
 
-const ProductDetailsScreen = () => {
+const StoreProductDetail = () => {
   const navigation = useNavigation<any>();
 
   return (
@@ -125,7 +125,7 @@ const ProductDetailsScreen = () => {
   );
 };
 
-export default ProductDetailsScreen;
+export default StoreProductDetail;
 
 const styles = StyleSheet.create({
   mainContainer: {

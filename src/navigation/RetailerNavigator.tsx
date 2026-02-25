@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import RetailerBottomTabNavigator from './RetailerBottomTabNavigator';
-import CreateShop from '../screens/CreateShop';
-import MyProducts from '../screens/MyProducts';
+import CreateShop from '../screens/createShop/CreateShop';
+import MyProducts from '../screens/storeProducts/StoreProducts';
 import MyProduct from '../screens/MyProduct';
 import RetailerHelpScreen from '../screens/RetailerHelpScreen';
 

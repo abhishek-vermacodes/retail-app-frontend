@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
   Image,
   ScrollView,
@@ -16,6 +15,7 @@ import {
 import API from '../api/authApi';
 import Modal from 'react-native-modal';
 import WebView from 'react-native-webview';
+import styles from './RetailerHome.styles';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -115,11 +115,12 @@ const RetailerHomeScreen = () => {
     try {
       const token = await AsyncStorage.getItem('token');
 
-      const response = await API.get('/store/my-store', {
+      const response = await API.get('/api/store/my-store', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log('response', response);
       setStore(response.data.store);
     } catch (error) {
       console.log('Failed to fetch', error);
@@ -261,32 +262,37 @@ const RetailerHomeScreen = () => {
     >
       <StatusBar barStyle="dark-content" />
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => setOpenLocation(true)}>
-            <View style={styles.locationContainer}>
-              <Ionicons name="location" size={20} color="#ff6a32" />
-              <Text style={styles.priLocationText}>
-                {user?.address?.split(',')[0]}
-              </Text>
-              <MaterialIcons
-                name="keyboard-arrow-down"
-                size={22}
-                color={'#000'}
-                style={styles.arrowDownIcon}
-              />
-            </View>
-            <Text style={styles.secLocationText}>{displayAddress}</Text>
-          </TouchableOpacity>
-
-          <View style={styles.profileContainer}>
-            <Fontisto name="bell" size={20} color="#000" />
-            <View style={styles.avatarContainer}>
-              <Text style={styles.avatarText}>{user?.username?.charAt(0)}</Text>
-            </View>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => setOpenLocation(true)}>
+          <View style={styles.locationContainer}>
+            <Ionicons name="location" size={20} color="#ff6a32" />
+            <Text style={styles.priLocationText}>
+              {user?.address?.split(',')[0]}
+            </Text>
+            <MaterialIcons
+              name="keyboard-arrow-down"
+              size={22}
+              color={'#000'}
+              style={styles.arrowDownIcon}
+            />
           </View>
-        </View>
+          <Text style={styles.secLocationText}>{displayAddress}</Text>
+        </TouchableOpacity>
 
+        <View style={styles.profileContainer}>
+          <TouchableOpacity>
+            <Fontisto name="bell" size={20} color="#000" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.avatarContainer}>
+            <Text style={styles.avatarText}>{user?.username?.charAt(0)}</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollView}
+      >
         {store === null ? (
           <View style={styles.banner}>
             <View style={styles.badge}>
@@ -324,7 +330,7 @@ const RetailerHomeScreen = () => {
             <View style={styles.storeImgContainer}>
               <Image
                 source={{
-                  uri: `${API}${store.image}`,
+                  uri: `http://192.168.1.12:5000${store.image}`,
                 }}
                 style={styles.storeImg}
               />
@@ -355,12 +361,12 @@ const RetailerHomeScreen = () => {
           </View>
         )}
 
-        <View style={styles.overviewHeader}>
+        {/* <View style={styles.overviewHeader}>
           <Text style={styles.sectionTitle}>Overview</Text>
           <Text style={styles.viewReport}>View Report</Text>
-        </View>
+        </View> */}
 
-        <View style={styles.statsRow}>
+        {/* <View style={styles.statsRow}>
           <View style={styles.statCard}>
             <Ionicons name="people-outline" size={22} />
             <Text style={styles.statNumber}>128</Text>
@@ -374,13 +380,13 @@ const RetailerHomeScreen = () => {
             <Text style={styles.statLabel}>Total Orders</Text>
             <Text style={styles.muted}>--</Text>
           </View>
-        </View>
+        </View> */}
 
-        <View style={styles.overviewHeader}>
+        {/* <View style={styles.overviewHeader}>
           <Text style={styles.sectionTitle}>Get Started</Text>
-        </View>
+        </View> */}
 
-        <View style={styles.getStartedSection}>
+        {/* <View style={styles.getStartedSection}>
           <TouchableOpacity style={styles.actionCard}>
             <View style={styles.iconBox}>
               <Feather name="box" size={20} color="#ff6a32" />
@@ -406,8 +412,9 @@ const RetailerHomeScreen = () => {
             </View>
             <Ionicons name="chevron-forward" size={20} color="#999" />
           </TouchableOpacity>
-        </View>
+        </View> */}
       </ScrollView>
+
       <Modal
         isVisible={openLocation}
         onBackdropPress={() => setOpenLocation(false)}
@@ -522,380 +529,3 @@ const RetailerHomeScreen = () => {
 };
 
 export default RetailerHomeScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    paddingVertical: 80,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: 2,
-    paddingBottom: 26,
-    zIndex: 10,
-    paddingHorizontal: 20,
-  },
-  locationContainer: {
-    flexDirection: 'row',
-    marginLeft: -6,
-    gap: 4,
-  },
-  priLocationText: {
-    fontFamily: 'Poppins-Bold',
-    marginBottom: -2,
-    fontSize: 14,
-  },
-  secLocationText: {
-    fontFamily: 'Poppins-Regular',
-    fontSize: 12,
-  },
-  profileContainer: {
-    flexDirection: 'row',
-    gap: 14,
-    alignItems: 'center',
-  },
-  avatarContainer: {
-    width: 36,
-    height: 36,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 18,
-    padding: 2,
-    backgroundColor: '#ff6a32',
-  },
-  avatarText: {
-    fontFamily: 'Poppins-SemiBold',
-    fontSize: 16,
-    color: '#ffe3d9',
-    marginBottom: -2,
-  },
-  banner: {
-    borderRadius: 22,
-    backgroundColor: '#ff6a32',
-    padding: 20,
-    marginBottom: 24,
-    position: 'relative',
-    overflow: 'hidden',
-    marginHorizontal: 20,
-  },
-  badge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    alignSelf: 'flex-start',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
-  },
-  badgeText: { color: '#fff', fontSize: 10, fontFamily: 'Poppins-Medium' },
-  bannerTitle: {
-    fontSize: 26,
-    color: '#fff',
-    marginTop: 14,
-    fontFamily: 'Poppins-Bold',
-    lineHeight: 32,
-  },
-  bannerDesc: {
-    color: '#ffe7dd',
-    fontSize: 12,
-    marginTop: 10,
-    lineHeight: 18,
-    fontFamily: 'Poppins-Medium',
-  },
-  bannerBtn: {
-    backgroundColor: '#fff',
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    alignSelf: 'flex-start',
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    borderRadius: 14,
-    marginTop: 16,
-  },
-  bannerBtnText: {
-    color: '#ff6a32',
-    fontFamily: 'Poppins-Medium',
-    fontSize: 12,
-  },
-  circle: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    height: 160,
-    width: 160,
-    borderRadius: 100,
-    position: 'absolute',
-    top: -40,
-    right: -40,
-  },
-  bagImage: {
-    height: 100,
-    width: 100,
-    position: 'absolute',
-    bottom: -6,
-    right: -14,
-    transform: [{ rotate: '-14deg' }],
-  },
-  storeBanner: {
-    height: 300,
-    marginHorizontal: 20,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: '#ffe3d9',
-    backgroundColor: '#fff',
-    position: 'relative',
-    marginBottom: 20,
-  },
-  editBtn: {
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    backgroundColor: '#ffe3d9',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    zIndex: 9999,
-    right: 10,
-    top: 10,
-  },
-  storeImgContainer: {
-    height: '64%',
-    width: 'auto',
-  },
-  storeImg: {
-    height: '100%',
-    borderTopLeftRadius: 14,
-    borderTopRightRadius: 14,
-  },
-  storeContentContainer: {
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    flexDirection: 'column',
-    gap: 6,
-  },
-  storeContentSubContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  storeName: {
-    fontSize: 20,
-    fontFamily: 'Poppins-Bold',
-    color: '#ff6a32',
-  },
-  storeCategory: {
-    backgroundColor: '#ff6a32',
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  storeCatgoryText: {
-    fontSize: 12,
-    fontFamily: 'Poppins-Medium',
-    color: '#fff',
-    marginBottom: -1,
-  },
-  storeAddressContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    marginBottom: 4,
-  },
-  storeLocationIcon: {
-    marginLeft: -2,
-    marginTop: -4,
-  },
-  storeAddress: {
-    fontSize: 12,
-    fontFamily: 'Poppins-Regular',
-  },
-  overviewHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontFamily: 'Poppins-SemiBold',
-  },
-  viewReport: {
-    fontSize: 12,
-    color: '#ff6a32',
-    fontFamily: 'Poppins-Medium',
-  },
-  statsRow: {
-    flexDirection: 'row',
-    paddingHorizontal: 20,
-    gap: 14,
-    marginBottom: 24,
-    marginTop: 12,
-  },
-  statCard: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#eee',
-    borderRadius: 16,
-    padding: 16,
-  },
-  statNumber: { fontSize: 22, fontFamily: 'Poppins-SemiBold', marginTop: 8 },
-  statLabel: {
-    fontSize: 12,
-    color: '#888',
-    marginTop: 4,
-    fontFamily: 'Poppins-Regular',
-  },
-  growth: {
-    fontSize: 14,
-    color: 'green',
-    marginTop: 6,
-    fontFamily: 'Poppins-Medium',
-  },
-  muted: {
-    fontSize: 14,
-    color: '#bbb',
-    marginTop: 6,
-    fontFamily: 'Poppins-Medium',
-  },
-  getStartedSection: {
-    marginTop: 12,
-    flexDirection: 'column',
-    paddingHorizontal: 20,
-  },
-  actionCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 12,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: '#eee',
-    marginBottom: 12,
-    gap: 14,
-  },
-  iconBox: {
-    backgroundColor: '#ffe7dd',
-    padding: 16,
-    borderRadius: 12,
-  },
-  actionTitle: { fontSize: 13, fontFamily: 'Poppins-Medium' },
-  actionDesc: { fontSize: 11, color: '#888', fontFamily: 'Poppins-Regular' },
-  iconBoxGray: {
-    backgroundColor: '#f3f3f3',
-    padding: 16,
-    borderRadius: 12,
-  },
-  modal: {
-    justifyContent: 'flex-end',
-    margin: 0,
-  },
-  drawer: {
-    backgroundColor: '#fff',
-    paddingVertical: 26,
-    paddingHorizontal: 18,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    height: 'auto',
-  },
-  mapContainer: {
-    backgroundColor: '#fff',
-    height: 200,
-    borderWidth: 1,
-    borderColor: '#ffe3d9',
-    borderRadius: 20,
-    marginBottom: 20,
-    overflow: 'hidden',
-    position: 'relative',
-    justifyContent: 'center',
-  },
-  loadingContainer: {
-    position: 'absolute',
-    right: '30%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 10,
-    zIndex: 9999,
-  },
-  primaryBtnContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: '#ff5b27',
-    borderRadius: 14,
-    paddingVertical: 16,
-    gap: 6,
-    marginBottom: 20,
-  },
-  primaryBtnText: {
-    color: '#ff5b27',
-    fontFamily: 'Poppins-Regular',
-    marginBottom: -2,
-  },
-  secondaryBtnContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ff5b27',
-    borderRadius: 14,
-    paddingVertical: 16,
-    marginBottom: 20,
-  },
-  secondaryBtnText: {
-    color: '#fff',
-    fontFamily: 'Poppins-Regular',
-  },
-  streetAddressContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    marginLeft: -6,
-  },
-  streetText: {
-    fontFamily: 'Poppins-SemiBold',
-    fontSize: 14,
-    color: '#000000',
-    marginBottom: -2,
-  },
-  addressText: {
-    fontFamily: 'Poppins-Regular',
-    fontSize: 12,
-    color: '#000000',
-  },
-  inputContainer: {
-    marginBottom: 20,
-  },
-  inputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: '#00000061',
-    paddingHorizontal: 14,
-    height: 56,
-  },
-  input: {
-    flex: 1,
-    fontSize: 14,
-    fontFamily: 'Poppins-Regular',
-  },
-  addressContainer: {
-    flexDirection: 'column',
-    gap: 6,
-    borderWidth: 1,
-    borderColor: '#ffe3d9',
-    backgroundColor: '#fff5f0',
-    borderRadius: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    marginBottom: 20,
-  },
-  arrowDownIcon: {
-    marginLeft: 2,
-  },
-});

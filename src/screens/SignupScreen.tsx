@@ -34,7 +34,8 @@ const SignupScreen = () => {
 
   const handleSignup = async () => {
     try {
-      signUp(user.username, user.email, user.password, user.role);
+      const res = signUp(user.username, user.email, user.password, user.role);
+      console.log('res', res);
       Alert.alert('success', 'Signup successful');
 
       const email = user.email;

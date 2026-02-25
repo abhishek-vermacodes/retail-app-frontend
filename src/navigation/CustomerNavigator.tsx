@@ -3,8 +3,8 @@ import { Store } from '../types/type';
 
 import CustomerBottomTabNavigator from './CustomerBottomTabNavigator';
 import CategoryProductsScreen from '../screens/CategoryScreen';
-import ProductDetailsScreen from '../screens/ProductDetails';
-import CustomerHelpScreen from '../screens/CustomerHelpScreen';
+import ProductDetailsScreen from '../screens/ProductDetail/ProductDetail';
+import CustomerHelpScreen from '../screens/helpCenter/CustomerHelpScreen';
 import ShopDetailScreen from '../screens/ShopDetailsScreen';
 
 export type CustomerStackParamList = {

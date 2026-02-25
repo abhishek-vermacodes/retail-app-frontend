@@ -3,23 +3,22 @@ import {
   Text,
   ScrollView,
   StatusBar,
-  StyleSheet,
   TouchableOpacity,
   Image,
   TextInput,
   FlatList,
 } from 'react-native';
-
-import API from '../api/authApi';
+import styles from './StoreProducts.styles';
+import API from '../../api/authApi';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { categories, Product } from '../types/type';
+import { categories, Product } from '../../types/type';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-const MyProducts = () => {
+const StoreProducts = () => {
   const navigation = useNavigation<any>();
   const [isVisible, setIsVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -59,22 +58,23 @@ const MyProducts = () => {
   }, []);
 
   return (
-    <View style={styles.mainContainer}>
+    <View style={styles.container}>
       <StatusBar barStyle={'dark-content'} />
 
-      <View style={styles.headerContainer}>
-        <TouchableOpacity
-          style={styles.backBtn}
-          onPress={() => navigation.goBack()}
-        >
-          <FontAwesome6 name="arrow-left" size={18} color="#000000" />
-        </TouchableOpacity>
-        <Text style={styles.pageTitle}>My Products</Text>
+      <View style={styles.header}>
+        <View style={styles.subHeader}>
+          <TouchableOpacity
+            style={styles.backBtn}
+            onPress={() => navigation.navigate('RetailerHome')}
+          >
+            <FontAwesome6 name="arrow-left" size={18} color="#000000" />
+          </TouchableOpacity>
+          <Text style={styles.pageTitle}>Products</Text>
+        </View>
         <Feather
           name="search"
           size={22}
           color={'#000'}
-          style={styles.searchBtn}
           onPress={() => setIsVisible(prev => !prev)}
         />
       </View>
@@ -125,7 +125,7 @@ const MyProducts = () => {
 
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 200 }}
+        contentContainerStyle={styles.scrollView}
       >
         <View style={styles.gridContainer}>
           {filteredProducts?.map(product => (
@@ -139,7 +139,7 @@ const MyProducts = () => {
                 <Image
                   style={styles.productImage}
                   source={{
-                    uri: `${API}${product.image}`,
+                    uri: `http://192.168.1.12:5000${product.image}`,
                   }}
                 />
               </TouchableOpacity>
@@ -169,162 +169,4 @@ const MyProducts = () => {
   );
 };
 
-export default MyProducts;
-
-const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: '#fff5f0',
-    paddingHorizontal: 20,
-    paddingVertical: 60,
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 20,
-    position: 'relative',
-  },
-  backBtn: {
-    borderColor: '#bbb',
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderRadius: 50,
-  },
-  pageTitle: {
-    fontSize: 20,
-    fontFamily: 'Poppins-Bold',
-  },
-  searchBtn: {
-    position: 'absolute',
-    right: 0,
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#ffe3d9',
-    borderRadius: 50,
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    marginTop: 20,
-  },
-  searchText: {
-    fontFamily: 'Poppins-Regular',
-    color: '#000',
-  },
-  categoryContainer: {
-    marginTop: 20,
-    paddingBottom: 20,
-  },
-  categoryBtn: {
-    paddingHorizontal: 30,
-    paddingVertical: 10,
-    backgroundColor: '#ffffff',
-    borderRadius: 24,
-    marginRight: 8,
-    borderWidth: 1,
-    borderColor: '#ffe3d9',
-  },
-  categoryBtnActive: {
-    backgroundColor: '#ff5b27',
-    borderColor: '#ff5b27',
-  },
-  categoryText: {
-    fontSize: 12,
-    color: '#000000a3',
-    fontFamily: 'Poppins-Regular',
-  },
-  categoryTextActive: {
-    color: '#FFFFFF',
-  },
-  gridContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    marginTop: 10,
-  },
-  productCard: {
-    width: '48%',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    gap: 10,
-    backgroundColor: '#ffffff',
-    borderWidth: 1,
-    borderColor: '#ffe3d9',
-    borderRadius: 12,
-    padding: 10,
-    marginTop: 16,
-    position: 'relative',
-  },
-  productImageContainer: {
-    alignItems: 'center',
-    borderRadius: 10,
-  },
-  productImage: {
-    width: '100%',
-    height: 168,
-    resizeMode: 'center',
-    borderRadius: 10,
-  },
-  productContentContainer: {
-    flexDirection: 'column',
-  },
-  productName: {
-    fontSize: 14,
-    fontFamily: 'Poppins-SemiBold',
-    color: '#ff5b27',
-  },
-  productcategory: {
-    fontSize: 10,
-    fontFamily: 'Poppins-SemiBold',
-    color: '#000000a3',
-    marginTop: -2,
-  },
-  productSubContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  productPrice: {
-    fontSize: 16,
-    fontFamily: 'Poppins-SemiBold',
-    color: '#ff5b27',
-  },
-  stockBadge: {
-    backgroundColor: '#dddddd',
-    paddingVertical: 2,
-    paddingHorizontal: 6,
-    width: 80,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    position: 'absolute',
-    top: 10,
-    left: 10,
-  },
-  stockText: {
-    marginTop: 2,
-    fontFamily: 'Poppins-Medium',
-    fontSize: 10,
-  },
-  outOfStockStatus: {
-    fontSize: 10,
-    fontFamily: 'Poppins-Medium',
-    color: '#ff0000',
-  },
-  lowStockStatus: {
-    fontSize: 10,
-    fontFamily: 'Poppins-Medium',
-    color: '#fda500',
-  },
-  inStockStatus: {
-    fontSize: 10,
-    fontFamily: 'Poppins-Medium',
-    color: '#277a00',
-  },
-});
+export default StoreProducts;

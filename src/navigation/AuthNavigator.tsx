@@ -6,7 +6,7 @@ import SplashScreen from '../screens/SplashScreen';
 import IntroScreen from '../screens/IntroScreen';
 import ForgotPasswordScreen from '../screens/ForgotPassword';
 import VerificationScreen from '../screens/Verification';
-import AddLocation from '../screens/AddLocation';
+import AddLocation from '../screens/addLocation/AddLocation';
 
 const Stack = createNativeStackNavigator();
 
