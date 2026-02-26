@@ -7,7 +7,7 @@ import AuthNavigator from './AuthNavigator';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AddLocation from '../screens/addLocation/AddLocation';
 import { AuthContext } from '../context/AuthContext';
-import SigninScreen from '../screens/SigninScreen';
+import SigninScreen from '../screens/signin/SigninScreen';
 
 const Stack = createNativeStackNavigator();
 

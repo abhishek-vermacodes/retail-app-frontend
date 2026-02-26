@@ -5,7 +5,7 @@ import CustomerBottomTabNavigator from './CustomerBottomTabNavigator';
 import CategoryProductsScreen from '../screens/CategoryScreen';
 import ProductDetailsScreen from '../screens/ProductDetail/ProductDetail';
 import CustomerHelpScreen from '../screens/helpCenter/CustomerHelpScreen';
-import ShopDetailScreen from '../screens/ShopDetailsScreen';
+import ShopDetailScreen from '../screens/shopDetail/ShopDetailsScreen';
 
 export type CustomerStackParamList = {
   CustomerHome: undefined;

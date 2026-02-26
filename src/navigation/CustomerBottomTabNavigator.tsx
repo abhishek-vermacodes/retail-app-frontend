@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import CustomTabBar from '../components/CustomTabBar';
 
-import CustomerHomeScreen from '../screens/CustomerHome';
+import CustomerHomeScreen from '../screens/customerHome/CustomerHome';
 import UserOrdersScreen from '../screens/UserOrders';
 
 import CartScreen from '../screens/Cart';

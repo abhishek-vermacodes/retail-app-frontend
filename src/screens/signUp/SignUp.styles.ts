@@ -2,8 +2,9 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: 80,
+    flexGrow: 1,
+    paddingTop: 60,
+    paddingBottom: 60,
     paddingHorizontal: 20,
     backgroundColor: '#ffffff',
   },
@@ -17,8 +18,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#000000a3',
     lineHeight: 20,
-    marginBottom: 40,
     marginTop: -6,
+    marginBottom: 40,
     fontFamily: 'Poppins-Regular',
   },
   inputContainer: {
@@ -54,13 +55,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 270,
+    marginTop: 70,
     marginBottom: 30,
   },
   buttonText: {
     color: '#ffffff',
     fontSize: 16,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-0Regular',
   },
   terms: {
     fontSize: 13,
@@ -91,21 +92,77 @@ const styles = StyleSheet.create({
     color: '#ff5b27',
     fontWeight: '700',
   },
-  forgotText: {
-    textAlign: 'right',
-    fontFamily: 'Poppins-Medium',
-    color: '#ff5b27',
+  roleContainer: {
+    marginBottom: 30,
   },
-  headerBtn: {
-    height: 40,
-    width: 40,
+  roleLabel: {
+    fontSize: 14,
+    marginBottom: 10,
+    fontFamily: 'Poppins-Medium',
+    color: '#000000',
+  },
+  roleOptions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  roleCard: {
+    width: '48%',
+    height: 120,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#00000061',
+    backgroundColor: 'transparent',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#bbb',
-    paddingHorizontal: 10,
-    paddingVertical: 8,
+    gap: 8,
+    position: 'relative',
+  },
+  roleCardActive: {
+    backgroundColor: '#ffded4',
+    borderColor: '#ff5b27',
+  },
+  iconContainer: {
+    height: 40,
+    width: 40,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#e8e8e8',
     borderRadius: 30,
+  },
+  iconContainerActive: {
+    backgroundColor: '#ffffff',
+  },
+  cardText: {
+    fontSize: 14,
+    color: '#000000',
+    fontFamily: 'Poppins-Medium',
+  },
+  cardTextActive: {
+    color: '#ff5b27',
+  },
+  checkIconContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    backgroundColor: '#ffffff',
+    borderColor: '#00000061',
+    borderWidth: 1,
+    borderRadius: 30,
+    height: 20,
+    width: 20,
+  },
+  checkIconContainerActive: {
+    borderColor: 'none',
+    borderWidth: 0,
+  },
+  shopIcon: {
+    height: 20,
+    width: 20,
   },
 });
 

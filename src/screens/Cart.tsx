@@ -93,7 +93,7 @@ function CartScreen() {
 
   return (
     <View style={styles.mainContainer}>
-      <View style={styles.headerContainer}>
+      {/* <View style={styles.headerContainer}>
         <TouchableOpacity
           style={styles.backBtn}
           onPress={() => navigation.goBack()}
@@ -103,6 +103,24 @@ function CartScreen() {
 
         <Text style={styles.pageTitle}>My Cart</Text>
 
+        <Entypo
+          name="dots-three-vertical"
+          size={22}
+          color="#000"
+          style={styles.menuBtn}
+        />
+      </View> */}
+
+      <View style={styles.header}>
+        <View style={styles.subHeader}>
+          <TouchableOpacity
+            style={styles.backBtn}
+            onPress={() => navigation.goBack()}
+          >
+            <FontAwesome6 name="arrow-left" size={18} color="#000000" />
+          </TouchableOpacity>
+          <Text style={styles.pageTitle}>My Cart</Text>
+        </View>
         <Entypo
           name="dots-three-vertical"
           size={22}
@@ -162,18 +180,24 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: '#fff5f0',
-    paddingHorizontal: 20,
-    paddingTop: 60,
   },
-  headerContainer: {
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     gap: 20,
-    marginBottom: 10,
+    paddingTop: 60,
+    paddingBottom: 20,
+    paddingHorizontal: 20,
     position: 'relative',
+    zIndex: 10,
+  },
+  subHeader: {
+    flexDirection: 'row',
+    gap: 20,
   },
   backBtn: {
-    borderColor: '#000000a3',
+    borderColor: '#bbb',
     borderWidth: 1,
     paddingHorizontal: 10,
     paddingVertical: 8,
@@ -182,7 +206,7 @@ const styles = StyleSheet.create({
   pageTitle: {
     fontSize: 20,
     fontFamily: 'Poppins-Bold',
-    color: '#000',
+    marginTop: 2,
   },
   menuBtn: {
     position: 'absolute',

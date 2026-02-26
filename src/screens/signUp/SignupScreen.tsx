@@ -3,7 +3,6 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
   KeyboardAvoidingView,
   Image,
   Alert,
@@ -13,9 +12,9 @@ import {
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import styles from './SignUp.styles';
 import React, { useContext, useState } from 'react';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
 const SignupScreen = () => {
@@ -138,12 +137,12 @@ const SignupScreen = () => {
             >
               {role === 'retailer' ? (
                 <Image
-                  source={require('../assets/icons/shopBlack.png')}
+                  source={require('../../assets/icons/shopBlack.png')}
                   style={styles.shopIcon}
                 />
               ) : (
                 <Image
-                  source={require('../assets/icons/shopGray.png')}
+                  source={require('../../assets/icons/shopGray.png')}
                   style={styles.shopIcon}
                 />
               )}
@@ -244,169 +243,3 @@ const SignupScreen = () => {
 };
 
 export default SignupScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    paddingTop: 60,
-    paddingBottom: 60,
-    paddingHorizontal: 20,
-    backgroundColor: '#ffffff',
-  },
-  title: {
-    fontSize: 32,
-    marginTop: 45,
-    color: '#000000',
-    fontFamily: 'Poppins-SemiBold',
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#000000a3',
-    lineHeight: 20,
-    marginTop: -6,
-    marginBottom: 40,
-    fontFamily: 'Poppins-Regular',
-  },
-  inputContainer: {
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 14,
-    color: '#000000',
-    marginBottom: 5,
-    fontFamily: 'Poppins-Medium',
-  },
-  inputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#00000061',
-    paddingHorizontal: 10,
-    height: 50,
-  },
-  icon: {
-    marginRight: 10,
-  },
-  input: {
-    flex: 1,
-    fontSize: 16,
-    color: '#000',
-  },
-  button: {
-    height: 50,
-    backgroundColor: '#ff5b27',
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 70,
-    marginBottom: 30,
-  },
-  buttonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontFamily: 'Poppins-0Regular',
-  },
-  terms: {
-    fontSize: 13,
-    color: '#000000a3',
-    textAlign: 'center',
-    fontFamily: 'Poppins-Regular',
-  },
-  extraButtonWrapper: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignContent: 'center',
-    justifyContent: 'space-between',
-    height: 80,
-    marginTop: 30,
-  },
-  extraButton: {
-    width: '48%',
-    paddingVertical: 14,
-    borderRadius: 12,
-    borderWidth: 1,
-    alignItems: 'center',
-    marginBottom: 16,
-    backgroundColor: '#ffffff',
-    borderColor: '#00000016',
-  },
-  link: {
-    color: '#ff5b27',
-    fontWeight: '700',
-  },
-  roleContainer: {
-    marginBottom: 30,
-  },
-  roleLabel: {
-    fontSize: 14,
-    marginBottom: 10,
-    fontFamily: 'Poppins-Medium',
-    color: '#000000',
-  },
-  roleOptions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  roleCard: {
-    width: '48%',
-    height: 120,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#00000061',
-    backgroundColor: 'transparent',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 8,
-    position: 'relative',
-  },
-  roleCardActive: {
-    backgroundColor: '#ffded4',
-    borderColor: '#ff5b27',
-  },
-  iconContainer: {
-    height: 40,
-    width: 40,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#e8e8e8',
-    borderRadius: 30,
-  },
-  iconContainerActive: {
-    backgroundColor: '#ffffff',
-  },
-  cardText: {
-    fontSize: 14,
-    color: '#000000',
-    fontFamily: 'Poppins-Medium',
-  },
-  cardTextActive: {
-    color: '#ff5b27',
-  },
-  checkIconContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    top: 10,
-    right: 10,
-    backgroundColor: '#ffffff',
-    borderColor: '#00000061',
-    borderWidth: 1,
-    borderRadius: 30,
-    height: 20,
-    width: 20,
-  },
-  checkIconContainerActive: {
-    borderColor: 'none',
-    borderWidth: 0,
-  },
-  shopIcon: {
-    height: 20,
-    width: 20,
-  },
-});

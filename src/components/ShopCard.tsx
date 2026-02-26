@@ -1,7 +1,6 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import API from '../api/authApi';
 
 interface NearbyShopCardProps {
   storeName: string;
@@ -23,7 +22,7 @@ const NearbyShopCard = ({
       </View>
       <Image
         source={{
-          uri: `${API}${image}`,
+          uri: `http://192.168.1.12:5000${image}`,
         }}
         style={styles.image}
       />

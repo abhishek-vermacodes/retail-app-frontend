@@ -3,8 +3,8 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Image,
   ScrollView,
+  Image,
 } from 'react-native';
 
 import React from 'react';
@@ -35,7 +35,7 @@ const StoreProductDetail = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* IMAGE */}
         <Image
-          source={require('../assets/images/bag.jpeg')}
+          source={require('../../assets/images/bag.jpeg')}
           style={styles.productImage}
         />
 
