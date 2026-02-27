@@ -9,31 +9,34 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 20,
     paddingTop: 60,
     paddingBottom: 20,
     paddingHorizontal: 20,
-    position: 'relative',
     zIndex: 10,
   },
-  subHeader: {
-    flexDirection: 'row',
-    gap: 20,
-  },
   backBtn: {
-    borderColor: '#bbb',
+    backgroundColor: 'white',
+    borderColor: '#ffe3d9',
     borderWidth: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
+    height: 40,
+    width: 40,
     borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   pageTitle: {
     fontSize: 20,
     fontFamily: 'Poppins-Bold',
   },
   searchBtn: {
-    position: 'absolute',
-    right: 0,
+    backgroundColor: 'white',
+    borderColor: '#ffe3d9',
+    borderWidth: 1,
+    height: 40,
+    width: 40,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   searchContainer: {
     flexDirection: 'row',
@@ -43,18 +46,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ffe3d9',
     borderRadius: 50,
-    paddingHorizontal: 18,
+    paddingHorizontal: 20,
     paddingVertical: 10,
-    marginTop: 20,
+    marginHorizontal: 20,
+    marginBottom: 20,
   },
   searchText: {
     fontFamily: 'Poppins-Regular',
     color: '#000',
+    marginBottom: -4,
   },
   scrollContent: {
     paddingBottom: 200,
   },
-
   subContainer: {
     paddingHorizontal: 20,
   },
@@ -64,9 +68,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ffe3d9',
     backgroundColor: '#fff',
-    position: 'relative',
-    marginTop: 20,
     marginBottom: 20,
+    position: 'relative',
   },
   storeImgContainer: {
     height: '60%',
@@ -82,7 +85,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     flexDirection: 'column',
     borderRadius: 20,
-
     gap: 6,
     backgroundColor: '#fff',
   },
@@ -126,6 +128,7 @@ const styles = StyleSheet.create({
   },
   categoryContainer: {
     paddingBottom: 20,
+    marginLeft: 20,
   },
   categoryBtn: {
     paddingHorizontal: 30,
@@ -153,6 +156,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     gap: 14,
+    paddingHorizontal: 20,
   },
   productCard: {
     width: '48%',
@@ -166,21 +170,73 @@ const styles = StyleSheet.create({
     padding: 10,
     position: 'relative',
   },
+  productImageContainer: {
+    alignItems: 'center',
+    borderRadius: 10,
+  },
   productImage: {
     width: '100%',
     height: 168,
     resizeMode: 'cover',
     borderRadius: 10,
   },
+  productContentContainer: {
+    flexDirection: 'column',
+  },
   productName: {
     fontSize: 14,
     fontFamily: 'Poppins-SemiBold',
     color: '#ff5b27',
   },
+  productcategory: {
+    fontSize: 10,
+    fontFamily: 'Poppins-SemiBold',
+    color: '#000000a3',
+    marginTop: -2,
+  },
+  productSubContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 10,
+  },
   productPrice: {
     fontSize: 16,
     fontFamily: 'Poppins-SemiBold',
     color: '#ff5b27',
+  },
+  stockBadge: {
+    backgroundColor: '#dddddd',
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    width: 80,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    position: 'absolute',
+    top: 10,
+    left: 10,
+  },
+  stockText: {
+    marginTop: 2,
+    fontFamily: 'Poppins-Medium',
+    fontSize: 10,
+  },
+  outOfStockStatus: {
+    fontSize: 10,
+    fontFamily: 'Poppins-Medium',
+    color: '#ff0000',
+  },
+  lowStockStatus: {
+    fontSize: 10,
+    fontFamily: 'Poppins-Medium',
+    color: '#fda500',
+  },
+  inStockStatus: {
+    fontSize: 10,
+    fontFamily: 'Poppins-Medium',
+    color: '#277a00',
   },
 });
 

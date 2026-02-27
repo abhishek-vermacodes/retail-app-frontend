@@ -347,6 +347,7 @@ function CustomerHomeScreen() {
       });
 
       const stores = response.data.stores || [];
+      console.log('stores', stores);
       setAllShops(stores);
       setFilteredShops(stores);
     } catch (error) {
@@ -365,12 +366,11 @@ function CustomerHomeScreen() {
       return;
     }
 
-      if (categoryKey.toLowerCase() === 'all') {
-        setSelectedCategory('all');
-        setFilteredShops(allShops);
-        return;
-      }
-
+    if (categoryKey.toLowerCase() === 'all') {
+      setSelectedCategory('all');
+      setFilteredShops(allShops);
+      return;
+    }
 
     setSelectedCategory(categoryKey);
 

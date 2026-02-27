@@ -3,9 +3,10 @@ import { Store } from '../types/type';
 
 import CustomerBottomTabNavigator from './CustomerBottomTabNavigator';
 import CategoryProductsScreen from '../screens/CategoryScreen';
-import ProductDetailsScreen from '../screens/ProductDetail/ProductDetail';
+import ProductDetailsScreen from '../screens/ProductDetail/ShopProductDetail';
 import CustomerHelpScreen from '../screens/helpCenter/CustomerHelpScreen';
-import ShopDetailScreen from '../screens/shopDetail/ShopDetailsScreen';
+import ShopDetailScreen from '../screens/shopProducts/ShopProducts';
+import ShopProductDetail from '../screens/ProductDetail/ShopProductDetail';
 
 export type CustomerStackParamList = {
   CustomerHome: undefined;
@@ -13,6 +14,7 @@ export type CustomerStackParamList = {
   ProductDetails: { productId: string } | undefined;
   ShopDetails: { shop: Store };
   HelpCenter: undefined;
+  ShopProductDetail: undefined;
 };
 
 const Stack = createNativeStackNavigator<CustomerStackParamList>();
@@ -28,6 +30,7 @@ export default function CustomerNavigator() {
       <Stack.Screen name="ProductDetails" component={ProductDetailsScreen} />
       <Stack.Screen name="ShopDetails" component={ShopDetailScreen} />
       <Stack.Screen name="HelpCenter" component={CustomerHelpScreen} />
+      <Stack.Screen name="ShopProductDetail" component={ShopProductDetail} />
     </Stack.Navigator>
   );
 }
