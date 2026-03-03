@@ -1,52 +1,45 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-} from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import React from 'react';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { useNavigation } from '@react-navigation/native';
 import styles from './userOrders.styles';
 
-const orders = [
-  {
-    id: '#8291',
-    date: 'Today, 10:30 AM',
-    status: 'Processing',
-    statusColor: '#ff7a1a',
-    images: [
-      require('../assets/images/bag.jpeg'),
-      require('../assets/images/bag.jpeg'),
-    ],
-    extra: '+2',
-    price: 24.5,
-    action: 'Track Order',
-    actionPrimary: true,
-  },
-  {
-    id: '#7732',
-    date: 'Oct 12, 2023',
-    status: 'Delivered',
-    statusColor: '#1dbf38',
-    images: [
-      require('../assets/images/bag.jpeg'),
-      require('../assets/images/bag.jpeg'),
-    ],
-    price: 18.2,
-    action: 'Reorder',
-    actionPrimary: false,
-  },
-];
+// const orders = [
+//   {
+//     id: '#8291',
+//     date: 'Today, 10:30 AM',
+//     status: 'Processing',
+//     statusColor: '#ff7a1a',
+//     images: [
+//       require('../assets/images/bag.jpeg'),
+//       require('../assets/images/bag.jpeg'),
+//     ],
+//     extra: '+2',
+//     price: 24.5,
+//     action: 'Track Order',
+//     actionPrimary: true,
+//   },
+//   {
+//     id: '#7732',
+//     date: 'Oct 12, 2023',
+//     status: 'Delivered',
+//     statusColor: '#1dbf38',
+//     images: [
+//       require('../assets/images/bag.jpeg'),
+//       require('../assets/images/bag.jpeg'),
+//     ],
+//     price: 18.2,
+//     action: 'Reorder',
+//     actionPrimary: false,
+//   },
+// ];
 
 const UserOrders = () => {
   const navigation = useNavigation<any>();
 
   return (
     <View style={styles.mainContainer}>
-      {/* ✅ HEADER */}
       <View style={styles.headerContainer}>
         <TouchableOpacity
           style={styles.backBtn}
@@ -65,11 +58,10 @@ const UserOrders = () => {
         />
       </View>
 
-      {/* ✅ ORDERS LIST */}
       <ScrollView showsVerticalScrollIndicator={false}>
-        {orders.map(order => (
+        {/* {orders.map(order => (
           <View key={order.id} style={styles.orderCard}>
-            {/* Top Row */}
+        
             <View style={styles.rowBetween}>
               <Text style={styles.dateText}>{order.date}</Text>
 
@@ -85,7 +77,7 @@ const UserOrders = () => {
 
             <View style={styles.divider} />
 
-            {/* Images */}
+          
             <View style={styles.imageRow}>
               {order.images.map((img, index) => (
                 <Image key={index} source={img} style={styles.itemImage} />
@@ -98,7 +90,7 @@ const UserOrders = () => {
               )}
             </View>
 
-            {/* Bottom Row */}
+       
             <View style={styles.bottomRow}>
               <View>
                 <Text style={styles.orderText}>Order</Text>
@@ -128,7 +120,7 @@ const UserOrders = () => {
               </View>
             </View>
           </View>
-        ))}
+        ))} */}
 
         <View style={{ height: 30 }} />
       </ScrollView>
@@ -137,5 +129,3 @@ const UserOrders = () => {
 };
 
 export default UserOrders;
-
-

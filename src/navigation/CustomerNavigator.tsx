@@ -2,11 +2,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Store } from '../types/type';
 
 import CustomerBottomTabNavigator from './CustomerBottomTabNavigator';
-import CategoryProductsScreen from '../screens/category/Category';
-import ProductDetailsScreen from '../screens/shopProductDetail/ShopProductDetail';
-import CustomerHelpScreen from '../screens/helpCenter/CustomerHelpCenter';
-import ShopDetailScreen from '../screens/shopProducts/ShopProducts';
-import ShopProductDetail from '../screens/shopProductDetail/ShopProductDetail';
+import Category from '../screens/category/Category';
+import CustomerHelpCenter from '../screens/helpCenter/CustomerHelpCenter';
 
 export type CustomerStackParamList = {
   CustomerHome: undefined;
@@ -26,11 +23,11 @@ export default function CustomerNavigator() {
         name="CustomerHome"
         component={CustomerBottomTabNavigator}
       />
-      <Stack.Screen name="CategoryScreen" component={CategoryProductsScreen} />
-      <Stack.Screen name="ProductDetails" component={ProductDetailsScreen} />
-      <Stack.Screen name="ShopDetails" component={ShopDetailScreen} />
-      <Stack.Screen name="HelpCenter" component={CustomerHelpScreen} />
-      <Stack.Screen name="ShopProductDetail" component={ShopProductDetail} />
+      <Stack.Screen name="CategoryScreen" component={Category} />
+      {/* <Stack.Screen name="ProductDetails" component={ProductDetailsScreen} /> */}
+      {/* <Stack.Screen name="ShopDetails" component={ShopDetailScreen} /> */}
+      <Stack.Screen name="HelpCenter" component={CustomerHelpCenter} />
+      {/* <Stack.Screen name="ShopProductDetail" component={ShopProductDetail} /> */}
     </Stack.Navigator>
   );
 }

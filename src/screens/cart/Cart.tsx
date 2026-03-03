@@ -1,116 +1,93 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 
-import CartItem from '../../components/CartItem';
+// import CartItem from '../../components/CartItem';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import styles from './cart.styles';
 
-const initialCart = [
-  {
-    id: '1',
-    name: 'Fresh Red Apple (1kg)',
-    price: 3.5,
-    quantity: 1,
-    image: require('../assets/images/bag.jpeg'),
-  },
-  {
-    id: '2',
-    name: 'Organic Whole Milk',
-    price: 1.2,
-    quantity: 2,
-    image: require('../assets/images/bag.jpeg'),
-  },
-  {
-    id: '3',
-    name: 'Organic Whole Milk',
-    price: 1.2,
-    quantity: 2,
-    image: require('../assets/images/bag.jpeg'),
-  },
-  {
-    id: '4',
-    name: 'Organic Whole Milk',
-    price: 1.2,
-    quantity: 2,
-    image: require('../assets/images/bag.jpeg'),
-  },
-  {
-    id: '5',
-    name: 'Organic Whole Milk',
-    price: 1.2,
-    quantity: 2,
-    image: require('../assets/images/bag.jpeg'),
-  },
-  {
-    id: '6',
-    name: 'Organic Whole Milk',
-    price: 1.2,
-    quantity: 2,
-    image: require('../assets/images/bag.jpeg'),
-  },
-];
+// const initialCart = [
+//   {
+//     id: '1',
+//     name: 'Fresh Red Apple (1kg)',
+//     price: 3.5,
+//     quantity: 1,
+//     image: require('../assets/images/bag.jpeg'),
+//   },
+//   {
+//     id: '2',
+//     name: 'Organic Whole Milk',
+//     price: 1.2,
+//     quantity: 2,
+//     image: require('../assets/images/bag.jpeg'),
+//   },
+//   {
+//     id: '3',
+//     name: 'Organic Whole Milk',
+//     price: 1.2,
+//     quantity: 2,
+//     image: require('../assets/images/bag.jpeg'),
+//   },
+//   {
+//     id: '4',
+//     name: 'Organic Whole Milk',
+//     price: 1.2,
+//     quantity: 2,
+//     image: require('../assets/images/bag.jpeg'),
+//   },
+//   {
+//     id: '5',
+//     name: 'Organic Whole Milk',
+//     price: 1.2,
+//     quantity: 2,
+//     image: require('../assets/images/bag.jpeg'),
+//   },
+//   {
+//     id: '6',
+//     name: 'Organic Whole Milk',
+//     price: 1.2,
+//     quantity: 2,
+//     image: require('../assets/images/bag.jpeg'),
+//   },
+// ];
 
 function Cart() {
   const navigation = useNavigation<any>();
-  const [cartItems, setCartItems] = useState(initialCart);
+  // const [cartItems, setCartItems] = useState(initialCart);
 
-  const increaseQty = (id: string) => {
-    setCartItems(items =>
-      items.map(item =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item,
-      ),
-    );
-  };
+  // const increaseQty = (id: string) => {
+  //   setCartItems(items =>
+  //     items.map(item =>
+  //       item.id === id ? { ...item, quantity: item.quantity + 1 } : item,
+  //     ),
+  //   );
+  // };
 
-  const decreaseQty = (id: string) => {
-    setCartItems(items =>
-      items.map(item =>
-        item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item,
-      ),
-    );
-  };
+  // const decreaseQty = (id: string) => {
+  //   setCartItems(items =>
+  //     items.map(item =>
+  //       item.id === id && item.quantity > 1
+  //         ? { ...item, quantity: item.quantity - 1 }
+  //         : item,
+  //     ),
+  //   );
+  // };
 
-  const deleteItem = (id: string) => {
-    setCartItems(items => items.filter(item => item.id !== id));
-  };
+  // const deleteItem = (id: string) => {
+  //   setCartItems(items => items.filter(item => item.id !== id));
+  // };
 
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0,
-  );
+  // const subtotal = cartItems.reduce(
+  //   (sum, item) => sum + item.price * item.quantity,
+  //   0,
+  // );
   const deliveryFee = 1.0;
-  const total = subtotal + deliveryFee;
+  // const total = subtotal + deliveryFee;
 
   return (
     <View style={styles.mainContainer}>
-      {/* <View style={styles.headerContainer}>
-        <TouchableOpacity
-          style={styles.backBtn}
-          onPress={() => navigation.goBack()}
-        >
-          <FontAwesome6 name="arrow-left" size={18} color="#000" />
-        </TouchableOpacity>
-
-        <Text style={styles.pageTitle}>My Cart</Text>
-
-        <Entypo
-          name="dots-three-vertical"
-          size={22}
-          color="#000"
-          style={styles.menuBtn}
-        />
-      </View> */}
-
       <View style={styles.header}>
         <View style={styles.subHeader}>
           <TouchableOpacity
@@ -134,7 +111,7 @@ function Cart() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewStyle}
       >
-        {cartItems.map(item => (
+        {/* {cartItems.map(item => (
           <CartItem
             key={item.id}
             image={item.image}
@@ -145,12 +122,12 @@ function Cart() {
             onDecrease={() => decreaseQty(item.id)}
             onDelete={() => deleteItem(item.id)}
           />
-        ))}
+        ))} */}
 
         <View style={styles.summaryCard}>
           <View style={styles.row}>
             <Text style={styles.label}>Subtotal</Text>
-            <Text style={styles.value}>${subtotal.toFixed(2)}</Text>
+            {/* <Text style={styles.value}>${subtotal.toFixed(2)}</Text> */}
           </View>
 
           <View style={styles.row}>
@@ -162,7 +139,7 @@ function Cart() {
 
           <View style={styles.row}>
             <Text style={styles.total}>Total</Text>
-            <Text style={styles.total}>${total.toFixed(2)}</Text>
+            {/* <Text style={styles.total}>${total.toFixed(2)}</Text> */}
           </View>
 
           <TouchableOpacity style={styles.checkoutBtn}>
@@ -175,4 +152,3 @@ function Cart() {
 }
 
 export default Cart;
-

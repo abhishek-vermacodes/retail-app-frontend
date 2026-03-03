@@ -319,7 +319,7 @@ const RetailerHome = () => {
 
             <View style={styles.circle} />
             <Image
-              source={require('../assets/images/bag.jpeg')}
+              source={require('../../assets/images/bag.jpeg')}
               style={styles.bagImage}
             />
           </View>

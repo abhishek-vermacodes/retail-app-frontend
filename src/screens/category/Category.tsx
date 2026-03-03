@@ -7,64 +7,64 @@ import {
   TextInput,
 } from 'react-native';
 
-import ProductCard from '../../components/ProductCard';
+// import ProductCard from '../../components/ProductCard';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
 import { useState } from 'react';
-import { useRoute, useNavigation } from '@react-navigation/native';
+// import { useRoute, useNavigation } from '@react-navigation/native';
 import styles from './category.styles';
 
-const products = [
-  {
-    id: '1',
-    name: 'Apple',
-    price: 3.5,
-    category: 'fresh',
-    image: require('../assets/images/bag.jpeg'),
-  },
-  {
-    id: '2',
-    name: 'Milk',
-    price: 1.2,
-    category: 'grocery',
-    image: require('../assets/images/bag.jpeg'),
-  },
-  {
-    id: '3',
-    name: 'Bread',
-    price: 2.0,
-    category: 'grocery',
-    image: require('../assets/images/bag.jpeg'),
-  },
-  {
-    id: '3',
-    name: 'Shampoo',
-    price: 2.0,
-    category: 'personal',
-    image: require('../assets/images/bag.jpeg'),
-  },
-  {
-    id: '3',
-    name: 'Shirt',
-    price: 2.0,
-    category: 'fashion',
-    image: require('../assets/images/bag.jpeg'),
-  },
-];
+// const products = [
+//   {
+//     id: '1',
+//     name: 'Apple',
+//     price: 3.5,
+//     category: 'fresh',
+//     image: require('../assets/images/bag.jpeg'),
+//   },
+//   {
+//     id: '2',
+//     name: 'Milk',
+//     price: 1.2,
+//     category: 'grocery',
+//     image: require('../assets/images/bag.jpeg'),
+//   },
+//   {
+//     id: '3',
+//     name: 'Bread',
+//     price: 2.0,
+//     category: 'grocery',
+//     image: require('../assets/images/bag.jpeg'),
+//   },
+//   {
+//     id: '3',
+//     name: 'Shampoo',
+//     price: 2.0,
+//     category: 'personal',
+//     image: require('../assets/images/bag.jpeg'),
+//   },
+//   {
+//     id: '3',
+//     name: 'Shirt',
+//     price: 2.0,
+//     category: 'fashion',
+//     image: require('../assets/images/bag.jpeg'),
+//   },
+// ];
 
 function Category() {
-  const route = useRoute<any>();
+  // const route = useRoute<any>();
   const navigation = useNavigation<any>();
 
   const [isVisible, setIsVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const { categoryKey, categoryLabel } = route.params;
+  // const { categoryKey, categoryLabel } = route.params;
 
-  const filteredProducts = products.filter(
-    item => item.category === categoryKey,
-  );
+  // const filteredProducts = products.filter(
+  //   item => item.category === categoryKey,
+  // );
 
   return (
     <View style={styles.mainContainer}>
@@ -76,7 +76,7 @@ function Category() {
           <FontAwesome6 name="arrow-left" size={18} color="#000" />
         </TouchableOpacity>
 
-        <Text style={styles.pageTitle}>{categoryLabel}</Text>
+        {/* <Text style={styles.pageTitle}>{categoryLabel}</Text> */}
         <Feather
           name="search"
           size={22}
@@ -103,7 +103,7 @@ function Category() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollView}
       >
-        <FlatList
+        {/* <FlatList
           data={filteredProducts}
           numColumns={2}
           keyExtractor={item => item.id}
@@ -132,7 +132,7 @@ function Category() {
               </TouchableOpacity>
             </View>
           )}
-        />
+        /> */}
       </ScrollView>
     </View>
   );

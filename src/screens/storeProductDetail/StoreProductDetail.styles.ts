@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import theme from '../../theme/theme';
 
 const styles = StyleSheet.create({
   container: {
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
   },
   productImgContainer: {
     width: '100%',
-    height: 360,
+    height: 400,
     resizeMode: 'center',
     borderRadius: 20,
     backgroundColor: '#fff',
@@ -62,33 +63,6 @@ const styles = StyleSheet.create({
     height: '80%',
     borderRadius: 20,
     zIndex: 1000,
-  },
-  productContentContainer: {
-    marginTop: 20,
-    flexDirection: 'column',
-  },
-  productSubContentContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  productNameContainer: {
-    flexDirection: 'column',
-  },
-  productCategory: {
-    color: '#000000a3',
-    fontFamily: 'Poppins-Medium',
-    fontSize: 12,
-  },
-  productName: {
-    fontSize: 20,
-    fontFamily: 'Poppins-Bold',
-    marginBottom: 10,
-  },
-  descritpionText: {
-    fontFamily: 'Poppins-Regular',
-    fontSize: 14,
-    marginBottom: 20,
   },
   offerContainer: {
     backgroundColor: '#fff5f0',
@@ -110,9 +84,38 @@ const styles = StyleSheet.create({
     marginBottom: -3,
     color: '#fff',
   },
+  productContentContainer: {
+    marginTop: 40,
+    flexDirection: 'column',
+  },
+  productCategory: {
+    color: '#000000a3',
+    fontFamily: 'Poppins-Medium',
+    fontSize: 12,
+  },
+  productName: {
+    fontSize: 20,
+    fontFamily: 'Poppins-Bold',
+    marginBottom: 10,
+  },
+  descritpionText: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 14,
+    marginBottom: 20,
+  },
+  productSubContentContainer: {
+    flexDirection: 'column',
+    marginBottom: 10,
+  },
   labelContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  label: {
+    fontFamily: 'Poppins-Medium',
+    color: '#000000a3',
+    fontSize: 14,
+    marginBottom: -4,
   },
   priceContainer: {
     flexDirection: 'row',
@@ -124,18 +127,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  label: {
-    fontFamily: 'Poppins-Medium',
-    color: '#000000a3',
-    fontSize: 14,
-    marginBottom: -4,
-  },
-  price: {
-    textDecorationLine: 'line-through',
-    fontFamily: 'Poppins-Regular',
-    fontSize: 14,
-    color: '#000000a3',
-  },
   offerPrice: {
     fontSize: 24,
     fontFamily: 'Poppins-Bold',
@@ -143,11 +134,148 @@ const styles = StyleSheet.create({
     padding: 0,
     color: '#ff5b27',
   },
+  price: {
+    textDecorationLine: 'line-through',
+    fontFamily: 'Poppins-Regular',
+    fontSize: 14,
+    color: '#000000a3',
+  },
   rating: {
     fontSize: 14,
     color: '#ff5b27',
     fontFamily: 'Poppins-Medium',
     marginTop: 10,
+  },
+  modal: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
+  drawer: {
+    backgroundColor: '#fff',
+    paddingVertical: 26,
+    paddingHorizontal: 18,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    height: 800,
+  },
+  modalScrollView: {
+    paddingBottom: 100,
+    flexDirection: 'column',
+    gap: 24
+  },
+  imageUploadCard: {
+    backgroundColor: '#FFF5F0',
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    borderRadius: theme.BORDER_RADIUS.inputField,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ffe3d9',
+  },
+  previewImage: {
+    width: '100%',
+    height: 120,
+    borderRadius: 12,
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
+    width: 50,
+    backgroundColor: '#ffe3d9',
+    padding: 12,
+    borderRadius: 100,
+  },
+  cardTitle: {
+    fontSize: 14,
+    fontFamily: 'Poppins-Medium',
+    marginTop: 16,
+    color: '#ff5b27',
+  },
+  cardSubTitle: {
+    fontSize: 12,
+    color: '#000000a3',
+    textAlign: 'center',
+    marginTop: -2,
+    fontFamily: 'Poppins-Regular',
+  },
+  inputContainer: {
+    flexDirection: 'column',
+    gap: 6,
+  },
+  inputLabel: {
+    fontSize: 14,
+    color: '#000',
+    fontFamily: 'Poppins-Medium',
+  },
+  inputSubContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+    borderWidth: 1,
+    borderColor: '#bbb',
+    borderRadius: theme.BORDER_RADIUS.inputField,
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+  },
+  icon: {
+    marginRight: 10,
+  },
+  input: {
+    fontFamily: 'Poppins-Regular',
+    color: '#000',
+    marginBottom: -4
+  },
+  categoryRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  categoryBtn: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: theme.BORDER_RADIUS.categoryBtn,
+    borderWidth: 1,
+    borderColor: '#00000061',
+  },
+  categoryBtnActive: {
+    backgroundColor: '#ff5b27',
+    borderColor: '#ff5b27',
+  },
+  categoryText: {
+    fontSize: 13,
+    fontFamily: 'Poppins-Regular',
+    color: '#000',
+  },
+  categoryTextActive: {
+    color: '#fff',
+  },
+  textAreaContainer: {
+    height: 120,
+    alignItems: 'flex-start',
+    borderWidth: 1,
+    borderColor: '#bbb',
+    borderRadius: theme.BORDER_RADIUS.inputField,
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+  },
+  textArea: {
+    flex: 1,
+    fontFamily: 'Poppins-Regular',
+    color: '#000',
+  },
+  button: {
+    height: 60,
+    backgroundColor: '#ff5b27',
+    borderRadius: theme.BORDER_RADIUS.inputField,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontFamily: 'Poppins-Medium',
   },
 });
 

@@ -98,7 +98,7 @@ const RetailerProfile = () => {
             <View style={styles.cardProfile}>
               <View style={styles.shopContainer}>
                 <Image
-                  source={require('../assets/images/bag.jpeg')}
+                  source={require('../../assets/images/bag.jpeg')}
                   style={styles.shop}
                 />
               </View>

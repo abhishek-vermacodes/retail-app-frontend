@@ -51,7 +51,7 @@ const Intro = () => {
       <StatusBar barStyle="dark-content" />
 
       <Image
-        source={require('../assets/images/intro.jpg')}
+        source={require('../../assets/images/intro.jpg')}
         style={styles.image}
       />
 
@@ -115,4 +115,3 @@ const Intro = () => {
 };
 
 export default Intro;
-

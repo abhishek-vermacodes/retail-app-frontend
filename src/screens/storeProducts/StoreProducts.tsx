@@ -65,7 +65,7 @@ const StoreProducts = () => {
         <View style={styles.subHeader}>
           <TouchableOpacity
             style={styles.backBtn}
-            onPress={() => navigation.navigate('RetailerHome')}
+            onPress={() => navigation.goBack()}
           >
             <FontAwesome6 name="arrow-left" size={18} color="#000000" />
           </TouchableOpacity>

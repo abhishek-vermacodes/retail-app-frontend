@@ -1,13 +1,13 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { useContext } from 'react';
-
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import AppNavigator from './AppNavigator';
 import AuthNavigator from './AuthNavigator';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Signin from '../screens/signin/Signin';
 import AddLocation from '../screens/addLocation/AddLocation';
+
+import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import SigninScreen from '../screens/signin/Signin';
+import { NavigationContainer } from '@react-navigation/native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,7 +29,7 @@ const RootNavigator = () => {
       ) : !user.address ? (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="AddLocation" component={AddLocation} />
-          <Stack.Screen name="Signin" component={SigninScreen} />
+          <Stack.Screen name="Signin" component={Signin} />
         </Stack.Navigator>
       ) : (
         <AppNavigator />
