@@ -3,7 +3,7 @@ import styles from './storeProductDetail.styles';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+// import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import {
@@ -14,21 +14,25 @@ import {
   ScrollView,
   Image,
   TextInput,
-  Alert,
+  // Alert,
 } from 'react-native';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { categories } from '../../types/type';
-
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { categories, Product } from '../../types/type';
+import { getToken } from '../../utils/storage';
 import API from '../../api/authApi';
+
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+// import API from '../../api/authApi';
 
 const StoreProductDetail = () => {
   const navigation = useNavigation<any>();
   const route = useRoute();
-  const { product } = route.params as any;
+  const { id } = route.params as any;
+
+  const [product, setProduct] = useState<Product | null>();
 
   const [openModal, setOpenModal] = useState(false);
   const [updateProduct, setUpdateProduct] = useState({
@@ -57,56 +61,81 @@ const StoreProductDetail = () => {
     );
   };
 
-  const handleUpdateProduct = async () => {
-    const formData = new FormData();
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const token = await getToken();
+        const response = await API.get(`/api/product/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setProduct(response.data.product);
+        console.log('res', response.data.product);
+      } catch (error) {
+        console.log('Failed to fetch product', error);
+      }
+    };
 
-    formData.append('productName', updateProduct.productName);
-    formData.append('price', updateProduct.price);
-    formData.append('stock', updateProduct.stock);
-    formData.append('category', updateProduct.category);
-    formData.append('description', updateProduct.description);
-    if (updateProduct.image) {
-      formData.append('image', {
-        uri: updateProduct.image.uri,
-        type: updateProduct.image.type || 'image/jpeg',
-        name: updateProduct.image.fileName || 'product.jpg',
-      } as any);
-    }
+    fetchProduct();
+  }, [id]);
 
-    const token = await AsyncStorage.getItem('token');
-    console.log('token', token);
+  // const handleUpdateProduct = async () => {
+  //   const formData = new FormData();
 
-    if (
-      !updateProduct.category ||
-      !updateProduct.description ||
-      !updateProduct.price ||
-      !updateProduct.productName ||
-      !updateProduct.stock
-    ) {
-      Alert.alert('Warning', 'All Field are Required');
-      return;
-    }
-    try {
-      await API.patch(`/api/products/${product.id}`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+  //   formData.append('productName', updateProduct.productName);
+  //   formData.append('price', updateProduct.price);
+  //   formData.append('stock', updateProduct.stock);
+  //   formData.append('category', updateProduct.category);
+  //   formData.append('description', updateProduct.description);
+  //   if (updateProduct.image) {
+  //     formData.append('image', {
+  //       uri: updateProduct.image.uri,
+  //       type: updateProduct.image.type || 'image/jpeg',
+  //       name: updateProduct.image.fileName || 'product.jpg',
+  //     } as any);
+  //   }
 
-      setUpdateProduct({
-        productName: '',
-        price: '',
-        stock: '',
-        category: '',
-        description: '',
-        image: '',
-      });
-      Alert.alert('Success', 'Product updated successfully');
-      setOpenModal(false);
-    } catch (error) {
-      console.error('Product updation failed', error);
-    }
+  //   const token = await AsyncStorage.getItem('token');
+  //   console.log('token', token);
+
+  //   if (
+  //     !updateProduct.category ||
+  //     !updateProduct.description ||
+  //     !updateProduct.price ||
+  //     !updateProduct.productName ||
+  //     !updateProduct.stock
+  //   ) {
+  //     Alert.alert('Warning', 'All Field are Required');
+  //     return;
+  //   }
+  //   try {
+  //     await API.patch(`/api/products/${product.id}`, formData, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         'Content-Type': 'multipart/form-data',
+  //       },
+  //     });
+
+  //     setUpdateProduct({
+  //       productName: '',
+  //       price: '',
+  //       stock: '',
+  //       category: '',
+  //       description: '',
+  //       image: '',
+  //     });
+  //     Alert.alert('Success', 'Product updated successfully');
+  //     setOpenModal(false);
+  //   } catch (error) {
+  //     console.error('Product updation failed', error);
+  //   }
+  // };
+
+  const getOfferPrice = (price: number, offer: number) => {
+    const offerAmount = (price * offer) / 100;
+    const finalPrice = price - offerAmount;
+    return finalPrice;
   };
 
   return (
@@ -126,11 +155,11 @@ const StoreProductDetail = () => {
           style={styles.likeButton}
           onPress={() => {
             setUpdateProduct({
-              productName: product.productName,
-              price: product.price?.toString(),
-              stock: product.stock?.toString(),
-              category: product.category,
-              description: product.description,
+              productName: product?.productName || '',
+              price: product?.price?.toString() || '',
+              stock: product?.stock?.toString() || '',
+              category: product?.category || '',
+              description: product?.description || '',
               image: null,
             });
             setOpenModal(true);
@@ -154,7 +183,7 @@ const StoreProductDetail = () => {
             />
             <View style={styles.offerContainer}>
               <View style={styles.offer}>
-                <Text style={styles.offerText}>50% OFF</Text>
+                <Text style={styles.offerText}>{product?.offers}% OFF</Text>
               </View>
             </View>
           </View>
@@ -184,17 +213,24 @@ const StoreProductDetail = () => {
             <View style={styles.productSubContentContainer}>
               <View style={styles.labelContainer}>
                 <Text style={styles.label}>Price</Text>
-                <Text style={styles.label}>Ratings</Text>
+                {/* <Text style={styles.label}>Ratings</Text> */}
               </View>
               <View style={styles.priceContainer}>
                 <View style={styles.priceSubContainer}>
-                  <Text style={styles.offerPrice}>$29.00</Text>
-                  <Text style={styles.price}>$58.00</Text>
+                  <Text style={styles.offerPrice}>
+                    ₹
+                    {getOfferPrice(
+                      Number(product?.price) || 0,
+                      Number(product?.offers) || 0,
+                    )}
+                    .00
+                  </Text>
+                  <Text style={styles.price}>₹{product?.price}.00</Text>
                 </View>
-                <Text style={styles.rating}>
+                {/* <Text style={styles.rating}>
                   <FontAwesome name="star" size={14} color={'#ffc905'} /> 4.9
                   (185 Reviews)
-                </Text>
+                </Text> */}
               </View>
             </View>
           </View>
@@ -352,7 +388,7 @@ const StoreProductDetail = () => {
 
             <TouchableOpacity
               style={styles.button}
-              onPress={handleUpdateProduct}
+              // onPress={handleUpdateProduct}
             >
               <Text style={styles.buttonText}>Update Product</Text>
             </TouchableOpacity>

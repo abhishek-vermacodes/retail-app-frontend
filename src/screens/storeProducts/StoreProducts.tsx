@@ -28,7 +28,7 @@ const StoreProducts = () => {
   const getProducts = async () => {
     const token = await AsyncStorage.getItem('token');
     try {
-      const response = await API.get('/api/products/my-products', {
+      const response = await API.get('/api/product/my-products', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -134,7 +134,7 @@ const StoreProducts = () => {
                 style={styles.productImageContainer}
                 onPress={() =>
                   navigation.navigate('StoreProductDetail', {
-                    product: product,
+                    id: product.id,
                   })
                 }
               >

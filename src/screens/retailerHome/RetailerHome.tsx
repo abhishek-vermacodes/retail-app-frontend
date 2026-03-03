@@ -281,10 +281,10 @@ const RetailerHome = () => {
         </TouchableOpacity>
 
         <View style={styles.profileContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Orders")}>
             <Fontisto name="bell" size={20} color="#000" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.avatarContainer}>
+          <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={styles.avatarContainer}>
             <Text style={styles.avatarText}>{user?.username?.charAt(0)}</Text>
           </TouchableOpacity>
         </View>

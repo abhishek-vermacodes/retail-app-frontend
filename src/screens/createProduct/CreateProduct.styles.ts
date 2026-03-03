@@ -84,12 +84,13 @@ const styles = StyleSheet.create({
   inputSubContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 2,
+    gap: 0,
     borderWidth: 1,
     borderColor: '#bbb',
     borderRadius: theme.BORDER_RADIUS.inputField,
     paddingHorizontal: 14,
     paddingVertical: 6,
+    marginTop: 6,
   },
   icon: {
     marginRight: 10,
@@ -97,11 +98,13 @@ const styles = StyleSheet.create({
   input: {
     fontFamily: 'Poppins-Regular',
     color: '#000',
+    marginBottom: -4,
   },
   categoryRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 10,
+    marginTop: 6,
   },
   categoryBtn: {
     paddingVertical: 10,
