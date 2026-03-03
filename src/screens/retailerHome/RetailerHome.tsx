@@ -12,10 +12,10 @@ import {
   TextInput,
 } from 'react-native';
 
-import API from '../api/authApi';
+import API from '../../api/authApi';
 import Modal from 'react-native-modal';
 import WebView from 'react-native-webview';
-import styles from './RetailerHome.styles';
+
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -25,10 +25,11 @@ import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
-import { LocationProperties, Store } from '../types/type';
+import { LocationProperties, Store } from '../../types/type';
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import styles from './retailerHome.styles';
 
 const RetailerHomeScreen = () => {
   const navigation = useNavigation<any>();

@@ -1,10 +1,10 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import RetailerHomeScreen from '../screens/RetailerHome';
+import RetailerHomeScreen from '../screens/retailerHome/RetailerHome';
 import CustomTabBar from '../components/CustomTabBar';
 
-import OrdersScreen from '../screens/Orders';
-import RetailerProfileScreen from '../screens/RetailerProfile';
+import OrdersScreen from '../screens/orders/Orders';
+import RetailerProfileScreen from '../screens/retailerProfile/RetailerProfile';
 import CreateProduct from '../screens/createProduct/CreateProduct';
 import StoreProducts from '../screens/storeProducts/StoreProducts';
 

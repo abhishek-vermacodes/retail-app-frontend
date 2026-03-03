@@ -3,10 +3,10 @@ import React from 'react';
 import CustomTabBar from '../components/CustomTabBar';
 
 import CustomerHomeScreen from '../screens/customerHome/CustomerHome';
-import UserOrdersScreen from '../screens/UserOrders';
+import UserOrdersScreen from '../screens/userOrders/UserOrders';
 
-import CartScreen from '../screens/Cart';
-import UserProfileScreen from '../screens/UserProfile';
+import CartScreen from '../screens/cart/Cart';
+import UserProfileScreen from '../screens/userProfile/UserProfile';
 
 const Tab = createBottomTabNavigator();
 
