@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import theme from '../../theme/theme';
 
 const styles = StyleSheet.create({
   container: {
@@ -123,11 +124,12 @@ const styles = StyleSheet.create({
     transform: [{ rotate: '-14deg' }],
   },
   storeBanner: {
-    height: 300,
+    height: 240,
+    padding: 4,
     marginHorizontal: 20,
-    borderRadius: 14,
+    borderRadius: 18,
     borderWidth: 1,
-    borderColor: '#ffe3d9',
+    borderColor: '#ff59275a',
     backgroundColor: '#fff',
     position: 'relative',
     marginBottom: 20,
@@ -146,13 +148,14 @@ const styles = StyleSheet.create({
     top: 10,
   },
   storeImgContainer: {
-    height: '64%',
+    height: '100%',
     width: 'auto',
   },
   storeImg: {
     height: '100%',
-    borderTopLeftRadius: 14,
-    borderTopRightRadius: 14,
+    // borderTopLeftRadius: 14,
+    // borderTopRightRadius: 14,
+    borderRadius: 16,
   },
   storeContentContainer: {
     paddingHorizontal: 14,
@@ -283,7 +286,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    height: 'auto',
+    height: 800,
   },
   mapContainer: {
     backgroundColor: '#fff',
@@ -379,7 +382,125 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     marginBottom: 20,
   },
+  // shopEditModal
+  form: {
+    flexDirection: 'column',
+    gap: 24,
+    marginTop: 40,
+  },
+  logoInputContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  card: {
+    height: 120,
+    width: 120,
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    borderColor: '#bbb',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 100,
+  },
+  previewImage: {
+    width: 110,
+    height: 110,
+    borderRadius: 100,
+  },
+  cardTitle: {
+    fontSize: 12,
+    fontFamily: 'Poppins-Medium',
+    marginTop: 4,
+  },
+  cardText: {
+    fontSize: 12,
+    color: '#ff5b27',
+    marginTop: 10,
+    textAlign: 'center',
+    fontFamily: 'Poppins-Regular',
+  },
+  editShopInputContainer: {
+    flexDirection: 'column',
+    gap: 10,
+  },
+  inputLabel: {
+    fontSize: 14,
+    color: '#000',
+    fontFamily: 'Poppins-Medium',
+  },
+  inputSubContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    borderWidth: 1,
+    borderColor: '#bbb',
+    borderRadius: theme.BORDER_RADIUS.inputField,
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+  },
+  shopIcon: {
+    height: 25,
+    width: 25,
+  },
+  editShopInput: {
+    fontFamily: 'Poppins-Regular',
+    color: '#000',
+    marginBottom: -4,
+    fontSize: 14,
+  },
+  categoryRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  categoryChip: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: theme.BORDER_RADIUS.categoryBtn,
+    borderWidth: 1,
+    borderColor: '#bbb',
+  },
+  categoryChipActive: {
+    backgroundColor: '#ff5b27',
+    borderColor: '#ff5b27',
+  },
+  categoryText: {
+    fontSize: 14,
+    fontFamily: 'Poppins-Regular',
+    color: '#888',
+    marginBottom: -2,
+  },
+  categoryTextActive: {
+    color: '#fff',
+  },
+  textAreaContainer: {
+    height: 120,
+    alignItems: 'flex-start',
+    borderWidth: 1,
+    borderColor: '#bbb',
+    borderRadius: theme.BORDER_RADIUS.inputField,
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+  },
+  textArea: {
+    flex: 1,
+    fontFamily: 'Poppins-Regular',
+    color: '#000',
+  },
+  button: {
+    height: 60,
+    backgroundColor: '#ff5b27',
+    borderRadius: theme.BORDER_RADIUS.inputField,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontFamily: 'Poppins-Regular',
+  },
 });
 
 export default styles;
-

@@ -15,7 +15,7 @@ import {
 import API from '../../api/authApi';
 import Modal from 'react-native-modal';
 import WebView from 'react-native-webview';
-
+import styles from './retailerHome.styles';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -27,9 +27,9 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
-import { LocationProperties, Store } from '../../types/type';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { LocationProperties, shopCategories, Store } from '../../types/type';
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
-import styles from './retailerHome.styles';
 
 const RetailerHome = () => {
   const navigation = useNavigation<any>();
@@ -39,9 +39,12 @@ const RetailerHome = () => {
   const [loading, setLoading] = useState(false);
   const [mapLoading, setMapLoading] = useState(false);
   const [openLocation, setOpenLocation] = useState(false);
+  const [openShopModal, setOpenShopModal] = useState(false);
   const [selectAddress, setSelectAddress] = useState(false);
+
   const [store, setStore] = useState<Store | null>(null);
   const [location, setLocation] = useState<LocationProperties | null>(null);
+
   const [selectedLocation, setSelectedLocation] = useState<{
     lat: number;
     lng: number;
@@ -51,6 +54,15 @@ const RetailerHome = () => {
     houseNo: '',
     area: '',
     landmark: '',
+  });
+
+  const [updateStore, setUpdateStore] = useState({
+    storeName: '',
+    category: '',
+    description: '',
+    address: '',
+    phone: '',
+    image: null as any,
   });
 
   const webViewRef = useRef<WebView>(null);
@@ -253,6 +265,24 @@ const RetailerHome = () => {
       Alert.alert('error', 'Failed to add location');
     }
   };
+
+  const pickImage = () => {
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        quality: 0.8,
+      },
+      response => {
+        if (!response.didCancel && response.assets?.length) {
+          setUpdateStore({
+            ...updateStore,
+            image: response.assets[0],
+          });
+        }
+      },
+    );
+  };
+
   return (
     <LinearGradient
       start={{ x: 1.2, y: 0 }}
@@ -281,10 +311,13 @@ const RetailerHome = () => {
         </TouchableOpacity>
 
         <View style={styles.profileContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate("Orders")}>
+          <TouchableOpacity onPress={() => navigation.navigate('Orders')}>
             <Fontisto name="bell" size={20} color="#000" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={styles.avatarContainer}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Profile')}
+            style={styles.avatarContainer}
+          >
             <Text style={styles.avatarText}>{user?.username?.charAt(0)}</Text>
           </TouchableOpacity>
         </View>
@@ -325,7 +358,10 @@ const RetailerHome = () => {
           </View>
         ) : (
           <View style={styles.storeBanner}>
-            <TouchableOpacity style={styles.editBtn}>
+            <TouchableOpacity
+              style={styles.editBtn}
+              onPress={() => setOpenShopModal(true)}
+            >
               <Entypo name="dots-three-vertical" color="#ff6a32" size={14} />
             </TouchableOpacity>
             <View style={styles.storeImgContainer}>
@@ -336,7 +372,7 @@ const RetailerHome = () => {
                 style={styles.storeImg}
               />
             </View>
-            <View style={styles.storeContentContainer}>
+            {/* <View style={styles.storeContentContainer}>
               <View style={styles.storeContentSubContainer}>
                 <Text style={styles.storeName}>{store.storeName}</Text>
                 <View style={styles.storeCategory}>
@@ -358,7 +394,7 @@ const RetailerHome = () => {
                   <Text style={styles.storeAddress}>+91 {store.phone}</Text>
                 </View>
               </View>
-            </View>
+            </View> */}
           </View>
         )}
 
@@ -416,113 +452,261 @@ const RetailerHome = () => {
         </View> */}
       </ScrollView>
 
+      {/* editLocationModal */}
       <Modal
         isVisible={openLocation}
         onBackdropPress={() => setOpenLocation(false)}
         style={styles.modal}
       >
         <View style={styles.drawer}>
-          <View style={styles.mapContainer}>
-            {loading && (
-              <View style={styles.loadingContainer}>
-                <ActivityIndicator size={'small'} color={'#ff6a32'} />
-                <Text style={styles.primaryBtnText}>Getting Location...</Text>
-              </View>
-            )}
-            <WebView
-              ref={webViewRef}
-              originWhitelist={['*']}
-              source={{ html: mapHtml }}
-              javaScriptEnabled
-              domStorageEnabled
-              onMessage={handleMessage}
-            />
-          </View>
-          <View style={styles.addressContainer}>
-            {mapLoading ? (
-              <Text>Getting Location...</Text>
-            ) : (
-              <>
-                <View style={styles.streetAddressContainer}>
-                  <Ionicons name="location-outline" size={20} color="#ff6a32" />
-                  <Text style={styles.streetText}>
-                    {selectAddress
-                      ? location?.name || location?.county
-                      : user?.address.split(',')[0]}
-                  </Text>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollView}
+          >
+            <View style={styles.mapContainer}>
+              {loading && (
+                <View style={styles.loadingContainer}>
+                  <ActivityIndicator size={'small'} color={'#ff6a32'} />
+                  <Text style={styles.primaryBtnText}>Getting Location...</Text>
                 </View>
-                <Text style={styles.addressText}>
-                  {selectAddress
-                    ? `${location?.name}, ${location?.state}, ${location?.postcode}`
-                    : user?.address}
+              )}
+              <WebView
+                ref={webViewRef}
+                originWhitelist={['*']}
+                source={{ html: mapHtml }}
+                javaScriptEnabled
+                domStorageEnabled
+                onMessage={handleMessage}
+              />
+            </View>
+
+            <View style={styles.addressContainer}>
+              {mapLoading ? (
+                <Text>Getting Location...</Text>
+              ) : (
+                <>
+                  <View style={styles.streetAddressContainer}>
+                    <Ionicons
+                      name="location-outline"
+                      size={20}
+                      color="#ff6a32"
+                    />
+                    <Text style={styles.streetText}>
+                      {selectAddress
+                        ? location?.name || location?.county
+                        : user?.address.split(',')[0]}
+                    </Text>
+                  </View>
+                  <Text style={styles.addressText}>
+                    {selectAddress
+                      ? `${location?.name}, ${location?.state}, ${location?.postcode}`
+                      : user?.address}
+                  </Text>
+                </>
+              )}
+            </View>
+
+            <TouchableOpacity
+              style={styles.primaryBtnContainer}
+              onPress={handleSelectLocation}
+            >
+              <Ionicons name="location-outline" size={20} color="#ff6a32" />
+              <Text style={styles.primaryBtnText}>Set Location on Map</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.secondaryBtnContainer}
+              onPress={handleUseCurrentLocation}
+              disabled={loading}
+            >
+              <Text style={styles.secondaryBtnText}>Use Current Location</Text>
+            </TouchableOpacity>
+
+            <View style={styles.inputContainer}>
+              <View style={styles.inputWrapper}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Flat, House no, Building name (Optional)"
+                  placeholderTextColor="#00000061"
+                  autoCapitalize="none"
+                  value={extraFields.houseNo}
+                  onChangeText={text =>
+                    setExtraFields({ ...extraFields, houseNo: text })
+                  }
+                />
+              </View>
+            </View>
+
+            <View style={styles.inputContainer}>
+              <View style={styles.inputWrapper}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Area, Street, Sector, Village (Optional)"
+                  placeholderTextColor="#00000061"
+                  autoCapitalize="none"
+                  value={extraFields.area}
+                  onChangeText={text =>
+                    setExtraFields({ ...extraFields, area: text })
+                  }
+                />
+              </View>
+            </View>
+
+            <View style={styles.inputContainer}>
+              <View style={styles.inputWrapper}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Landmark (Optional)"
+                  placeholderTextColor="#00000061"
+                  autoCapitalize="none"
+                  value={extraFields.landmark}
+                  onChangeText={text =>
+                    setExtraFields({ ...extraFields, landmark: text })
+                  }
+                />
+              </View>
+            </View>
+
+            <TouchableOpacity
+              style={styles.secondaryBtnContainer}
+              onPress={handleSetAddress}
+            >
+              <Text style={styles.secondaryBtnText}>Confirm Location</Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </View>
+      </Modal>
+
+      {/* storeUpdateModal */}
+      <Modal
+        isVisible={openShopModal}
+        onBackdropPress={() => setOpenShopModal(false)}
+        style={styles.modal}
+      >
+        <View style={styles.drawer}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollView}
+          >
+            <View style={styles.form}>
+              <View style={styles.logoInputContainer}>
+                <TouchableOpacity style={styles.card} onPress={pickImage}>
+                  {updateStore.image ? (
+                    <Image
+                      source={{ uri: updateStore.image.uri }}
+                      style={styles.previewImage}
+                    />
+                  ) : (
+                    <>
+                      <Ionicons name="camera-outline" size={20} color="#888" />
+                      <Text style={styles.cardTitle}>Add Picture</Text>
+                    </>
+                  )}
+                </TouchableOpacity>
+                <Text style={styles.cardText}>Tap to upload shop logo</Text>
+              </View>
+              <View style={styles.editShopInputContainer}>
+                <Text style={styles.inputLabel}>Store Name</Text>
+                <View style={styles.inputSubContainer}>
+                  <Image
+                    source={require('../../assets/icons/shopGray.png')}
+                    style={styles.shopIcon}
+                  />
+                  <TextInput
+                    placeholder="My awesome store"
+                    placeholderTextColor={'#888'}
+                    style={styles.editShopInput}
+                    value={updateStore.storeName}
+                    onChangeText={text =>
+                      setUpdateStore({ ...updateStore, storeName: text })
+                    }
+                  />
+                </View>
+              </View>
+              <View style={styles.editShopInputContainer}>
+                <Text style={styles.inputLabel}>Category</Text>
+
+                <View style={styles.categoryRow}>
+                  {shopCategories.map(item => (
+                    <TouchableOpacity
+                      key={item}
+                      style={[
+                        styles.categoryChip,
+                        updateStore.category === item &&
+                          styles.categoryChipActive,
+                      ]}
+                      onPress={() =>
+                        setUpdateStore({ ...updateStore, category: item })
+                      }
+                    >
+                      <Text
+                        style={[
+                          styles.categoryText,
+                          updateStore.category === item &&
+                            styles.categoryTextActive,
+                        ]}
+                      >
+                        {item}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+              <View style={styles.editShopInputContainer}>
+                <Text style={styles.inputLabel}>Address</Text>
+                <View style={styles.inputSubContainer}>
+                  <Feather name="map-pin" size={20} color={'#888'} />
+                  <TextInput
+                    placeholder="123 Market street, city"
+                    placeholderTextColor={'#888'}
+                    style={styles.editShopInput}
+                    value={updateStore.address}
+                    onChangeText={text =>
+                      setUpdateStore({ ...updateStore, address: text })
+                    }
+                  />
+                </View>
+              </View>
+              <View style={styles.editShopInputContainer}>
+                <Text style={styles.inputLabel}>Phone</Text>
+                <View style={styles.inputSubContainer}>
+                  <Feather name="phone" size={20} color={'#888'} />
+                  <TextInput
+                    placeholder="+91 1231231231"
+                    placeholderTextColor={'#888'}
+                    style={styles.editShopInput}
+                    value={updateStore.phone}
+                    onChangeText={text =>
+                      setUpdateStore({ ...updateStore, phone: text })
+                    }
+                  />
+                </View>
+              </View>
+              <View style={styles.editShopInputContainer}>
+                <Text style={styles.inputLabel}>Description</Text>
+                <View style={styles.textAreaContainer}>
+                  <TextInput
+                    style={styles.textArea}
+                    placeholder="Write product description"
+                    placeholderTextColor="#888"
+                    multiline
+                    numberOfLines={4}
+                    textAlignVertical="top"
+                    value={updateStore.description}
+                    onChangeText={text =>
+                      setUpdateStore({ ...updateStore, description: text })
+                    }
+                  />
+                </View>
+              </View>
+
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttonText}>
+                  {loading ? 'Loading...' : 'Launch Shop'}
                 </Text>
-              </>
-            )}
-          </View>
-          <TouchableOpacity
-            style={styles.primaryBtnContainer}
-            onPress={handleSelectLocation}
-          >
-            <Ionicons name="location-outline" size={20} color="#ff6a32" />
-            <Text style={styles.primaryBtnText}>Set Location on Map</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.secondaryBtnContainer}
-            onPress={handleUseCurrentLocation}
-            disabled={loading}
-          >
-            <Text style={styles.secondaryBtnText}>Use Current Location</Text>
-          </TouchableOpacity>
-          <View style={styles.inputContainer}>
-            <View style={styles.inputWrapper}>
-              <TextInput
-                style={styles.input}
-                placeholder="Flat, House no, Building name (Optional)"
-                placeholderTextColor="#00000061"
-                autoCapitalize="none"
-                value={extraFields.houseNo}
-                onChangeText={text =>
-                  setExtraFields({ ...extraFields, houseNo: text })
-                }
-              />
+              </TouchableOpacity>
             </View>
-          </View>
-          <View style={styles.inputContainer}>
-            <View style={styles.inputWrapper}>
-              <TextInput
-                style={styles.input}
-                placeholder="Area, Street, Sector, Village (Optional)"
-                placeholderTextColor="#00000061"
-                autoCapitalize="none"
-                value={extraFields.area}
-                onChangeText={text =>
-                  setExtraFields({ ...extraFields, area: text })
-                }
-              />
-            </View>
-          </View>
-
-          <View style={styles.inputContainer}>
-            <View style={styles.inputWrapper}>
-              <TextInput
-                style={styles.input}
-                placeholder="Landmark (Optional)"
-                placeholderTextColor="#00000061"
-                autoCapitalize="none"
-                value={extraFields.landmark}
-                onChangeText={text =>
-                  setExtraFields({ ...extraFields, landmark: text })
-                }
-              />
-            </View>
-          </View>
-
-          <TouchableOpacity
-            style={styles.secondaryBtnContainer}
-            onPress={handleSetAddress}
-          >
-            <Text style={styles.secondaryBtnText}>Confirm Location</Text>
-          </TouchableOpacity>
+          </ScrollView>
         </View>
       </Modal>
     </LinearGradient>
