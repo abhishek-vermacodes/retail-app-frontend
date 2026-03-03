@@ -82,7 +82,7 @@ const orders = [
   },
 ];
 
-const OrdersScreen = () => {
+const Orders = () => {
   const navigation = useNavigation<any>();
   const [isVisible, setIsVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -261,6 +261,6 @@ const OrdersScreen = () => {
   );
 };
 
-export default OrdersScreen;
+export default Orders;
 
 

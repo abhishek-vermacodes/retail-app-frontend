@@ -53,7 +53,7 @@ const products = [
   },
 ];
 
-function CategoryProductsScreen() {
+function Category() {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
 
@@ -138,6 +138,6 @@ function CategoryProductsScreen() {
   );
 }
 
-export default CategoryProductsScreen;
+export default Category;
 
 

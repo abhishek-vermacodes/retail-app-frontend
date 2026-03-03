@@ -6,7 +6,7 @@ import {
   KeyboardAvoidingView,
   StatusBar,
 } from 'react-native';
-import styles from './Signin.styles';
+import styles from './signin.styles';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -15,7 +15,7 @@ import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-const SigninScreen = () => {
+const Signin = () => {
   const navigation = useNavigation<any>();
   const { signIn, loading } = useContext(AuthContext);
 
@@ -117,4 +117,4 @@ const SigninScreen = () => {
   );
 };
 
-export default SigninScreen;
+export default Signin;

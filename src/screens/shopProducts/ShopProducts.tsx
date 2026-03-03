@@ -9,7 +9,7 @@ import {
   FlatList,
 } from 'react-native';
 
-import styles from './ShopProducts.styles';
+import styles from './shopProducts.styles';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';

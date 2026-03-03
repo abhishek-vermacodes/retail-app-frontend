@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StatusBar, Text, View } from 'react-native';
 import styles from './splash.styles';
 
-const SplashScreen = () => {
+const Splash = () => {
   const navigation = useNavigation<any>();
 
   useEffect(() => {
@@ -31,4 +31,4 @@ const SplashScreen = () => {
   );
 };
 
-export default SplashScreen;
+export default Splash;

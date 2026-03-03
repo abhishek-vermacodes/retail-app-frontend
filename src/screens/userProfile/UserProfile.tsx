@@ -18,7 +18,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 import styles from './userProfile.styles';
 
-const UserProfileScreen = () => {
+const UserProfile = () => {
   const navigation = useNavigation<any>();
   const { signOut } = useContext(AuthContext);
 
@@ -160,6 +160,6 @@ const UserProfileScreen = () => {
   );
 };
 
-export default UserProfileScreen;
+export default UserProfile;
 
 

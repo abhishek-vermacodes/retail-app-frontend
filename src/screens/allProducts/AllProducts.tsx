@@ -9,7 +9,7 @@ import {
   FlatList,
   Pressable,
 } from 'react-native';
-import styles from './StoreProducts.styles';
+import styles from './allProducts.styles';
 import API from '../../api/authApi';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';

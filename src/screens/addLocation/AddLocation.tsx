@@ -9,7 +9,7 @@ import {
   StatusBar,
   ActivityIndicator,
 } from 'react-native';
-import styles from './AddLocation.styles';
+import styles from './addLocation.styles';
 import API from '../../api/authApi';
 import Modal from 'react-native-modal';
 import Feather from 'react-native-vector-icons/Feather';

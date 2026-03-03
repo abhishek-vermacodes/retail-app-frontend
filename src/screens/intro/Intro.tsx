@@ -32,7 +32,7 @@ const SLIDES = [
   },
 ];
 
-const IntroScreen = () => {
+const Intro = () => {
   const { width } = useWindowDimensions();
   const navigation = useNavigation<any>();
   const [activeIndex, setActiveIndex] = useState(0);
@@ -114,5 +114,5 @@ const IntroScreen = () => {
   );
 };
 
-export default IntroScreen;
+export default Intro;
 

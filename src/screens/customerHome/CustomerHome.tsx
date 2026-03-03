@@ -131,7 +131,7 @@ const recommendedProducts = [
   },
 ];
 
-function CustomerHomeScreen() {
+function CustomerHome() {
   const { user, refreshUser } = useContext(AuthContext);
 
   const navigation = useNavigation<NavigationProp>();
@@ -622,4 +622,4 @@ function CustomerHomeScreen() {
   );
 }
 
-export default CustomerHomeScreen;
+export default CustomerHome;

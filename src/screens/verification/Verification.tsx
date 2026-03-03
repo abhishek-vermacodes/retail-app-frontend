@@ -17,7 +17,7 @@ import styles from './verification.styles';
 
 const OTP_LENGTH = 6;
 
-const VerificationScreen = () => {
+const Verification = () => {
   const navigation = useNavigation<any>();
 
   const [email, setEmail] = useState<string | null>(null);
@@ -144,4 +144,4 @@ const VerificationScreen = () => {
   );
 };
 
-export default VerificationScreen;
+export default Verification;

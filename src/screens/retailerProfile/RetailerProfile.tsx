@@ -17,7 +17,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 import styles from './retailerProfile.styles';
 
-const RetailerProfileScreen = () => {
+const RetailerProfile = () => {
   const navigation = useNavigation<any>();
 
   const { signOut } = useContext(AuthContext);
@@ -194,5 +194,5 @@ const RetailerProfileScreen = () => {
   );
 };
 
-export default RetailerProfileScreen;
+export default RetailerProfile;
 

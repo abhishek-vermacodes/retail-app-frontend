@@ -41,7 +41,7 @@ const orders = [
   },
 ];
 
-const UserOrdersScreen = () => {
+const UserOrders = () => {
   const navigation = useNavigation<any>();
 
   return (
@@ -136,6 +136,6 @@ const UserOrdersScreen = () => {
   );
 };
 
-export default UserOrdersScreen;
+export default UserOrders;
 
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import SigninScreen from '../screens/signin/SigninScreen';
-import SignupScreen from '../screens/signUp/SignupScreen';
-import SplashScreen from '../screens/splashScreen/SplashScreen';
-import IntroScreen from '../screens/intro/IntroScreen';
+import SigninScreen from '../screens/signin/Signin';
+import SignupScreen from '../screens/signUp/Signup';
+import SplashScreen from '../screens/splashScreen/Splash';
+import IntroScreen from '../screens/intro/Intro';
 import ForgotPasswordScreen from '../screens/ForgotPassword';
 import VerificationScreen from '../screens/verification/Verification';
 import AddLocation from '../screens/addLocation/AddLocation';

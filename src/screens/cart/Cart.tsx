@@ -11,7 +11,7 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import styles from './cat.styles';
+import styles from './cart.styles';
 
 const initialCart = [
   {
@@ -58,7 +58,7 @@ const initialCart = [
   },
 ];
 
-function CartScreen() {
+function Cart() {
   const navigation = useNavigation<any>();
   const [cartItems, setCartItems] = useState(initialCart);
 
@@ -174,5 +174,5 @@ function CartScreen() {
   );
 }
 
-export default CartScreen;
+export default Cart;
 

@@ -31,7 +31,7 @@ import { LocationProperties, Store } from '../../types/type';
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './retailerHome.styles';
 
-const RetailerHomeScreen = () => {
+const RetailerHome = () => {
   const navigation = useNavigation<any>();
 
   const { user, refreshUser } = useContext(AuthContext);
@@ -529,4 +529,4 @@ const RetailerHomeScreen = () => {
   );
 };
 
-export default RetailerHomeScreen;
+export default RetailerHome;

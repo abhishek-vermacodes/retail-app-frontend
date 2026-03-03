@@ -11,7 +11,7 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-import styles from './StoreProductDetail.styles';
+import styles from './storeProductDetail.styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 const StoreProductDetail = () => {

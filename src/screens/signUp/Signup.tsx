@@ -12,12 +12,12 @@ import {
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import styles from './SignUp.styles';
+import styles from './signUp.styles';
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-const SignupScreen = () => {
+const Signup = () => {
   const navigation = useNavigation<any>();
 
   const [isVisible, setIsVisible] = useState(false);
@@ -246,4 +246,4 @@ const SignupScreen = () => {
   );
 };
 
-export default SignupScreen;
+export default Signup;

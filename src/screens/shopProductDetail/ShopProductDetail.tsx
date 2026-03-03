@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 
 import API from '../../api/authApi';
-import styles from './ShopProductDetail.styles';
+import styles from './shopProductDetail.styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';

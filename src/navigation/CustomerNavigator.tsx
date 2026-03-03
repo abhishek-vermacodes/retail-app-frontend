@@ -2,9 +2,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Store } from '../types/type';
 
 import CustomerBottomTabNavigator from './CustomerBottomTabNavigator';
-import CategoryProductsScreen from '../screens/category/CategoryScreen';
+import CategoryProductsScreen from '../screens/category/Category';
 import ProductDetailsScreen from '../screens/shopProductDetail/ShopProductDetail';
-import CustomerHelpScreen from '../screens/helpCenter/CustomerHelpScreen';
+import CustomerHelpScreen from '../screens/helpCenter/CustomerHelpCenter';
 import ShopDetailScreen from '../screens/shopProducts/ShopProducts';
 import ShopProductDetail from '../screens/shopProductDetail/ShopProductDetail';
 
