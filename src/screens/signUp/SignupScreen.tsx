@@ -33,8 +33,12 @@ const SignupScreen = () => {
 
   const handleSignup = async () => {
     try {
-      const res = signUp(user.username, user.email, user.password, user.role);
-      console.log('res', res);
+      if (!user.username || !user.email || !user.role || !user.password) {
+        Alert.alert('Warning', 'All Field are Required');
+        return;
+      }
+
+      await signUp(user.username, user.email, user.password, user.role);
       Alert.alert('success', 'Signup successful');
 
       const email = user.email;

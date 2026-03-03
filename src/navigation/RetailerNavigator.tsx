@@ -4,6 +4,7 @@ import CreateShop from '../screens/createShop/CreateShop';
 import MyProducts from '../screens/storeProducts/StoreProducts';
 import MyProduct from '../screens/storeProductDetail/StoreProductDetail';
 import RetailerHelpScreen from '../screens/RetailerHelpScreen';
+import StoreProductDetail from '../screens/storeProductDetail/StoreProductDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ export default function RetailerNavigator() {
       <Stack.Screen name="MyProducts" component={MyProducts} />
       <Stack.Screen name="MyProduct" component={MyProduct} />
       <Stack.Screen name="HelpCenter" component={RetailerHelpScreen} />
+      <Stack.Screen name="StoreProductDetail" component={StoreProductDetail} />
     </Stack.Navigator>
   );
 }

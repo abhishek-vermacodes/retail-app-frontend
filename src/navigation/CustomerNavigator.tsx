@@ -3,10 +3,10 @@ import { Store } from '../types/type';
 
 import CustomerBottomTabNavigator from './CustomerBottomTabNavigator';
 import CategoryProductsScreen from '../screens/CategoryScreen';
-import ProductDetailsScreen from '../screens/ProductDetail/ShopProductDetail';
+import ProductDetailsScreen from '../screens/shopProductDetail/ShopProductDetail';
 import CustomerHelpScreen from '../screens/helpCenter/CustomerHelpScreen';
 import ShopDetailScreen from '../screens/shopProducts/ShopProducts';
-import ShopProductDetail from '../screens/ProductDetail/ShopProductDetail';
+import ShopProductDetail from '../screens/shopProductDetail/ShopProductDetail';
 
 export type CustomerStackParamList = {
   CustomerHome: undefined;

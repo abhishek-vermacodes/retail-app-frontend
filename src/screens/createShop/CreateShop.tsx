@@ -65,6 +65,18 @@ const CreateShop = () => {
       name: store.image.fileName || 'product.jpg',
     } as any);
 
+    if (
+      !store.address ||
+      !store.category ||
+      !store.description ||
+      !store.image ||
+      !store.phone ||
+      !store.storeName
+    ) {
+      Alert.alert('Warning', 'All Field are Required');
+      return;
+    }
+
     try {
       setLoading(true);
 

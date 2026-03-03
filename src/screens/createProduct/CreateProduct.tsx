@@ -68,6 +68,18 @@ const CreateProduct = () => {
 
     const token = await AsyncStorage.getItem('token');
     console.log('token', token);
+
+    if (
+      !product.category ||
+      !product.description ||
+      !product.image ||
+      !product.price ||
+      !product.productName ||
+      !product.stock
+    ) {
+      Alert.alert('Warning', 'All Field are Required');
+      return;
+    }
     try {
       await API.post('/api/products', formData, {
         headers: {

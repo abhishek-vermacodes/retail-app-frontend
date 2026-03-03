@@ -1,37 +1,49 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  mainContainer: {
+  container: {
     flex: 1,
     backgroundColor: '#fff5f0',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 20,
-    position: 'relative',
+    justifyContent: 'space-between',
     paddingTop: 60,
     paddingBottom: 20,
     paddingHorizontal: 20,
     zIndex: 10,
   },
   backBtn: {
-    borderColor: '#bbb',
+    backgroundColor: 'white',
+    borderColor: '#ffe3d9',
     borderWidth: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
+    height: 40,
+    width: 40,
     borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  headerTitle: {
+  pageTitle: {
     fontSize: 20,
     fontFamily: 'Poppins-Bold',
+  },
+  likeButton: {
+    height: 40,
+    width: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderColor: '#ffe3d9',
+    borderWidth: 1,
+    borderRadius: 30,
   },
   scrollView: {
     paddingBottom: 160,
     paddingHorizontal: 20,
   },
   productMainContainer: {
-    marginTop: 20,
+    margin: 0,
   },
   productImgContainer: {
     width: '100%',
@@ -39,11 +51,11 @@ const styles = StyleSheet.create({
     resizeMode: 'center',
     borderRadius: 20,
     backgroundColor: '#fff',
-
     borderWidth: 1,
     borderColor: '#ffe3d9',
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'relative',
   },
   productImg: {
     width: '80%',
@@ -54,128 +66,88 @@ const styles = StyleSheet.create({
   productContentContainer: {
     marginTop: 20,
     flexDirection: 'column',
-    gap: 10,
   },
-  nameContainer: {
+  productSubContentContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  productTitle: {
-    fontFamily: 'Poppins-Bold',
+  productNameContainer: {
+    flexDirection: 'column',
+  },
+  productCategory: {
+    color: '#000000a3',
+    fontFamily: 'Poppins-Medium',
+    fontSize: 12,
+  },
+  productName: {
     fontSize: 20,
+    fontFamily: 'Poppins-Bold',
+    marginBottom: 10,
   },
-  productPrice: {
-    fontSize: 16,
-    fontFamily: 'Poppins-SemiBold',
-    color: '#ff5b27',
-  },
-  stockContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-  stockStatusBadge: {
-    backgroundColor: '#277a0022',
-    paddingVertical: 6,
-    paddingHorizontal: 14,
-    borderRadius: 8,
-  },
-  stockStatusBadgeText: {
-    color: '#277a00',
-    fontFamily: 'Poppins-Medium',
-    fontSize: 12,
-  },
-  stockBadge: {
-    backgroundColor: '#dddddd',
-    paddingVertical: 6,
-    paddingHorizontal: 14,
-    borderRadius: 8,
-  },
-  stockBadgeText: {
-    fontFamily: 'Poppins-Medium',
-    fontSize: 12,
-  },
-  infoGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-    marginTop: 16,
-  },
-  infoCard: {
-    width: '48%',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 12,
-  },
-  infoLabel: {
-    fontSize: 12,
-    color: '#000000a3',
+  descritpionText: {
     fontFamily: 'Poppins-Regular',
-  },
-  infoValue: {
     fontSize: 14,
-    fontFamily: 'Poppins-SemiBold',
-    marginTop: 4,
+    marginBottom: 20,
   },
-
-  sectionTitle: {
-    fontSize: 16,
-    fontFamily: 'Poppins-SemiBold',
-    marginTop: 20,
+  offerContainer: {
+    backgroundColor: '#fff5f0',
+    position: 'absolute',
+    bottom: -20,
+    right: 26,
+    padding: 4,
+    borderRadius: 30,
   },
-  description: {
-    fontSize: 13,
-    color: '#000000a3',
-    marginTop: 6,
-    lineHeight: 20,
-    fontFamily: 'Poppins-Regular',
+  offer: {
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 30,
+    backgroundColor: '#ff5b27',
   },
-
-  variantRow: {
+  offerText: {
+    fontSize: 12,
+    fontFamily: 'Poppins-Medium',
+    marginBottom: -3,
+    color: '#fff',
+  },
+  labelContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderColor: '#eee',
   },
-  variantText: {
+  priceContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  priceSubContainer: {
+    flexDirection: 'row',
+    gap: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  label: {
+    fontFamily: 'Poppins-Medium',
+    color: '#000000a3',
     fontSize: 14,
-    fontFamily: 'Poppins-Regular',
+    marginBottom: -4,
   },
-  variantStock: {
+  price: {
+    textDecorationLine: 'line-through',
+    fontFamily: 'Poppins-Regular',
     fontSize: 14,
     color: '#000000a3',
-    fontFamily: 'Poppins-Regular',
   },
-
-  actionRow: {
-    flexDirection: 'row',
-    gap: 12,
-    marginTop: 20,
-    marginBottom: 40,
-  },
-  moreBtn: {
-    flex: 1,
-    backgroundColor: '#ffe3d9',
-    paddingVertical: 14,
-    borderRadius: 30,
-    alignItems: 'center',
-  },
-  moreText: {
+  offerPrice: {
+    fontSize: 24,
+    fontFamily: 'Poppins-Bold',
+    margin: 0,
+    padding: 0,
     color: '#ff5b27',
-    fontFamily: 'Poppins-SemiBold',
   },
-  editBtn: {
-    flex: 1,
-    backgroundColor: '#ff5b27',
-    paddingVertical: 14,
-    borderRadius: 30,
-    alignItems: 'center',
-  },
-  editText: {
-    color: '#fff',
-    fontFamily: 'Poppins-SemiBold',
+  rating: {
+    fontSize: 14,
+    color: '#ff5b27',
+    fontFamily: 'Poppins-Medium',
+    marginTop: 10,
   },
 });
 

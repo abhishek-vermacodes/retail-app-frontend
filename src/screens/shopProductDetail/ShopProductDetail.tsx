@@ -1,24 +1,62 @@
-import React from 'react';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-// import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import Entypo from 'react-native-vector-icons/Entypo';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { Product } from '../../types/type';
+import { getToken } from '../../utils/storage';
+import React, { useEffect, useState } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import {
   View,
   Text,
-  StatusBar,
   TouchableOpacity,
+  StatusBar,
+  TextInput,
   ScrollView,
   Image,
 } from 'react-native';
-import styles from './StoreProductDetail.styles';
-import { useNavigation, useRoute } from '@react-navigation/native';
 
-const StoreProductDetail = () => {
+import API from '../../api/authApi';
+import styles from './ShopProductDetail.styles';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+
+const ShopProductDetail = () => {
   const navigation = useNavigation<any>();
-  const route = useRoute();
-  const { product } = route.params as any;
-  console.log('product', product);
+
+  const route = useRoute<any>();
+  const { id } = route.params;
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  const [product, setProduct] = useState<Product | null>();
+  const [like, setLike] = useState(false);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const token = await getToken();
+      try {
+        const response = await API.get(
+          `/api/products/getProductForCustomerById/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+        console.log(response.data.product);
+        setProduct(response.data.product);
+      } catch (error) {
+        console.log('Failed to Fetch Product', error);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
+
+  const getStockStatus = (stock: any) => {
+    if (stock <= 0) return 'Out of Stock';
+    if (stock < 60) return 'Low Stock';
+    return 'Active';
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
@@ -26,14 +64,21 @@ const StoreProductDetail = () => {
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backBtn}
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate('CustomerHome')}
         >
           <Ionicons name="arrow-back" size={18} color="#000" />
         </TouchableOpacity>
 
         <Text style={styles.pageTitle}>{product?.productName}</Text>
-        <TouchableOpacity style={styles.likeButton}>
-          <Entypo name="dots-three-vertical" size={18} color={'#000'} />
+        <TouchableOpacity
+          style={styles.likeButton}
+          onPress={() => setLike(prev => !prev)}
+        >
+          {like ? (
+            <Ionicons name="heart" size={18} color={'red'} />
+          ) : (
+            <Ionicons name="heart-outline" size={18} color={'red'} />
+          )}
         </TouchableOpacity>
       </View>
 
@@ -49,16 +94,27 @@ const StoreProductDetail = () => {
                 uri: `http://192.168.1.12:5000${product?.image}`,
               }}
             />
-            <View style={styles.offerContainer}>
-              <View style={styles.offer}>
-                <Text style={styles.offerText}>50% OFF</Text>
-              </View>
-            </View>
           </View>
 
           <View style={styles.productContentContainer}>
-            <Text style={styles.productCategory}>{product?.category}</Text>
-            <Text style={styles.productName}>{product?.productName}</Text>
+            <View style={styles.productSubContentContainer}>
+              <View style={styles.productNameContainer}>
+                <Text style={styles.productName}>BBQ Chicken Pizza</Text>
+              </View>
+              <View style={styles.btnContainer}>
+                <TouchableOpacity style={styles.decreamentBtn}>
+                  <FontAwesome6 name="minus" size={14} color={'#000'} />
+                </TouchableOpacity>
+                <Text style={styles.quantityText}>1</Text>
+                <TouchableOpacity style={styles.increamentBtn}>
+                  <FontAwesome6 name="plus" size={14} color={'#fff'} />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View style={styles.productSubContentContainer}>
+              <Text></Text>
+            </View>
 
             <Text style={styles.descritpionText}>
               Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero sit
@@ -66,23 +122,6 @@ const StoreProductDetail = () => {
               inventore quidem, architecto nam cupiditate, perspiciatis officiis
               enim mollitia, facere maiores!
             </Text>
-
-            <View>
-              <View style={styles.labelContainer}>
-                <Text style={styles.label}>Price</Text>
-                <Text style={styles.label}>Ratings</Text>
-              </View>
-              <View style={styles.priceContainer}>
-                <View style={styles.priceSubContainer}>
-                  <Text style={styles.offerPrice}>$29.00</Text>
-                  <Text style={styles.price}>$58.00</Text>
-                </View>
-                <Text style={styles.rating}>
-                  <FontAwesome name="star" size={14} color={'#ffc905'} /> 4.9
-                  (185 Reviews)
-                </Text>
-              </View>
-            </View>
 
             {/* <View style={styles.nameContainer}>
               <Text style={styles.productTitle}>{product?.productName}</Text>
@@ -168,13 +207,13 @@ const StoreProductDetail = () => {
           </View>
         </View>
       </ScrollView>
-      {/* <View style={styles.buttonContainer}>
+      <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.cartButton}>
           <Text style={styles.cartButtonText}>Add to Cart</Text>
         </TouchableOpacity>
-      </View> */}
+      </View>
     </View>
   );
 };
 
-export default StoreProductDetail;
+export default ShopProductDetail;
