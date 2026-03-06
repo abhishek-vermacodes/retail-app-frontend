@@ -1,6 +1,6 @@
 import AppNavigator from './AppNavigator';
 import AuthNavigator from './AuthNavigator';
-import Signin from '../screens/signin/Signin';
+import Signin from '../screens/signIn/Signin';
 import AddLocation from '../screens/addLocation/AddLocation';
 
 import { useContext } from 'react';

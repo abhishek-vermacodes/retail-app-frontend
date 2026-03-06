@@ -48,7 +48,6 @@ const AddLocation = () => {
   useEffect(() => {
     const getEmail = async () => {
       const storedEmail = await AsyncStorage.getItem('email');
-      console.log('store email', storedEmail);
 
       setEmail(storedEmail);
     };
@@ -155,7 +154,7 @@ const AddLocation = () => {
 
           const data = await response.json();
           setLocation(data.features[0].properties);
-          console.log('get location', data.features[0].properties);
+         
 
           setLoading(false);
           setSecDrawerVisible(true);

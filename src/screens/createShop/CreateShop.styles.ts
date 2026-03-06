@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   inputSubContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 2,
+    gap: 6,
     borderWidth: 1,
     borderColor: '#bbb',
     borderRadius: theme.BORDER_RADIUS.inputField,
@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
   input: {
     fontFamily: 'Poppins-Regular',
     color: '#000',
+    marginBottom: -4
   },
   categoryRow: {
     flexDirection: 'row',
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: theme.BORDER_RADIUS.categoryBtn,
     borderWidth: 1,
-    borderColor: '#00000061',
+    borderColor: '#bbb',
   },
   categoryChipActive: {
     backgroundColor: '#ff5b27',
@@ -115,7 +116,8 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 13,
     fontFamily: 'Poppins-Regular',
-    color: '#000',
+    color: '#888',
+    marginBottom: -2
   },
   categoryTextActive: {
     color: '#fff',
@@ -143,8 +145,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#ffffff',
-    fontSize: 16,
-    fontFamily: 'Poppins-Medium',
+    fontSize: 14,
+    fontFamily: 'Poppins-Regular',
   },
 });
 

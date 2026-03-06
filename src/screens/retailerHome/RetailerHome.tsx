@@ -16,7 +16,6 @@ import API from '../../api/authApi';
 import Modal from 'react-native-modal';
 import WebView from 'react-native-webview';
 import styles from './retailerHome.styles';
-import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -24,6 +23,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
@@ -133,7 +133,7 @@ const RetailerHome = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log('response', response);
+      console.log('response', response.data.store);
       setStore(response.data.store);
     } catch (error) {
       console.log('Failed to fetch', error);
@@ -358,12 +358,13 @@ const RetailerHome = () => {
           </View>
         ) : (
           <View style={styles.storeBanner}>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={styles.editBtn}
               onPress={() => setOpenShopModal(true)}
             >
               <Entypo name="dots-three-vertical" color="#ff6a32" size={14} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+
             <View style={styles.storeImgContainer}>
               <Image
                 source={{
@@ -371,30 +372,24 @@ const RetailerHome = () => {
                 }}
                 style={styles.storeImg}
               />
+              <View style={styles.overlay} />
             </View>
-            {/* <View style={styles.storeContentContainer}>
+            <View style={styles.storeContentContainer}>
               <View style={styles.storeContentSubContainer}>
                 <Text style={styles.storeName}>{store.storeName}</Text>
-                <View style={styles.storeCategory}>
-                  <Text style={styles.storeCatgoryText}>{store.category}</Text>
-                </View>
+                <Text style={styles.storeCategory}>({store.category})</Text>
               </View>
-              <View>
-                <View style={styles.storeAddressContainer}>
-                  <Ionicons
-                    name="location-outline"
-                    size={18}
-                    color="#ff6a32"
-                    style={styles.storeLocationIcon}
-                  />
-                  <Text style={styles.storeAddress}>{store.address}</Text>
-                </View>
-                <View style={styles.storeAddressContainer}>
-                  <Feather name="phone" size={14} color="#ff6a32" />
-                  <Text style={styles.storeAddress}>+91 {store.phone}</Text>
-                </View>
+            </View>
+            <View style={styles.storeSubContainer}>
+              <View style={styles.storeWrapper}>
+                <FontAwesome6 name="phone" color={'#ffffff'} size={16} />
+                <Text style={styles.contentText}>{store?.phone}</Text>
               </View>
-            </View> */}
+              <View style={styles.storeWrapper}>
+                <FontAwesome6 name="location-dot" color={'#ffffff'} size={16} />
+                <Text style={styles.contentText}>{store?.address}</Text>
+              </View>
+            </View>
           </View>
         )}
 
