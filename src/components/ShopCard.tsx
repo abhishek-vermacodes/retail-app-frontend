@@ -45,7 +45,7 @@ export default NearbyShopCard;
 
 const styles = StyleSheet.create({
   card: {
-    width: 250,
+    width: 300,
     backgroundColor: '#fff',
     borderRadius: 14,
     marginRight: 16,
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 100,
+    height: 150,
     borderTopLeftRadius: 14,
     borderTopRightRadius: 14,
     backgroundColor: '#f2f2f2',

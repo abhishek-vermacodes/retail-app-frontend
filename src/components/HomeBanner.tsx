@@ -28,7 +28,7 @@ const HomeBanner = () => {
   }, [index]);
 
   return (
-    <View>
+    <View style={styles.mainContainer}>
       <FlatList
         ref={flatListRef}
         data={banners}
@@ -41,7 +41,7 @@ const HomeBanner = () => {
           setIndex(newIndex);
         }}
         renderItem={({ item }) => <Image source={item} style={styles.banner} />}
-        style={styles.Container}
+        style={styles.container}
         contentContainerStyle={styles.flatList}
       />
 
@@ -57,7 +57,10 @@ const HomeBanner = () => {
 export default HomeBanner;
 
 const styles = StyleSheet.create({
-  Container: {
+  mainContainer: {
+    marginBottom: 20,
+  },
+  container: {
     padding: 10,
     borderRadius: 12,
     borderWidth: 1,

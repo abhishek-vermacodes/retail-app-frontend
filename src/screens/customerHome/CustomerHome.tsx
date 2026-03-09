@@ -381,7 +381,7 @@ function CustomerHome() {
 
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={styles.scrollView}
       >
         <HomeBanner />
 
@@ -418,6 +418,7 @@ function CustomerHome() {
           />
         </View>
 
+        {/* shops */}
         <View>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Nearby Shops</Text>
@@ -454,19 +455,23 @@ function CustomerHome() {
           )}
         </View>
 
+        {/* products */}
         <View>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Recommended</Text>
             <Text style={styles.viewLink}>See All</Text>
           </View>
-          {/*  */}
 
           <View style={styles.gridContainer}>
             {products?.map((product: any) => (
               <View key={product?.id} style={styles.productCard}>
                 <TouchableOpacity
                   style={styles.productImageContainer}
-                  onPress={() => navigation.navigate('ShopProductDetail')}
+                  onPress={() =>
+                    navigation.navigate('ProductDetailForCustomer', {
+                      id: product.id,
+                    })
+                  }
                 >
                   <Image
                     style={styles.productImage}
@@ -490,14 +495,16 @@ function CustomerHome() {
                     )}
                   </View>
                 </View>
-                <View style={styles.stockBadge}>
+                {/* <View style={styles.stockBadge}>
                   <Text style={styles.stockText}>{product.stock} in stock</Text>
-                </View>
+                </View> */}
               </View>
             ))}
           </View>
         </View>
       </ScrollView>
+
+      {/* location modal */}
       <Modal
         isVisible={openLocation}
         onBackdropPress={() => setOpenLocation(false)}

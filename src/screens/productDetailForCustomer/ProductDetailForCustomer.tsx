@@ -1,7 +1,3 @@
-import { Product } from '../../types/type';
-import { getToken } from '../../utils/storage';
-import React, { useEffect, useState } from 'react';
-import { useNavigation, useRoute } from '@react-navigation/native';
 import {
   View,
   Text,
@@ -11,18 +7,21 @@ import {
   Image,
 } from 'react-native';
 
-// import API from '../../api/authApi';
-import styles from './shopProductDetail.styles';
+import styles from './productDetailForCustomer.styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useEffect, useState } from 'react';
+import API from '../../api/authApi';
+import { getToken } from '../../utils/storage';
 
-const ShopProductDetail = () => {
+const ProductDetailForCustomer = () => {
   const navigation = useNavigation<any>();
 
-  // const route = useRoute<any>();
-  // const { id } = route.params;
+  const route = useRoute<any>();
+  const { id } = route.params;
 
-  const [product, setProduct] = useState<Product | null>();
+  const [product, setProduct] = useState<any | null>();
   const [like, setLike] = useState(false);
 
   // useEffect(() => {
@@ -53,6 +52,27 @@ const ShopProductDetail = () => {
   //   return 'Active';
   // };
 
+  useEffect(() => {
+    const getProduct = async () => {
+      const token = await getToken();
+      try {
+        const response = await API.get(
+          `/api/product/getProductForCustomerById/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        setProduct(response.data.product);
+      } catch (error) {
+        console.log('Failed to fetch product', error);
+      }
+    };
+    getProduct();
+  });
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
@@ -60,7 +80,7 @@ const ShopProductDetail = () => {
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backBtn}
-          onPress={() => navigation.navigate('CustomerHome')}
+          onPress={() => navigation.goBack()}
         >
           <Ionicons name="arrow-back" size={18} color="#000" />
         </TouchableOpacity>
@@ -95,7 +115,7 @@ const ShopProductDetail = () => {
           <View style={styles.productContentContainer}>
             <View style={styles.productSubContentContainer}>
               <View style={styles.productNameContainer}>
-                <Text style={styles.productName}>BBQ Chicken Pizza</Text>
+                <Text style={styles.productName}>{product?.productName}</Text>
               </View>
               <View style={styles.btnContainer}>
                 <TouchableOpacity style={styles.decreamentBtn}>
@@ -108,16 +128,11 @@ const ShopProductDetail = () => {
               </View>
             </View>
 
-            <View style={styles.productSubContentContainer}>
+            {/* <View style={styles.productSubContentContainer}>
               <Text></Text>
-            </View>
+            </View> */}
 
-            <Text style={styles.descritpionText}>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero sit
-              ipsam laboriosam molestias doloribus sed fugiat a ducimus quo
-              inventore quidem, architecto nam cupiditate, perspiciatis officiis
-              enim mollitia, facere maiores!
-            </Text>
+            <Text style={styles.descritpionText}>{product?.description}</Text>
 
             {/* <View style={styles.nameContainer}>
               <Text style={styles.productTitle}>{product?.productName}</Text>
@@ -212,4 +227,4 @@ const ShopProductDetail = () => {
   );
 };
 
-export default ShopProductDetail;
+export default ProductDetailForCustomer;

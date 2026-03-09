@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 20,
+    marginBottom: 20,
   },
   locationContainer: {
     flexDirection: 'row',
@@ -20,6 +20,9 @@ const styles = StyleSheet.create({
   priLocationText: {
     fontFamily: 'Poppins-Bold',
     fontSize: 14,
+  },
+  arrowDownIcon: {
+    marginLeft: 2,
   },
   secLocationText: {
     fontFamily: 'Poppins-Regular',
@@ -45,39 +48,29 @@ const styles = StyleSheet.create({
     color: '#ffe3d9',
     marginBottom: -2,
   },
-  scrollContent: {
+  scrollView: {
     paddingBottom: 200,
   },
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 20,
+    marginBottom: 20,
   },
   sectionTitle: {
     fontSize: 16,
     fontFamily: 'Poppins-SemiBold',
   },
 
-  noShopFound: {
-    height: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   viewLink: {
     fontSize: 14,
     fontFamily: 'Poppins-Medium',
     color: '#ff5b27',
     marginBottom: -2,
   },
-  shopnotFound: {
-    marginTop: 20,
-  },
-  shopFlatListcontentContainerStyle: {
-    marginTop: 16,
-  },
+
   categoryContainer: {
-    marginTop: 14,
+    marginBottom: 28,
     gap: 20,
   },
   categoryBtnContainer: {
@@ -104,127 +97,14 @@ const styles = StyleSheet.create({
     color: '#000000a3',
     fontFamily: 'Poppins-Regular',
   },
-  productContainer: {
-    marginTop: 16,
-  },
-  productRow: {
-    justifyContent: 'space-between',
-    marginBottom: 16,
-  },
-  productItem: {
-    width: '48%',
-  },
-  arrowDownIcon: {
-    marginLeft: 2,
-  },
-  modal: {
-    justifyContent: 'flex-end',
-    margin: 0,
-  },
-  drawer: {
-    backgroundColor: '#fff',
-    paddingVertical: 26,
-    paddingHorizontal: 18,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    height: 'auto',
-  },
-  mapContainer: {
-    backgroundColor: '#fff',
-    height: 200,
-    borderWidth: 1,
-    borderColor: '#ffe3d9',
-    borderRadius: 20,
-    marginBottom: 20,
-    overflow: 'hidden',
-    position: 'relative',
-    justifyContent: 'center',
-  },
-  loadingContainer: {
-    position: 'absolute',
-    right: '30%',
-    flexDirection: 'row',
+  noShopFound: {
+    height: 100,
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 10,
-    zIndex: 9999,
   },
-  primaryBtnContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: '#ff5b27',
-    borderRadius: 14,
-    paddingVertical: 16,
-    gap: 6,
-    marginBottom: 20,
+  shopFlatListcontentContainerStyle: {
+    marginBottom: 28,
   },
-  primaryBtnText: {
-    color: '#ff5b27',
-    fontFamily: 'Poppins-Regular',
-    marginBottom: -2,
-  },
-  secondaryBtnContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ff5b27',
-    borderRadius: 14,
-    paddingVertical: 16,
-    marginBottom: 20,
-  },
-  secondaryBtnText: {
-    color: '#fff',
-    fontFamily: 'Poppins-Regular',
-  },
-  streetAddressContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    marginLeft: -6,
-  },
-  streetText: {
-    fontFamily: 'Poppins-SemiBold',
-    fontSize: 14,
-    color: '#000000',
-    marginBottom: -2,
-  },
-  addressText: {
-    fontFamily: 'Poppins-Regular',
-    fontSize: 12,
-    color: '#000000',
-  },
-  inputContainer: {
-    marginBottom: 20,
-  },
-  inputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: '#00000061',
-    paddingHorizontal: 14,
-    height: 56,
-  },
-  input: {
-    flex: 1,
-    fontSize: 14,
-    fontFamily: 'Poppins-Regular',
-  },
-  addressContainer: {
-    flexDirection: 'column',
-    gap: 6,
-    borderWidth: 1,
-    borderColor: '#ffe3d9',
-    backgroundColor: '#fff5f0',
-    borderRadius: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    marginBottom: 20,
-  },
-
-  //product cart style
   gridContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -249,8 +129,8 @@ const styles = StyleSheet.create({
   },
   productImage: {
     width: '100%',
-    height: 168,
-    resizeMode: 'cover',
+    height: 160,
+    resizeMode: 'center',
     borderRadius: 10,
   },
   productContentContainer: {
@@ -310,6 +190,113 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontFamily: 'Poppins-Medium',
     color: '#277a00',
+  },
+
+  modal: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
+  drawer: {
+    backgroundColor: '#fff',
+    paddingVertical: 26,
+    paddingHorizontal: 18,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    height: 'auto',
+  },
+  mapContainer: {
+    backgroundColor: '#fff',
+    height: 200,
+    borderWidth: 1,
+    borderColor: '#ffe3d9',
+    borderRadius: 20,
+    marginBottom: 20,
+    overflow: 'hidden',
+    position: 'relative',
+    justifyContent: 'center',
+  },
+  loadingContainer: {
+    position: 'absolute',
+    right: '30%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 10,
+    zIndex: 9999,
+  },
+  primaryBtnText: {
+    color: '#ff5b27',
+    fontFamily: 'Poppins-Regular',
+    marginBottom: -2,
+  },
+  addressContainer: {
+    flexDirection: 'column',
+    gap: 6,
+    borderWidth: 1,
+    borderColor: '#ffe3d9',
+    backgroundColor: '#fff5f0',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    marginBottom: 20,
+  },
+  streetAddressContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginLeft: -6,
+  },
+  streetText: {
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 14,
+    color: '#000000',
+    marginBottom: -2,
+  },
+  addressText: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 12,
+    color: '#000000',
+  },
+  primaryBtnContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#ff5b27',
+    borderRadius: 14,
+    paddingVertical: 16,
+    gap: 6,
+    marginBottom: 20,
+  },
+  secondaryBtnContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ff5b27',
+    borderRadius: 14,
+    paddingVertical: 16,
+    marginBottom: 20,
+  },
+  secondaryBtnText: {
+    color: '#fff',
+    fontFamily: 'Poppins-Regular',
+  },
+  inputContainer: {
+    marginBottom: 20,
+  },
+  inputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#00000061',
+    paddingHorizontal: 14,
+    height: 56,
+  },
+  input: {
+    flex: 1,
+    fontSize: 14,
+    fontFamily: 'Poppins-Regular',
   },
 });
 
