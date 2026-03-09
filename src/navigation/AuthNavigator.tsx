@@ -2,7 +2,7 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import AddLocation from '../screens/addLocation/AddLocation';
-import Splash from '../screens/splashScreen/Splash';
+import Splash from '../screens/splash/Splash';
 import Intro from '../screens/intro/Intro';
 import Signup from '../screens/signUp/Signup';
 import Signin from '../screens/signIn/Signin';

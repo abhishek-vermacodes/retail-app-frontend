@@ -18,7 +18,7 @@ import Modal from 'react-native-modal';
 import WebView from 'react-native-webview';
 import HomeBanner from '../../components/HomeBanner';
 import NearbyShopCard from '../../components/ShopCard';
-import ProductCard from '../../components/ProductCard';
+
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Geolocation from 'react-native-geolocation-service';
@@ -86,51 +86,6 @@ const categories = [
   },
 ];
 
-const recommendedProducts = [
-  {
-    id: '1',
-    productName: 'Fresh Apples',
-    price: 120,
-    image:
-      'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?w=400&h=400&fit=crop',
-  },
-  {
-    id: '2',
-    productName: 'Basmati Rice',
-    price: 450,
-    image:
-      'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=400&fit=crop',
-  },
-  {
-    id: '3',
-    productName: 'Milk 1L',
-    price: 60,
-    image:
-      'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&h=400&fit=crop',
-  },
-  {
-    id: '4',
-    productName: 'Shampoo',
-    price: 199,
-    image:
-      'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&h=400&fit=crop',
-  },
-  {
-    id: '5',
-    productName: 'Bread',
-    price: 40,
-    image:
-      'https://images.unsplash.com/photo-1608198093002-ad4e005484ec?w=400&h=400&fit=crop',
-  },
-  {
-    id: '6',
-    productName: 'Laptop ',
-    price: 55000,
-    image:
-      'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=400&fit=crop',
-  },
-];
-
 function CustomerHome() {
   const { user, refreshUser } = useContext(AuthContext);
 
@@ -138,6 +93,7 @@ function CustomerHome() {
 
   const [loading, setLoading] = useState(false);
   const [mapLoading, setMapLoading] = useState(false);
+  const [products, setProducts] = useState<any | null>(null);
   const [allShops, setAllShops] = useState<Store[]>([]);
   const [openLocation, setOpenLocation] = useState(false);
   const [selectAddress, setSelectAddress] = useState(false);
@@ -173,40 +129,40 @@ function CustomerHome() {
 
   const mapHtml = useMemo(() => {
     return `
-            <!DOCTYPE html>
-            <html>
-            <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
-              <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
-              <style>
-                html, body { margin:0; padding:0; height:100%; }
-                #map { height:100%; width:100%; }
-              </style>
-            </head>
-            <body>
-              <div id="map"></div>
-              <script>
-                window.map = L.map('map').setView([${defaultLat}, ${defaultLng}], 15);
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
+      <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+      <style>
+        html, body { margin:0; padding:0; height:100%; }
+        #map { height:100%; width:100%; }
+      </style>
+    </head>
+    <body>
+    <div id="map"></div>
+    <script>
+    window.map = L.map('map').setView([${defaultLat}, ${defaultLng}], 15);
         
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                  attribution: '© OpenStreetMap contributors'
-                }).addTo(window.map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+    }).addTo(window.map);
         
-                window.marker = L.marker([${defaultLat}, ${defaultLng}]).addTo(window.map);
+    window.marker = L.marker([${defaultLat}, ${defaultLng}]).addTo(window.map);
                 
-                window.map.on('click', function(e) {
-                  var lat = e.latlng.lat;
-                  var lng = e.latlng.lng;
-                  window.marker.setLatLng([lat, lng]);
-                  window.ReactNativeWebView.postMessage(
-                    JSON.stringify({ lat: lat, lng: lng })
-                    );
-                    });
-                    </script>
-                    </body>
-                    </html>
-                    `;
+    window.map.on('click', function(e) {
+    var lat = e.latlng.lat;
+    var lng = e.latlng.lng;
+    window.marker.setLatLng([lat, lng]);
+    window.ReactNativeWebView.postMessage(
+    JSON.stringify({ lat: lat, lng: lng })
+    );
+    });
+    </script>
+    </body>
+    </html>
+    `;
   }, []);
 
   const handleSelectLocation = async () => {
@@ -226,7 +182,6 @@ function CustomerHome() {
       const data = await response.json();
 
       setLocation(data.features[0].properties);
-      console.log('selected location', data.features[0].properties);
     } catch (error) {
       Alert.alert('Error saving location');
       console.log('Failed to fetch map', error);
@@ -269,7 +224,6 @@ function CustomerHome() {
 
           const data = await response.json();
           setLocation(data.features[0].properties);
-          console.log('current location', data.features[0].properties);
 
           setLoading(false);
         },
@@ -303,11 +257,10 @@ function CustomerHome() {
           .filter(Boolean)
           .join(', ');
 
-        const res = await API.post('/api/auth/setAddress', {
+        await API.post('/api/auth/setAddress', {
           location: locationString,
           email: user?.email,
         });
-        console.log('res', res);
       } else {
         const locationString = [
           location?.name,
@@ -317,11 +270,10 @@ function CustomerHome() {
           .filter(Boolean)
           .join(', ');
 
-        const res = await API.post('/api/auth/setAddress', {
+        await API.post('/api/auth/setAddress', {
           location: locationString,
           email: user?.email,
         });
-        console.log('res', res);
       }
       await refreshUser();
       setOpenLocation(false);
@@ -347,7 +299,7 @@ function CustomerHome() {
       });
 
       const stores = response.data.stores || [];
-      console.log('stores', stores);
+
       setAllShops(stores);
       setFilteredShops(stores);
     } catch (error) {
@@ -355,8 +307,25 @@ function CustomerHome() {
     }
   };
 
+  const fetchProducts = async () => {
+    const token = await AsyncStorage.getItem('token');
+
+    try {
+      const response = await API.get('/api/product/getAllProducts?limit=10', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setProducts(response.data.products);
+    } catch (error) {
+      console.log('Failed to fetch products', error);
+    }
+  };
+
   useEffect(() => {
     fetchShops();
+    fetchProducts();
   }, []);
 
   const handleCategorySelect = (categoryKey: string) => {
@@ -490,24 +459,43 @@ function CustomerHome() {
             <Text style={styles.sectionTitle}>Recommended</Text>
             <Text style={styles.viewLink}>See All</Text>
           </View>
+          {/*  */}
 
-          <FlatList
-            data={recommendedProducts}
-            keyExtractor={item => item.id}
-            numColumns={2}
-            scrollEnabled={false}
-            columnWrapperStyle={styles.productRow}
-            contentContainerStyle={styles.productContainer}
-            renderItem={({ item }) => (
-              <View style={styles.productItem}>
-                <ProductCard
-                  image={item.image}
-                  name={item.productName}
-                  price={item.price}
-                />
+          <View style={styles.gridContainer}>
+            {products?.map((product: any) => (
+              <View key={product?.id} style={styles.productCard}>
+                <TouchableOpacity
+                  style={styles.productImageContainer}
+                  onPress={() => navigation.navigate('ShopProductDetail')}
+                >
+                  <Image
+                    style={styles.productImage}
+                    source={{
+                      uri: `http://192.168.1.12:5000${product.image}`,
+                    }}
+                  />
+                </TouchableOpacity>
+                <View style={styles.productContentContainer}>
+                  <Text style={styles.productName}>{product.productName}</Text>
+                  <Text style={styles.productcategory}>{product.category}</Text>
+                  <View style={styles.productSubContainer}>
+                    <Text style={styles.productPrice}>₹{product.price}.00</Text>
+
+                    {product.stock <= 30 ? (
+                      <Text style={styles.outOfStockStatus}>Out of Stock</Text>
+                    ) : product.stock > 30 && product.stock < 60 ? (
+                      <Text style={styles.lowStockStatus}>Low Stock</Text>
+                    ) : (
+                      <Text style={styles.inStockStatus}>Active</Text>
+                    )}
+                  </View>
+                </View>
+                <View style={styles.stockBadge}>
+                  <Text style={styles.stockText}>{product.stock} in stock</Text>
+                </View>
               </View>
-            )}
-          />
+            ))}
+          </View>
         </View>
       </ScrollView>
       <Modal

@@ -114,3 +114,56 @@ export const productOffers = [
   { label: '40%', value: '40' },
   { label: '50%', value: '50' },
 ];
+
+export const categoriesForCustomer = [
+  {
+    label: 'All',
+    key: 'all',
+    value: require('../assets/icons/grocery.png'),
+  },
+  {
+    label: 'Grocery',
+    key: 'grocery',
+    value: require('../assets/icons/grocery.png'),
+  },
+  {
+    label: 'Fresh',
+    key: 'fresh',
+    value: require('../assets/icons/fresh.png'),
+  },
+  {
+    label: 'Personal',
+    key: 'personal',
+    value: require('../assets/icons/personal.png'),
+  },
+  {
+    label: 'Household',
+    key: 'household',
+    value: require('../assets/icons/home.png'),
+  },
+  {
+    label: 'Babycare',
+    key: 'babycare',
+    value: require('../assets/icons/baby.png'),
+  },
+  {
+    label: 'Healthcare',
+    key: 'healthcare',
+    value: require('../assets/icons/health.png'),
+  },
+  {
+    label: 'Fashion',
+    key: 'fashion',
+    value: require('../assets/icons/fashion.png'),
+  },
+  {
+    label: 'Electronic',
+    key: 'electronic',
+    value: require('../assets/icons/electronic.png'),
+  },
+  {
+    label: 'Stationery',
+    key: 'stationery',
+    value: require('../assets/icons/stationery.png'),
+  },
+];

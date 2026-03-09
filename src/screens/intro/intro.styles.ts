@@ -28,11 +28,10 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   badgeText: {
-    fontSize: 10,
-    fontWeight: '600',
+    fontSize: 12,
     color: '#ff5b27',
-    letterSpacing: 0.5,
     fontFamily: 'Poppins-SemiBold',
+    marginBottom: -2
   },
   title: {
     fontSize: 28,
@@ -96,7 +95,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
   },
   terms: {
-    fontSize: 11,
+    fontSize: 12,
     color: '#000000a3',
     textAlign: 'center',
     fontFamily: 'Poppins-Regular',

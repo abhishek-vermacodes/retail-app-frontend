@@ -44,5 +44,6 @@ const styles = StyleSheet.create({
   LoadingContainer: {
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: '#fff',
   },
 });

@@ -7,55 +7,51 @@ import {
   Text,
   TouchableOpacity,
   StatusBar,
-  TextInput,
   ScrollView,
   Image,
 } from 'react-native';
 
-import API from '../../api/authApi';
+// import API from '../../api/authApi';
 import styles from './shopProductDetail.styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
 const ShopProductDetail = () => {
   const navigation = useNavigation<any>();
 
-  const route = useRoute<any>();
-  const { id } = route.params;
-
-  const [isVisible, setIsVisible] = useState(false);
+  // const route = useRoute<any>();
+  // const { id } = route.params;
 
   const [product, setProduct] = useState<Product | null>();
   const [like, setLike] = useState(false);
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      const token = await getToken();
-      try {
-        const response = await API.get(
-          `/api/products/getProductForCustomerById/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-        console.log(response.data.product);
-        setProduct(response.data.product);
-      } catch (error) {
-        console.log('Failed to Fetch Product', error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchProduct = async () => {
+  //     const token = await getToken();
+  //     try {
+  //       const response = await API.get(
+  //         `/api/products/getProductForCustomerById/${id}`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         },
+  //       );
+  //       console.log(response.data.product);
+  //       setProduct(response.data.product);
+  //     } catch (error) {
+  //       console.log('Failed to Fetch Product', error);
+  //     }
+  //   };
 
-    fetchProduct();
-  }, [id]);
+  //   fetchProduct();
+  // }, [id]);
 
-  const getStockStatus = (stock: any) => {
-    if (stock <= 0) return 'Out of Stock';
-    if (stock < 60) return 'Low Stock';
-    return 'Active';
-  };
+  // const getStockStatus = (stock: any) => {
+  //   if (stock <= 0) return 'Out of Stock';
+  //   if (stock < 60) return 'Low Stock';
+  //   return 'Active';
+  // };
 
   return (
     <View style={styles.container}>

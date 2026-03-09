@@ -2,7 +2,7 @@ import Icon from 'react-native-vector-icons/FontAwesome6';
 
 import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StatusBar, Text, View } from 'react-native';
+import { Image, StatusBar, Text, View } from 'react-native';
 import styles from './splash.styles';
 
 const Splash = () => {
@@ -19,14 +19,20 @@ const Splash = () => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle={'dark-content'} />
-      <View style={styles.iconWrapper}>
+      {/* <View style={styles.iconWrapper}>
         <Icon name="cart-shopping" color={'white'} size={34} />
+      </View> */}
+      <View style={styles.logoContainer}>
+        <Image
+          source={require('../../assets/logos/retailPro.png')}
+          style={styles.logo}
+        />
       </View>
-      <Text style={styles.title}>Retail Pro</Text>
+      {/* <Text style={styles.title}>Retail Pro</Text>
       <Text style={styles.subtitle} numberOfLines={3}>
         Manage inventory, tract sales, and grow your retail business in one
         place.
-      </Text>
+      </Text> */}
     </View>
   );
 };
