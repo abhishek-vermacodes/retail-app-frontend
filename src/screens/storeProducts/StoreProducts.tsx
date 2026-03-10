@@ -12,11 +12,11 @@ import styles from './storeProducts.styles';
 import API from '../../api/authApi';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { categories, Product } from '../../types/type';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { getToken } from '../../utils/storage';
 
 const StoreProducts = () => {
   const navigation = useNavigation<any>();
@@ -26,7 +26,7 @@ const StoreProducts = () => {
   const [products, setProducts] = useState<Product[] | null>([]);
 
   const getProducts = async () => {
-    const token = await AsyncStorage.getItem('token');
+    const token = await getToken();
     try {
       const response = await API.get('/api/product/my-products', {
         headers: {

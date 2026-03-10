@@ -21,7 +21,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Geolocation from 'react-native-geolocation-service';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
@@ -30,6 +29,7 @@ import { useNavigation } from '@react-navigation/native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { LocationProperties, shopCategories, Store } from '../../types/type';
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { getToken } from '../../utils/storage';
 
 const RetailerHome = () => {
   const navigation = useNavigation<any>();
@@ -126,7 +126,7 @@ const RetailerHome = () => {
 
   const getStore = async () => {
     try {
-      const token = await AsyncStorage.getItem('token');
+      const token = await getToken();
 
       const response = await API.get('/api/store/my-store', {
         headers: {

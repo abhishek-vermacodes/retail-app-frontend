@@ -11,3 +11,20 @@ export const getToken = async () => {
 export const removeToken = async () => {
   await AsyncStorage.removeItem('token');
 };
+
+export const setCartItem = async (item: any) => {
+  try {
+    await AsyncStorage.setItem('item', JSON.stringify(item));
+  } catch (error) {
+    console.log('Error saving item', error);
+  }
+};
+
+export const getCartItem = async () => {
+  try {
+    const data = await AsyncStorage.getItem('item');
+    return data ? JSON.parse(data) : null;
+  } catch (error) {
+    console.log('Error getting item', error);
+  }
+};

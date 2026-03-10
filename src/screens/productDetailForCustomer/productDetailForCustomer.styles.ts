@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   },
   productMainContainer: {
     margin: 0,
+    padding: 0,
   },
   productImgContainer: {
     width: '100%',
@@ -64,303 +65,211 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     zIndex: 1000,
   },
+  offerContainer: {
+    backgroundColor: '#fff5f0',
+    position: 'absolute',
+    bottom: -20,
+    right: 26,
+    padding: 4,
+    borderRadius: 30,
+  },
+  offer: {
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 30,
+    backgroundColor: '#ff5b27',
+  },
+  offerText: {
+    fontSize: 12,
+    fontFamily: 'Poppins-Medium',
+    marginBottom: -3,
+    color: '#fff',
+  },
+  stockBadgeContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#008000',
+    position: 'absolute',
+    top: 14,
+    left: 14,
+    zIndex: 999999,
+  },
+  stockBadgeText: {
+    fontSize: 12,
+    fontFamily: 'Poppins-Medium',
+    marginBottom: -3,
+    color: '#008000',
+  },
+  outOfStockBadgeContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#FF0000',
+    position: 'absolute',
+    top: 14,
+    left: 14,
+    zIndex: 999999,
+  },
+  outOfStockBadgeText: {
+    fontSize: 12,
+    fontFamily: 'Poppins-Medium',
+    marginBottom: -3,
+    color: '#FF0000',
+  },
   productContentContainer: {
     marginTop: 20,
     flexDirection: 'column',
     gap: 10,
   },
   productSubContentContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: 'column',
+    gap: 4,
   },
   productNameContainer: {
     flexDirection: 'column',
   },
+  categoryText: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 14,
+    color: '#000000a3',
+  },
   productName: {
-    fontSize: 20,
+    fontSize: 26,
     fontFamily: 'Poppins-Bold',
   },
-  btnContainer: {
+  priceContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    gap: 14,
+    marginBottom: 10,
   },
-  decreamentBtn: {
-    height: 40,
-    width: 40,
+  priceSubContainer: {
+    flexDirection: 'row',
+    gap: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: '#ffe3d9',
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderRadius: 30,
   },
-  increamentBtn: {
-    height: 40,
-    width: 40,
-    justifyContent: 'center',
+  offerPriceText: {
+    fontSize: 24,
+    fontFamily: 'Poppins-Bold',
+    margin: 0,
+    padding: 0,
+    color: '#ff5b27',
+  },
+  priceText: {
+    textDecorationLine: 'line-through',
+    fontFamily: 'Poppins-Regular',
+    fontSize: 14,
+    color: '#000000a3',
+  },
+  ratingContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#ff5b27',
-    borderRadius: 30,
+    gap: 6,
   },
-  quantityText: {
-    fontFamily: 'Poppins-Medium',
-    fontSize: 16,
+  ratingText: {
     marginBottom: -2,
+    fontFamily: 'Poppins-Regular',
+    color: '#000000a3',
+  },
+  descriptionContainer: {
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 16,
+    fontFamily: 'Poppins-Bold',
   },
   descritpionText: {
     fontFamily: 'Poppins-Regular',
     fontSize: 14,
+    color: '#000000a3',
   },
-  // nameContainer: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  //   alignItems: 'center',
-  // },
-  // productTitle: {
-  //   fontFamily: 'Poppins-Bold',
-  //   fontSize: 20,
-  // },
-  // productPrice: {
-  //   fontSize: 16,
-  //   fontFamily: 'Poppins-SemiBold',
-  //   color: '#ff5b27',
-  // },
-  // stockContainer: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   gap: 10,
-  // },
-  // stockStatusBadge: {
-  //   backgroundColor: '#277a0022',
-  //   paddingVertical: 6,
-  //   paddingHorizontal: 14,
-  //   borderRadius: 8,
-  // },
-  // stockStatusBadgeText: {
-  //   color: '#277a00',
-  //   fontFamily: 'Poppins-Medium',
-  //   fontSize: 12,
-  // },
-  // stockBadge: {
-  //   backgroundColor: '#dddddd',
-  //   paddingVertical: 6,
-  //   paddingHorizontal: 14,
-  //   borderRadius: 8,
-  // },
-  // stockBadgeText: {
-  //   fontFamily: 'Poppins-Medium',
-  //   fontSize: 12,
-  // },
-  // infoGrid: {
-  //   flexDirection: 'row',
-  //   flexWrap: 'wrap',
-  //   gap: 12,
-  //   marginTop: 16,
-  // },
-  // infoCard: {
-  //   width: '48%',
-  //   backgroundColor: '#fff',
-  //   borderRadius: 12,
-  //   padding: 12,
-  // },
-  // infoLabel: {
-  //   fontSize: 12,
-  //   color: '#000000a3',
-  //   fontFamily: 'Poppins-Regular',
-  // },
-  // infoValue: {
-  //   fontSize: 14,
-  //   fontFamily: 'Poppins-SemiBold',
-  //   marginTop: 4,
-  // },
-  // sectionTitle: {
-  //   fontSize: 16,
-  //   fontFamily: 'Poppins-SemiBold',
-  //   marginTop: 20,
-  // },
-  // description: {
-  //   fontSize: 13,
-  //   color: '#000000a3',
-  //   marginTop: 6,
-  //   lineHeight: 20,
-  //   fontFamily: 'Poppins-Regular',
-  // },
-  // actionRow: {
-  //   flexDirection: 'row',
-  //   gap: 12,
-  //   marginTop: 20,
-  //   marginBottom: 40,
-  // },
-  // moreBtn: {
-  //   flex: 1,
-  //   backgroundColor: '#ffe3d9',
-  //   paddingVertical: 14,
-  //   borderRadius: 30,
-  //   alignItems: 'center',
-  // },
-  // moreText: {
-  //   color: '#ff5b27',
-  //   fontFamily: 'Poppins-SemiBold',
-  // },
-  // editBtn: {
-  //   flex: 1,
-  //   backgroundColor: '#ff5b27',
-  //   paddingVertical: 14,
-  //   borderRadius: 30,
-  //   alignItems: 'center',
-  // },
-  // editText: {
-  //   color: '#fff',
-  //   fontFamily: 'Poppins-SemiBold',
-  // },
-
-  // headerContainer: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   gap: 20,
-  //   marginBottom: 10,
-  //   position: 'relative',
-  // },
-  // menuBtn: {
-  //   position: 'absolute',
-  //   right: 0,
-  // },
-
-  // productImage: {
-  //   width: '100%',
-  //   height: 260,
-  //   borderRadius: 20,
-  //   marginTop: 10,
-  // },
-
-  // titleRow: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  //   marginTop: 16,
-  // },
-  // productName: {
-  //   fontFamily: 'Poppins-Bold',
-  //   fontSize: 20,
-  // },
-  // price: {
-  //   fontSize: 18,
-  //   fontFamily: 'Poppins-SemiBold',
-  //   color: '#ff5b27',
-  // },
-
-  // statusRow: {
-  //   flexDirection: 'row',
-  //   gap: 10,
-  //   marginTop: 6,
-  //   alignItems: 'center',
-  // },
-
-  // stockStatusBadge: {
-  //   backgroundColor: '#277a0022',
-  //   paddingVertical: 6,
-  //   paddingHorizontal: 14,
-  //   borderRadius: 8,
-  // },
-  // stockStatusBadgeText: {
-  //   color: '#277a00',
-  //   fontFamily: 'Poppins-Medium',
-  //   fontSize: 12,
-  // },
-  // stockBadge: {
-  //   backgroundColor: '#dddddd',
-  //   paddingVertical: 6,
-  //   paddingHorizontal: 14,
-  //   borderRadius: 8,
-  // },
-  // stockBadgeText: {
-  //   fontFamily: 'Poppins-Medium',
-  //   fontSize: 12,
-  // },
-
-  // infoGrid: {
-  //   flexDirection: 'row',
-  //   flexWrap: 'wrap',
-  //   gap: 12,
-  //   marginTop: 16,
-  // },
-  // infoCard: {
-  //   width: '48%',
-  //   backgroundColor: '#fff',
-  //   borderRadius: 12,
-  //   padding: 12,
-  // },
-  // infoLabel: {
-  //   fontSize: 12,
-  //   color: '#000000a3',
-  //   fontFamily: 'Poppins-Regular',
-  // },
-  // infoValue: {
-  //   fontSize: 14,
-  //   fontFamily: 'Poppins-SemiBold',
-  //   marginTop: 4,
-  // },
-
-  // sectionTitle: {
-  //   fontSize: 16,
-  //   fontFamily: 'Poppins-SemiBold',
-  //   marginTop: 20,
-  // },
-  // description: {
-  //   fontSize: 13,
-  //   color: '#000000a3',
-  //   marginTop: 6,
-  //   lineHeight: 20,
-  //   fontFamily: 'Poppins-Regular',
-  // },
-
-  // variantRow: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  //   paddingVertical: 10,
-  //   borderBottomWidth: 1,
-  //   borderColor: '#eee',
-  // },
-  // variantText: {
-  //   fontSize: 14,
-  //   fontFamily: 'Poppins-Regular',
-  // },
-  // variantStock: {
-  //   fontSize: 14,
-  //   color: '#000000a3',
-  //   fontFamily: 'Poppins-Regular',
-  // },
-
-  // actionRow: {
-  //   flexDirection: 'row',
-  //   gap: 12,
-  //   marginTop: 20,
-  //   marginBottom: 40,
-  // },
-  // moreBtn: {
-  //   flex: 1,
-  //   backgroundColor: '#ffe3d9',
-  //   paddingVertical: 14,
-  //   borderRadius: 30,
-  //   alignItems: 'center',
-  // },
-  // moreText: {
-  //   color: '#ff5b27',
-  //   fontFamily: 'Poppins-SemiBold',
-  // },
-  // editBtn: {
-  //   flex: 1,
-  //   backgroundColor: '#ff5b27',
-  //   paddingVertical: 14,
-  //   borderRadius: 30,
-  //   alignItems: 'center',
-  // },
-  // editText: {
-  //   color: '#fff',
-  //   fontFamily: 'Poppins-SemiBold',
-  // },
+  extraDetailContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#ffe3d9',
+    borderRadius: 10,
+    marginBottom: 20,
+    padding: 10,
+  },
+  infoContainer: {
+    height: 100,
+    width: '32%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  infoIcon: {
+    marginBottom: 10,
+  },
+  infoTitle: {
+    fontSize: 12,
+    fontFamily: 'Poppins-Bold',
+  },
+  infoSubTitle: {
+    fontSize: 12,
+    fontFamily: 'Poppins-Regular',
+    color: '#000000a3',
+    marginTop: -4,
+  },
+  verticalLine: {
+    borderRightWidth: 1,
+    borderColor: '#ffe3d9',
+  },
+  shopContainer: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#ffe3d9',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 10,
+    gap: 14,
+  },
+  shopImageContainer: {
+    height: 90,
+    width: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  shopImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 6,
+  },
+  shopContentContainer: {
+    flexDirection: 'column',
+  },
+  shopNameText: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: 16,
+    marginBottom: 4,
+  },
+  shopRatingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 4,
+  },
+  shopRatingText: {
+    fontFamily: 'Poppins-Medium',
+    fontSize: 12,
+    color: '#000000a3',
+  },
+  shopLocationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  shopLocationText: {
+    fontFamily: 'Poppins-Medium',
+    fontSize: 12,
+    marginBottom: -2,
+    color: '#000000a3',
+  },
   buttonContainer: {
     flexDirection: 'row',
     alignItems: 'center',

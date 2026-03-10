@@ -23,7 +23,6 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Geolocation from 'react-native-geolocation-service';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { LocationProperties, Store } from '../../types/type';
 import { AuthContext } from '../../context/AuthContext';
@@ -32,6 +31,7 @@ import { useNavigation } from '@react-navigation/native';
 import { CustomerStackParamList } from '../../navigation/CustomerNavigator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import styles from './CustomerHome.styles';
+import { getToken } from '../../utils/storage';
 
 const categories = [
   {
@@ -289,7 +289,8 @@ function CustomerHome() {
   >;
 
   const fetchShops = async () => {
-    const token = await AsyncStorage.getItem('token');
+    const token = await getToken()
+
 
     try {
       const response = await API.get('/api/store/get-all-stores?limit=10', {
@@ -308,7 +309,8 @@ function CustomerHome() {
   };
 
   const fetchProducts = async () => {
-    const token = await AsyncStorage.getItem('token');
+       const token = await getToken();
+
 
     try {
       const response = await API.get('/api/product/getAllProducts?limit=10', {

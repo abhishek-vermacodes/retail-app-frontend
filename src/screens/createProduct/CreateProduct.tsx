@@ -15,13 +15,14 @@ import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 import { useState } from 'react';
 import { Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { categories, productOffers } from '../../types/type';
+import { getToken } from '../../utils/storage';
 
 const CreateProduct = () => {
   const navigation = useNavigation<any>();
@@ -68,7 +69,7 @@ const CreateProduct = () => {
       name: product.image.fileName || 'product.jpg',
     } as any);
 
-    const token = await AsyncStorage.getItem('token');
+    const token = await getToken()
     console.log('token', token);
 
     if (

@@ -15,10 +15,9 @@ const CustomerBottomTabNavigator = () => {
       screenOptions={{ headerShown: false }}
     >
       <Tab.Screen name="Home" component={CustomerHome} />
-      <Tab.Screen name="Cart" component={Cart} />
       <Tab.Screen name="Orders" component={UserOrders} />
+      <Tab.Screen name="Cart" component={Cart} />
       <Tab.Screen name="Profile" component={UserProfile} />
-
     </Tab.Navigator>
   );
 };

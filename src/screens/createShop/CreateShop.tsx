@@ -14,12 +14,12 @@ import styles from './CreateShop.styles';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { shopCategories } from '../../types/type';
+import { getToken } from '../../utils/storage';
 
 const CreateShop = () => {
   const navigation = useNavigation<any>();
@@ -80,7 +80,7 @@ const CreateShop = () => {
     try {
       setLoading(true);
 
-      const token = await AsyncStorage.getItem('token');
+      const token = await getToken()
 
       await API.post('/api/store', formData, {
         headers: {

@@ -7,13 +7,15 @@ import {
   Image,
 } from 'react-native';
 
+import API from '../../api/authApi';
 import styles from './productDetailForCustomer.styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import { useNavigation, useRoute } from '@react-navigation/native';
+
 import { useEffect, useState } from 'react';
-import API from '../../api/authApi';
-import { getToken } from '../../utils/storage';
+import { getToken, setCartItem } from '../../utils/storage';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const ProductDetailForCustomer = () => {
   const navigation = useNavigation<any>();
@@ -21,36 +23,9 @@ const ProductDetailForCustomer = () => {
   const route = useRoute<any>();
   const { id } = route.params;
 
-  const [product, setProduct] = useState<any | null>();
   const [like, setLike] = useState(false);
-
-  // useEffect(() => {
-  //   const fetchProduct = async () => {
-  //     const token = await getToken();
-  //     try {
-  //       const response = await API.get(
-  //         `/api/products/getProductForCustomerById/${id}`,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         },
-  //       );
-  //       console.log(response.data.product);
-  //       setProduct(response.data.product);
-  //     } catch (error) {
-  //       console.log('Failed to Fetch Product', error);
-  //     }
-  //   };
-
-  //   fetchProduct();
-  // }, [id]);
-
-  // const getStockStatus = (stock: any) => {
-  //   if (stock <= 0) return 'Out of Stock';
-  //   if (stock < 60) return 'Low Stock';
-  //   return 'Active';
-  // };
+  const [product, setProduct] = useState<any | null>();
+  console.log('product', product);
 
   useEffect(() => {
     const getProduct = async () => {
@@ -71,7 +46,13 @@ const ProductDetailForCustomer = () => {
       }
     };
     getProduct();
-  });
+  }, [id]);
+
+  const getOfferPrice = (price: number, offer: number) => {
+    const offerAmount = (price * offer) / 100;
+    const finalPrice = price - offerAmount;
+    return finalPrice;
+  };
 
   return (
     <View style={styles.container}>
@@ -110,116 +91,140 @@ const ProductDetailForCustomer = () => {
                 uri: `http://192.168.1.12:5000${product?.image}`,
               }}
             />
+            <View
+              style={[
+                styles.stockBadgeContainer,
+                product?.stock === 0 && styles.outOfStockBadgeContainer,
+              ]}
+            >
+              <Text
+                style={[
+                  styles.stockBadgeText,
+                  product?.stock === 0 && styles.outOfStockBadgeText,
+                ]}
+              >
+                {product?.stock === 0 ? 'Out of Stock' : 'In Stock'}
+              </Text>
+            </View>
+            <View style={styles.offerContainer}>
+              <View style={styles.offer}>
+                <Text style={styles.offerText}>{product?.offers}% OFF</Text>
+              </View>
+            </View>
           </View>
 
           <View style={styles.productContentContainer}>
             <View style={styles.productSubContentContainer}>
               <View style={styles.productNameContainer}>
+                <Text style={styles.categoryText}>{product?.category}</Text>
                 <Text style={styles.productName}>{product?.productName}</Text>
               </View>
-              <View style={styles.btnContainer}>
-                <TouchableOpacity style={styles.decreamentBtn}>
-                  <FontAwesome6 name="minus" size={14} color={'#000'} />
-                </TouchableOpacity>
-                <Text style={styles.quantityText}>1</Text>
-                <TouchableOpacity style={styles.increamentBtn}>
-                  <FontAwesome6 name="plus" size={14} color={'#fff'} />
-                </TouchableOpacity>
+              <View style={styles.priceContainer}>
+                <View style={styles.priceSubContainer}>
+                  <Text style={styles.offerPriceText}>
+                    ₹{' '}
+                    {getOfferPrice(
+                      Number(product?.price) || 0,
+                      Number(product?.offers) || 0,
+                    )}
+                    .00
+                  </Text>
+                  <Text style={styles.priceText}>₹ {product?.price}.00</Text>
+                </View>
+                <View style={styles.ratingContainer}>
+                  <FontAwesome name="star" size={16} color={'#ffc905'} />
+                  <Text style={styles.ratingText}>4.9 (185)</Text>
+                </View>
+              </View>
+              <View style={styles.descriptionContainer}>
+                <Text style={styles.label}>Description</Text>
+                <Text style={styles.descritpionText}>
+                  {/* {product?.description} */}
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Omnis, impedit laudantium ipsam aut natus dolorem! Ut libero
+                  quasi eligendi? Illo.
+                </Text>
               </View>
             </View>
-
-            {/* <View style={styles.productSubContentContainer}>
-              <Text></Text>
-            </View> */}
-
-            <Text style={styles.descritpionText}>{product?.description}</Text>
-
-            {/* <View style={styles.nameContainer}>
-              <Text style={styles.productTitle}>{product?.productName}</Text>
-
-              <Text style={styles.productPrice}>₹ {product?.price}.00</Text>
-            </View> */}
-
-            {/* <View style={styles.stockContainer}>
-              <View style={styles.stockStatusBadge}>
-                <Text style={styles.stockStatusBadgeText}>
-                  {getStockStatus(product?.stock)}
-                </Text>
-              </View>
-
-              <View style={styles.stockBadge}>
-                <Text style={styles.stockBadgeText}>
-                  {product?.stock} in Stock
-                </Text>
-              </View>
-            </View> */}
-
-            {/* <View style={styles.infoGrid}>
-              <View style={styles.infoCard}>
-                <Text style={styles.infoLabel}>Category</Text>
-                <Text style={styles.infoValue}>{product?.category}</Text>
-              </View>
-
-              <View style={styles.infoCard}>
-                <Text style={styles.infoLabel}>SKU</Text>
-                <Text style={styles.infoValue}>{product?.sku || 'N/A'}</Text>
-              </View>
-
-              <View style={styles.infoCard}>
-                <Text style={styles.infoLabel}>Sold</Text>
-                <Text style={styles.infoValue}>{product?.sold || 0}</Text>
-              </View>
-
-              <View style={styles.infoCard}>
-                <Text style={styles.infoLabel}>Revenue</Text>
-                <Text style={styles.infoValue}>
-                  ₹ {(product?.sold || 0) * product?.price}
-                </Text>
-              </View>
-            </View> */}
-
-            {/* <Text style={styles.sectionTitle}>Description</Text>
-            <Text style={styles.description}>
-              {product?.description || 'No description available'}
-            </Text> */}
-
-            {/* {product.variants?.length > 0 && (
-              <>
-                <Text style={styles.sectionTitle}>Variants & Stock</Text>
-
-                {product.variants.map((item: any, index: number) => (
-                  <View key={index} style={styles.variantRow}>
-                    <Text style={styles.variantText}>
-                      {item.size} - {item.color}
-                    </Text>
-
-                    <Text
-                      style={[
-                        styles.variantStock,
-                        item.stock === 0 && { color: 'red' },
-                      ]}
-                    >
-                      {item.stock} units
-                    </Text>
-                  </View>
-                ))}
-              </>
-            )} */}
-
-            {/* <View style={styles.actionRow}>
-              <TouchableOpacity style={styles.moreBtn}>
-                <Text style={styles.moreText}>More</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.editBtn}>
-                <Text style={styles.editText}>Edit Product</Text>
-              </TouchableOpacity>
-            </View> */}
           </View>
+
+          <View style={styles.extraDetailContainer}>
+            <View style={styles.infoContainer}>
+              <FontAwesome
+                name="user"
+                color={'#ff5b27'}
+                size={18}
+                style={styles.infoIcon}
+              />
+              <Text style={styles.infoTitle}>24/7</Text>
+              <Text style={styles.infoSubTitle}>Support</Text>
+            </View>
+            <View style={styles.verticalLine} />
+            <View style={styles.infoContainer}>
+              <FontAwesome6
+                name="arrow-rotate-left"
+                size={18}
+                style={styles.infoIcon}
+                color={'#ff5b27'}
+              />
+              <Text style={styles.infoTitle}>72 hours</Text>
+              <Text style={styles.infoSubTitle}>Replacement</Text>
+            </View>
+            <View style={styles.verticalLine} />
+
+            <View style={styles.infoContainer}>
+              <FontAwesome6
+                name="truck-fast"
+                size={18}
+                style={styles.infoIcon}
+                color={'#ff5b27'}
+              />
+              <Text style={styles.infoTitle}>Fast</Text>
+              <Text style={styles.infoSubTitle}>Delivery</Text>
+            </View>
+          </View>
+
+          <TouchableOpacity
+            style={styles.shopContainer}
+            onPress={() =>
+              navigation.navigate('ShopForCustomer', { shop: product?.store })
+            }
+          >
+            <View style={styles.shopImageContainer}>
+              <Image
+                style={styles.shopImage}
+                source={{
+                  uri: `http://192.168.1.12:5000${product?.store?.image}`,
+                }}
+              />
+            </View>
+            <View style={styles.shopContentContainer}>
+              <Text style={styles.shopNameText}>
+                {product?.store?.storeName}({product?.store?.category})
+              </Text>
+              <View style={styles.shopRatingContainer}>
+                <FontAwesome name="star" size={16} color={'#ffc905'} />
+                <Text style={styles.shopRatingText}>4.9 (185 Reviews)</Text>
+              </View>
+              <View style={styles.shopLocationContainer}>
+                <Ionicons name="location" size={16} color="#ff6a32" />
+                <Text style={styles.shopLocationText}>
+                  {product?.store?.address}
+                </Text>
+              </View>
+            </View>
+          </TouchableOpacity>
         </View>
       </ScrollView>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.cartButton}>
+        <TouchableOpacity
+          style={styles.cartButton}
+          // onPress={() => navigation.navigate('Cart', { item: product })}
+          onPress={() => {
+            setCartItem(product);
+            navigation.navigate('Cart');
+          }}
+        >
           <Text style={styles.cartButtonText}>Add to Cart</Text>
         </TouchableOpacity>
       </View>

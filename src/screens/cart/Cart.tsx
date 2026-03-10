@@ -1,12 +1,11 @@
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 
-// import CartItem from '../../components/CartItem';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
-// import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import styles from './cart.styles';
+import { getCartItem } from '../../utils/storage';
 
 // const initialCart = [
 //   {
@@ -55,6 +54,10 @@ import styles from './cart.styles';
 
 function Cart() {
   const navigation = useNavigation<any>();
+
+  const getItems = getCartItem();
+  console.log('cart items', getItems);
+
   // const [cartItems, setCartItems] = useState(initialCart);
 
   // const increaseQty = (id: string) => {
@@ -111,7 +114,7 @@ function Cart() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewStyle}
       >
-        {/* {cartItems.map(item => (
+        {/* {getItems.map(item => (
           <CartItem
             key={item.id}
             image={item.image}

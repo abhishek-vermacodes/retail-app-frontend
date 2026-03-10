@@ -3,7 +3,6 @@ import styles from './storeProductDetail.styles';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-// import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import {
@@ -14,7 +13,6 @@ import {
   ScrollView,
   Image,
   TextInput,
-  // Alert,
 } from 'react-native';
 
 import React, { useEffect, useState } from 'react';
@@ -23,9 +21,6 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { categories, Product } from '../../types/type';
 import { getToken } from '../../utils/storage';
 import API from '../../api/authApi';
-
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-// import API from '../../api/authApi';
 
 const StoreProductDetail = () => {
   const navigation = useNavigation<any>();
@@ -79,58 +74,6 @@ const StoreProductDetail = () => {
 
     fetchProduct();
   }, [id]);
-
-  // const handleUpdateProduct = async () => {
-  //   const formData = new FormData();
-
-  //   formData.append('productName', updateProduct.productName);
-  //   formData.append('price', updateProduct.price);
-  //   formData.append('stock', updateProduct.stock);
-  //   formData.append('category', updateProduct.category);
-  //   formData.append('description', updateProduct.description);
-  //   if (updateProduct.image) {
-  //     formData.append('image', {
-  //       uri: updateProduct.image.uri,
-  //       type: updateProduct.image.type || 'image/jpeg',
-  //       name: updateProduct.image.fileName || 'product.jpg',
-  //     } as any);
-  //   }
-
-  //   const token = await AsyncStorage.getItem('token');
-  //   console.log('token', token);
-
-  //   if (
-  //     !updateProduct.category ||
-  //     !updateProduct.description ||
-  //     !updateProduct.price ||
-  //     !updateProduct.productName ||
-  //     !updateProduct.stock
-  //   ) {
-  //     Alert.alert('Warning', 'All Field are Required');
-  //     return;
-  //   }
-  //   try {
-  //     await API.patch(`/api/products/${product.id}`, formData, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //     });
-
-  //     setUpdateProduct({
-  //       productName: '',
-  //       price: '',
-  //       stock: '',
-  //       category: '',
-  //       description: '',
-  //       image: '',
-  //     });
-  //     Alert.alert('Success', 'Product updated successfully');
-  //     setOpenModal(false);
-  //   } catch (error) {
-  //     console.error('Product updation failed', error);
-  //   }
-  // };
 
   const getOfferPrice = (price: number, offer: number) => {
     const offerAmount = (price * offer) / 100;

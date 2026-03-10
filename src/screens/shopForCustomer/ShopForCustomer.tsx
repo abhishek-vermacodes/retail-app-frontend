@@ -9,7 +9,7 @@ import {
   FlatList,
 } from 'react-native';
 
-import styles from './shopProducts.styles';
+
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -19,8 +19,9 @@ import { getToken } from '../../utils/storage';
 import { categories, Product } from '../../types/type';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import styles from './shopForCustomer.styles';
 
-const ShopProducts = () => {
+const ShopForCustomer = () => {
   const route = useRoute();
   const { shop } = route.params as any;
 
@@ -227,4 +228,4 @@ const ShopProducts = () => {
   );
 };
 
-export default ShopProducts;
+export default ShopForCustomer;
