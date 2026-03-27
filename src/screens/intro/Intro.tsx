@@ -1,3 +1,6 @@
+
+
+
 import {
   FlatList,
   Image,
@@ -8,7 +11,7 @@ import {
   View,
 } from 'react-native';
 
-import { useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import styles from './intro.styles';
 
@@ -35,15 +38,34 @@ const SLIDES = [
 const Intro = () => {
   const { width } = useWindowDimensions();
   const navigation = useNavigation<any>();
+
   const [activeIndex, setActiveIndex] = useState(0);
 
   const CARD_PADDING = 24;
   const SLIDE_WIDTH = width - CARD_PADDING * 2;
 
-  const onViewRef = useRef(({ viewableItems }: any) => {
+  const onViewableItemsChanged = useCallback(({ viewableItems }: any) => {
     if (viewableItems?.length) {
       setActiveIndex(viewableItems[0].index ?? 0);
     }
+  }, []);
+
+  
+
+  const renderItem = useCallback(
+    ({ item }: any) => (
+      <View style={{ width: SLIDE_WIDTH, alignItems: 'center' }}>
+        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.subtitle}>{item.subtitle}</Text>
+      </View>
+    ),
+    [SLIDE_WIDTH],
+  );
+
+  const getItemLayout = (_: any, index: number) => ({
+    length: SLIDE_WIDTH,
+    offset: SLIDE_WIDTH * index,
+    index,
   });
 
   return (
@@ -67,17 +89,9 @@ const Intro = () => {
           bounces={false}
           showsHorizontalScrollIndicator={false}
           keyExtractor={item => item.id}
-          style={{ height: 140 }}
-          contentContainerStyle={{
-            alignContent: 'center',
-          }}
-          renderItem={({ item }) => (
-            <View style={{ width: SLIDE_WIDTH, alignItems: 'center' }}>
-              <Text style={styles.title}>{item.title}</Text>
-              <Text style={styles.subtitle}>{item.subtitle}</Text>
-            </View>
-          )}
-          onViewableItemsChanged={onViewRef.current}
+          renderItem={renderItem}
+          getItemLayout={getItemLayout}
+          onViewableItemsChanged={onViewableItemsChanged}
           viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
         />
 

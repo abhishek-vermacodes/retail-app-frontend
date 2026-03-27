@@ -1,4 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
+import { responsive } from '../../theme/responsive';
+const screenWidth = Dimensions.get('screen').width;
 
 const styles = StyleSheet.create({
   container: {
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
   searchText: {
     fontFamily: 'Poppins-Regular',
     color: '#000',
-    marginBottom: -3
+    marginBottom: -3,
   },
   categoryContainer: {
     paddingBottom: 20,
@@ -82,8 +84,9 @@ const styles = StyleSheet.create({
   gridContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    gap: 14,
+    justifyContent: 'flex-start',
+    gap: 10,
+    width: '100%',
   },
   productCard: {
     width: '48%',
@@ -103,7 +106,9 @@ const styles = StyleSheet.create({
   },
   productImage: {
     width: '100%',
-    height: 168,
+ height: screenWidth > 500
+      ? responsive.height(160)
+      : responsive.height(150),
     resizeMode: 'cover',
     borderRadius: 10,
   },

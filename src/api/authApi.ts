@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://192.168.1.12:5000',
+  baseURL: 'http://192.168.1.15:5000',
 });
 
 export const signin = (data: { email: string; password: string }) =>

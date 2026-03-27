@@ -4,27 +4,29 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: '#fff5f0',
-    paddingHorizontal: 20,
-    paddingVertical: 60,
   },
-  headerContainer: {
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 20,
-    position: 'relative',
+    justifyContent: 'space-between',
+    paddingTop: 60,
     paddingBottom: 20,
+    paddingHorizontal: 20,
+    zIndex: 10,
   },
   backBtn: {
-    borderColor: '#bbb',
+    backgroundColor: 'white',
+    borderColor: '#ffe3d9',
     borderWidth: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
+    height: 40,
+    width: 40,
     borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   pageTitle: {
     fontSize: 20,
     fontFamily: 'Poppins-Bold',
-    color: '#000',
   },
   profileCardContainer: {
     backgroundColor: '#fff',
@@ -148,6 +150,10 @@ const styles = StyleSheet.create({
   settings: {
     fontFamily: 'Poppins-Regular',
     fontSize: 14,
+  },
+  scrollView: {
+    paddingBottom: 200,
+    paddingHorizontal: 20,
   },
 });
 

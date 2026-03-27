@@ -1,6 +1,8 @@
 import { Dimensions, StyleSheet } from 'react-native';
+import { responsive } from '../../theme/responsive';
 
 const { width } = Dimensions.get('window');
+const screenWidth = width;
 
 const styles = StyleSheet.create({
   container: {
@@ -50,18 +52,19 @@ const styles = StyleSheet.create({
   },
   productImgContainer: {
     width: '100%',
-    height: 360,
-    resizeMode: 'center',
+    height: 400,
+    resizeMode: 'contain',
     borderRadius: 20,
     backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#ffe3d9',
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 30,
   },
   productImg: {
-    width: '80%',
-    height: '80%',
+    width: '100%',
+    height: '100%',
     borderRadius: 20,
     zIndex: 1000,
   },
@@ -242,10 +245,12 @@ const styles = StyleSheet.create({
   },
   shopContentContainer: {
     flexDirection: 'column',
+    width: '100%',
   },
   shopNameText: {
     fontFamily: 'Poppins-Bold',
-    fontSize: 16,
+    fontSize:
+      screenWidth > 500 ? responsive.fontSize(16) : responsive.fontSize(13),
     marginBottom: 4,
   },
   shopRatingContainer: {
@@ -288,7 +293,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 100,
+    borderRadius: 16,
   },
   cartButtonText: {
     fontFamily: 'Poppins-Medium',

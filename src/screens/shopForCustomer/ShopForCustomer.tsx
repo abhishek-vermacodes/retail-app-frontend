@@ -38,7 +38,7 @@ const ShopForCustomer = () => {
       const token = await getToken();
       try {
         const response = await API.get(
-          `/api/products/getShopProducts/${shop.id}`,
+          `/api/product/getShopProducts/${shop.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -121,7 +121,7 @@ const ShopForCustomer = () => {
             <View style={styles.storeImgContainer}>
               <Image
                 source={{
-                  uri: `http://192.168.1.12:5000${shop.image}`,
+                  uri: `http://192.168.1.15:5000${shop.image}`,
                 }}
                 style={styles.storeImg}
                 resizeMode="cover"
@@ -198,7 +198,7 @@ const ShopForCustomer = () => {
                 <Image
                   style={styles.productImage}
                   source={{
-                    uri: `http://192.168.1.12:5000${product.image}`,
+                    uri: `http://192.168.1.15:5000${product.image}`,
                   }}
                 />
               </TouchableOpacity>

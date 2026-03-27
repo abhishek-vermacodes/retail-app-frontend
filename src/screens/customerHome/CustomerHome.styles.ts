@@ -108,8 +108,9 @@ const styles = StyleSheet.create({
   gridContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    gap: 14,
+    justifyContent: 'flex-start',
+    gap: 10,
+    width: '100%',
   },
   productCard: {
     width: '48%',
@@ -129,7 +130,7 @@ const styles = StyleSheet.create({
   },
   productImage: {
     width: '100%',
-    height: 160,
+    height: 120,
     resizeMode: 'center',
     borderRadius: 10,
   },

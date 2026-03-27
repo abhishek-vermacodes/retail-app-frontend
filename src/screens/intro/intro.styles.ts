@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 24,
     alignItems: 'center',
-    marginTop: -24,
+    marginTop: -54,
   },
   badge: {
     backgroundColor: '#ffded4',
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     marginBottom: -2
   },
   title: {
-    fontSize: 28,
+    fontSize: 26,
     color: '#000000',
     textAlign: 'center',
     lineHeight: 34,
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     color: '#000000a3',
     textAlign: 'center',
     lineHeight: 20,
-    marginBottom: 20,
+    // marginBottom: 20,
     fontFamily: 'Poppins-Regular',
   },
   dots: {
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     color: '#000000a3',
     textAlign: 'center',
     fontFamily: 'Poppins-Regular',
-    marginBottom: 70,
+    marginBottom: 30,
   },
 });
 

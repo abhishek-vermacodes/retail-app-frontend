@@ -1,57 +1,20 @@
 import {
   View,
-  Text,
-  FlatList,
+
   TouchableOpacity,
   ScrollView,
   TextInput,
 } from 'react-native';
 
-// import ProductCard from '../../components/ProductCard';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
 import { useState } from 'react';
-// import { useRoute, useNavigation } from '@react-navigation/native';
-import styles from './category.styles';
 
-// const products = [
-//   {
-//     id: '1',
-//     name: 'Apple',
-//     price: 3.5,
-//     category: 'fresh',
-//     image: require('../assets/images/bag.jpeg'),
-//   },
-//   {
-//     id: '2',
-//     name: 'Milk',
-//     price: 1.2,
-//     category: 'grocery',
-//     image: require('../assets/images/bag.jpeg'),
-//   },
-//   {
-//     id: '3',
-//     name: 'Bread',
-//     price: 2.0,
-//     category: 'grocery',
-//     image: require('../assets/images/bag.jpeg'),
-//   },
-//   {
-//     id: '3',
-//     name: 'Shampoo',
-//     price: 2.0,
-//     category: 'personal',
-//     image: require('../assets/images/bag.jpeg'),
-//   },
-//   {
-//     id: '3',
-//     name: 'Shirt',
-//     price: 2.0,
-//     category: 'fashion',
-//     image: require('../assets/images/bag.jpeg'),
-//   },
-// ];
+import styles from './category.styles';
+import { useNavigation } from '@react-navigation/native';
+
+
 
 function Category() {
   // const route = useRoute<any>();

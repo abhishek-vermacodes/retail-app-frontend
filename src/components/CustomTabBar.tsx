@@ -1,9 +1,28 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  Dimensions,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
+import { responsive } from '../theme/responsive';
+import { useCart } from '../context/CartContext';
+
+const screenWidth = Dimensions.get('screen').width;
 
 const CustomTabBar = ({ state, navigation, role }: any) => {
+
+  const { cartItems } = useCart();
+
+
+  const cartCount = cartItems.reduce(
+    (sum: number, item: any) => sum + (item.quantity || 1),
+    0,
+  );
+
   return (
     <View style={styles.wrapper}>
       <View style={styles.container}>
@@ -33,7 +52,19 @@ const CustomTabBar = ({ state, navigation, role }: any) => {
               return <Feather name="box" size={20} color={color} />;
 
             if (route.name === 'Cart')
-              return <Feather name="shopping-cart" size={20} color={color} />;
+              return (
+                <View>
+                  <Feather name="shopping-cart" size={20} color={color} />
+
+                  {cartCount > 0 && (
+                    <View style={styles.badge}>
+                      <Text style={styles.badgeText}>
+                        {cartCount > 99 ? '99+' : cartCount}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+              );
 
             if (route.name === 'Orders')
               return <Feather name="package" size={20} color={color} />;
@@ -66,8 +97,11 @@ const styles = StyleSheet.create({
     right: 0,
   },
   container: {
-    marginHorizontal: 20,
-    paddingHorizontal: 10,
+    marginHorizontal: 12,
+    paddingHorizontal:
+      screenWidth > 500
+        ? responsive.paddingHorizontal(20)
+        : responsive.paddingHorizontal(10),
     flexDirection: 'row',
     backgroundColor: '#ffe3d9',
     height: 80,
@@ -83,7 +117,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
-    top: 0,
   },
   label: {
     color: '#ff5b27',
@@ -96,12 +129,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ff5b27',
-    shadowColor: '#ff5b27',
     width: 60,
     height: 60,
     borderRadius: 32,
+    shadowColor: '#ff5b27',
     shadowOpacity: 0.4,
     shadowRadius: 10,
     elevation: 12,
+  },
+
+  // 🔥 Badge
+  badge: {
+    position: 'absolute',
+    top: -6,
+    right: -10,
+    backgroundColor: '#ff5b27',
+    borderRadius: 10,
+    minWidth: 16,
+    height: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 4,
+  },
+  badgeText: {
+    color: '#fff',
+    fontSize: 10,
+    fontWeight: 'bold',
   },
 });

@@ -8,6 +8,7 @@ import {
 import styles from './customerHelpCenter.styles';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -24,16 +25,17 @@ const CustomerHelpCenter = () => {
           style={styles.backBtn}
           onPress={() => navigation.goBack()}
         >
-          <FontAwesome6 name="arrow-left" size={18} color="#000" />
+         <Ionicons name="arrow-back" size={18} color="#000" />
         </TouchableOpacity>
         <Text style={styles.pageTitle}>Help Center</Text>
-        <Feather
-          name="search"
-          size={22}
-          color={'#000'}
-          style={styles.searchBtn}
-          onPress={() => setIsVisible(prev => !prev)}
-        />
+        <TouchableOpacity style={styles.searchBtn}>
+          <Ionicons
+            name="search"
+            size={18}
+            color={'#000'}
+            onPress={() => setIsVisible(prev => !prev)}
+          />
+        </TouchableOpacity>
       </View>
 
       {isVisible && (

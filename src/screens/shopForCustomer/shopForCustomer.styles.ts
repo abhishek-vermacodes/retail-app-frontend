@@ -176,8 +176,8 @@ const styles = StyleSheet.create({
   },
   productImage: {
     width: '100%',
-    height: 168,
-    resizeMode: 'cover',
+    height: 120,
+    resizeMode: 'center',
     borderRadius: 10,
   },
   productContentContainer: {

@@ -7,19 +7,11 @@ import CustomerHelpCenter from '../screens/helpCenter/CustomerHelpCenter';
 import ShopProductDetail from '../screens/productDetailForCustomer/ProductDetailForCustomer';
 import ShopForCustomer from '../screens/shopForCustomer/ShopForCustomer';
 import Cart from '../screens/cart/Cart';
+import Checkout from '../screens/checkout/Checkout';
+import AddLocation from '../screens/addLocation/AddLocation';
+import MyWishlist from '../screens/wishlist/MyWishlist';
 
-// export type CustomerStackParamList = {
-//   CustomerHome: undefined;
-//   CategoryScreen: { categoryKey: string } | undefined;
-//   ProductDetails: { productId: string } | undefined;
-//   ShopDetails: { shop: Store };
-//   HelpCenter: undefined;
-//   ShopProductDetail: undefined;
-//   ProductDetailForCustomer: { id: string } | undefined;
-//   ShopForCustomer: { shop: any } | undefined;
-// };
 
-// const Stack = createNativeStackNavigator<CustomerStackParamList>();
 
 const Stack = createNativeStackNavigator();
 
@@ -32,12 +24,15 @@ export default function CustomerNavigator() {
       />
       <Stack.Screen name="CategoryScreen" component={Category} />
       <Stack.Screen name="HelpCenter" component={CustomerHelpCenter} />
+      <Stack.Screen name="MyWishlist" component={MyWishlist} />
       <Stack.Screen
         name="ProductDetailForCustomer"
         component={ShopProductDetail}
       />
       <Stack.Screen name="ShopForCustomer" component={ShopForCustomer} />
       <Stack.Screen name="Cart" component={Cart} />
+      <Stack.Screen name="Checkout" component={Checkout} />
+      <Stack.Screen name="AddLocation" component={AddLocation} />
     </Stack.Navigator>
   );
 }

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -9,42 +9,125 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 20,
     paddingTop: 60,
     paddingBottom: 20,
     paddingHorizontal: 20,
-    position: 'relative',
     zIndex: 10,
   },
-  subHeader: {
-    flexDirection: 'row',
-    gap: 20,
-  },
   backBtn: {
-    borderColor: '#bbb',
+    backgroundColor: 'white',
+    borderColor: '#ffe3d9',
     borderWidth: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
+    height: 40,
+    width: 40,
     borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   pageTitle: {
     fontSize: 20,
     fontFamily: 'Poppins-Bold',
-    marginTop: 2,
   },
-  menuBtn: {
-    position: 'absolute',
-    right: 0,
+  likeButton: {
+    height: 40,
+    width: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderColor: '#ffe3d9',
+    borderWidth: 1,
+    borderRadius: 30,
   },
-
-  itemContainer: {
-    height: '50%',
+  scrollViewStyle: {
+    paddingBottom: 160,
+    paddingHorizontal: 20,
+  },
+  cartCard: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 0,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    marginBottom: 16,
+    paddingHorizontal: 10,
+    height: 120,
+    borderWidth: 1,
+    borderColor: '#ffe3d9',
+  },
+  productImageContainer: {
+    height: 100,
+    width: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 6,
+  },
+  productImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 10,
+    resizeMode: 'cover',
+  },
+  productInfo: {
+    flex: 1,
+    marginLeft: 12,
+    justifyContent: 'center',
+  },
+  productName: {
+    fontSize: 14,
+    fontFamily: 'Poppins-SemiBold',
+  },
+  productPrice: {
+    fontSize: 14,
+    color: '#ff5b27',
+    fontFamily: 'Poppins-Bold',
+  },
+  qtyRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 6,
+  },
+  qtyBtn: {
+    width: 33,
+    height: 33,
+    borderRadius: 30,
+    backgroundColor: '#fff2ec',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  qtyText: {
+    fontSize: 16,
+    fontFamily: 'Poppins-Bold',
+    color: '#ff5b27',
+    marginBottom: -2,
+  },
+  qtyValue: {
+    marginHorizontal: 10,
+    fontSize: 14,
+    fontFamily: 'Poppins-SemiBold',
+  },
+  deleteAnimation: {
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 90,
+    borderRadius: 10,
+    height: 120,
+  },
+  emptyCartContainer: {
+    alignItems: 'center',
+    marginTop: 50,
+  },
+  emptyCartText: {
+    fontSize: 16,
+    color: '#888',
   },
   summaryCard: {
     marginTop: 20,
     backgroundColor: '#fff',
     borderRadius: 16,
     padding: 16,
+    
     borderWidth: 1,
     borderColor: '#ffe3d9',
   },
@@ -86,9 +169,6 @@ const styles = StyleSheet.create({
   scrollWrapper: {
     height: '54%',
   },
-  scrollViewStyle: {
-    paddingBottom: 200,
-  },
 });
 
-export default styles
+export default styles;

@@ -1,4 +1,6 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+import { responsive } from "../../theme/responsive";
+const screenWidth = Dimensions.get('screen').width;
 
 const styles = StyleSheet.create({
   container: {
@@ -6,6 +8,11 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     paddingHorizontal: 30,
     backgroundColor: '#FFF5F0',
+    
+  },
+  subContainer:{
+    justifyContent:"space-between",
+    flex:1
   },
   title: {
     fontSize: 32,
@@ -39,7 +46,10 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderWidth: 1,
     borderColor: '#FFB3A0',
-    marginHorizontal: 8,
+    marginHorizontal:
+      screenWidth > 500
+        ? responsive.marginHorizontal(600)
+        : responsive.marginHorizontal(4),
     textAlign: 'center',
     fontSize: 18,
     backgroundColor: '#FFF',
@@ -92,7 +102,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 480,
+    // marginTop: 480,
     marginBottom: 30,
   },
   buttonText: {

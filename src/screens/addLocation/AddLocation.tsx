@@ -8,6 +8,7 @@ import {
   TextInput,
   StatusBar,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
 import styles from './addLocation.styles';
 import API from '../../api/authApi';
@@ -225,182 +226,193 @@ const AddLocation = () => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle={'dark-content'} />
-      <View>
-        <Text style={styles.pageTitle}>Add Location</Text>
-        <Text style={styles.pageSubTitle}>
-          Choose your location to find nearby stores and services easily.
-        </Text>
-      </View>
+      <ScrollView showsVerticalScrollIndicator={false
+      }>
+        <View>
+          <Text style={styles.pageTitle}>Add Location</Text>
+          <Text style={styles.pageSubTitle}>
+            Choose your location to find nearby stores and services easily.
+          </Text>
+        </View>
 
-      <View style={styles.searchContainer}>
-        <Feather name="search" color={'#000000a3'} size={20} />
-        <TextInput
-          placeholder="Search Location"
-          placeholderTextColor={'#000000a3'}
-          style={styles.searchText}
-        />
-      </View>
+        <View style={styles.searchContainer}>
+          <Feather name="search" color={'#000000a3'} size={20} />
+          <TextInput
+            placeholder="Search Location"
+            placeholderTextColor={'#000000a3'}
+            style={styles.searchText}
+          />
+        </View>
 
-      <View style={styles.mapContainer}>
-        {loading && (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size={'small'} color={'#ff6a32'} />
-            <Text style={styles.primaryBtnText}>Getting Location...</Text>
-          </View>
-        )}
-        <WebView
-          ref={webViewRef}
-          originWhitelist={['*']}
-          source={{ html: mapHtml }}
-          javaScriptEnabled
-          domStorageEnabled
-        />
-      </View>
-
-      <View style={styles.btnContainer}>
-        <TouchableOpacity
-          style={styles.primaryBtnContainer}
-          onPress={handleSetLocation}
-        >
-          <Ionicons name="location-outline" size={20} color="#ff6a32" />
-          <Text style={styles.primaryBtnText}>Set Location on Map</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.secondaryBtnContainer}
-          onPress={handleUseCurrentLocation}
-          disabled={loading}
-        >
-          <Text style={styles.secondaryBtnText}>Use Current Location</Text>
-        </TouchableOpacity>
-      </View>
-
-      <Modal
-        isVisible={isPriDrawerVisible}
-        onBackdropPress={() => setPriDrawerVisible(false)}
-        style={styles.modal}
-      >
-        <View style={styles.drawer}>
-          <View style={styles.drawerHandle} />
-
-          <Text style={styles.drawerTitle}>Selected Location</Text>
-
-          <View style={styles.locationContainer}>
-            {mapLoading ? (
-              <Text>Getting Location...</Text>
-            ) : (
-              <>
-                <View style={styles.streetAddressContainer}>
-                  <Ionicons name="location-outline" size={20} color="#ff6a32" />
-                  <Text style={styles.streetText}>
-                    {location?.city || location?.county}
-                  </Text>
-                </View>
-                <Text style={styles.addressText}>
-                  {[
-                    extraFields.houseNo,
-                    extraFields.area,
-                    extraFields.landmark,
-                    location?.name,
-                    location?.state,
-                    location?.postcode,
-                  ]
-                    .filter(Boolean)
-                    .join(', ')}
-                </Text>
-              </>
-            )}
-          </View>
-
-          <View style={styles.inputContainer}>
-            <View style={styles.inputWrapper}>
-              <TextInput
-                style={styles.input}
-                placeholder="Flat, House no, Building name (Optional)"
-                placeholderTextColor="#00000061"
-                autoCapitalize="none"
-                value={extraFields.houseNo}
-                onChangeText={text =>
-                  setExtraFields({ ...extraFields, houseNo: text })
-                }
-              />
+        <View style={styles.mapContainer}>
+          {loading && (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size={'small'} color={'#ff6a32'} />
+              <Text style={styles.primaryBtnText}>Getting Location...</Text>
             </View>
-          </View>
-          <View style={styles.inputContainer}>
-            <View style={styles.inputWrapper}>
-              <TextInput
-                style={styles.input}
-                placeholder="Area, Street, Sector, Village (Optional)"
-                placeholderTextColor="#00000061"
-                autoCapitalize="none"
-                value={extraFields.area}
-                onChangeText={text =>
-                  setExtraFields({ ...extraFields, area: text })
-                }
-              />
-            </View>
-          </View>
+          )}
+          <WebView
+            ref={webViewRef}
+            originWhitelist={['*']}
+            source={{ html: mapHtml }}
+            javaScriptEnabled
+            domStorageEnabled
+          />
+        </View>
 
-          <View style={styles.inputContainer}>
-            <View style={styles.inputWrapper}>
-              <TextInput
-                style={styles.input}
-                placeholder="Landmark (Optional)"
-                placeholderTextColor="#00000061"
-                autoCapitalize="none"
-                value={extraFields.landmark}
-                onChangeText={text =>
-                  setExtraFields({ ...extraFields, landmark: text })
-                }
-              />
-            </View>
-          </View>
+        <View style={styles.btnContainer}>
+          <TouchableOpacity
+            style={styles.primaryBtnContainer}
+            onPress={handleSetLocation}
+          >
+            <Ionicons name="location-outline" size={20} color="#ff6a32" />
+            <Text style={styles.primaryBtnText}>Set Location on Map</Text>
+          </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.secondaryBtnContainer}
-            onPress={handleSetSelectedLocation}
+            onPress={handleUseCurrentLocation}
+            disabled={loading}
           >
-            <Text style={styles.secondaryBtnText}>Confirm Location</Text>
+            <Text style={styles.secondaryBtnText}>Use Current Location</Text>
           </TouchableOpacity>
         </View>
-      </Modal>
 
-      <Modal
-        isVisible={isSecDrawerVisible}
-        onBackdropPress={() => setSecDrawerVisible(false)}
-        style={styles.modal}
-      >
-        <View style={styles.drawer}>
-          <View style={styles.drawerHandle} />
+        <Modal
+          isVisible={isPriDrawerVisible}
+          onBackdropPress={() => setPriDrawerVisible(false)}
+          style={styles.modal}
+        >
+          <View style={styles.drawer}>
+            <View style={styles.drawerHandle} />
 
-          <Text style={styles.drawerTitle}>Selected Location</Text>
+            <Text style={styles.drawerTitle}>Selected Location</Text>
 
-          <View style={styles.locationContainer}>
-            {mapLoading ? (
-              <Text>Getting Location...</Text>
-            ) : (
-              <>
-                <View style={styles.streetAddressContainer}>
-                  <Ionicons name="location-outline" size={20} color="#ff6a32" />
-                  <Text style={styles.streetText}>
-                    {location?.city || location?.county}
+            <View style={styles.locationContainer}>
+              {mapLoading ? (
+                <Text>Getting Location...</Text>
+              ) : (
+                <>
+                  <View style={styles.streetAddressContainer}>
+                    <Ionicons
+                      name="location-outline"
+                      size={20}
+                      color="#ff6a32"
+                    />
+                    <Text style={styles.streetText}>
+                      {location?.city || location?.county}
+                    </Text>
+                  </View>
+                  <Text style={styles.addressText}>
+                    {[
+                      extraFields.houseNo,
+                      extraFields.area,
+                      extraFields.landmark,
+                      location?.name,
+                      location?.state,
+                      location?.postcode,
+                    ]
+                      .filter(Boolean)
+                      .join(', ')}
                   </Text>
-                </View>
-                <Text style={styles.addressText}>
-                  {location?.name}, {location?.state}, {location?.postcode}
-                </Text>
-              </>
-            )}
-          </View>
+                </>
+              )}
+            </View>
 
-          <TouchableOpacity
-            style={styles.secondaryBtnContainer}
-            onPress={handleSetCurrentLocation}
-          >
-            <Text style={styles.secondaryBtnText}>Confirm Location</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
+            <View style={styles.inputContainer}>
+              <View style={styles.inputWrapper}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Flat, House no, Building name (Optional)"
+                  placeholderTextColor="#00000061"
+                  autoCapitalize="none"
+                  value={extraFields.houseNo}
+                  onChangeText={text =>
+                    setExtraFields({ ...extraFields, houseNo: text })
+                  }
+                />
+              </View>
+            </View>
+            <View style={styles.inputContainer}>
+              <View style={styles.inputWrapper}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Area, Street, Sector, Village (Optional)"
+                  placeholderTextColor="#00000061"
+                  autoCapitalize="none"
+                  value={extraFields.area}
+                  onChangeText={text =>
+                    setExtraFields({ ...extraFields, area: text })
+                  }
+                />
+              </View>
+            </View>
+
+            <View style={styles.inputContainer}>
+              <View style={styles.inputWrapper}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Landmark (Optional)"
+                  placeholderTextColor="#00000061"
+                  autoCapitalize="none"
+                  value={extraFields.landmark}
+                  onChangeText={text =>
+                    setExtraFields({ ...extraFields, landmark: text })
+                  }
+                />
+              </View>
+            </View>
+
+            <TouchableOpacity
+              style={styles.secondaryBtnContainer}
+              onPress={handleSetSelectedLocation}
+            >
+              <Text style={styles.secondaryBtnText}>Confirm Location</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+
+        <Modal
+          isVisible={isSecDrawerVisible}
+          onBackdropPress={() => setSecDrawerVisible(false)}
+          style={styles.modal}
+        >
+          <View style={styles.drawer}>
+            <View style={styles.drawerHandle} />
+
+            <Text style={styles.drawerTitle}>Selected Location</Text>
+
+            <View style={styles.locationContainer}>
+              {mapLoading ? (
+                <Text>Getting Location...</Text>
+              ) : (
+                <>
+                  <View style={styles.streetAddressContainer}>
+                    <Ionicons
+                      name="location-outline"
+                      size={20}
+                      color="#ff6a32"
+                    />
+                    <Text style={styles.streetText}>
+                      {location?.city || location?.county}
+                    </Text>
+                  </View>
+                  <Text style={styles.addressText}>
+                    {location?.name}, {location?.state}, {location?.postcode}
+                  </Text>
+                </>
+              )}
+            </View>
+
+            <TouchableOpacity
+              style={styles.secondaryBtnContainer}
+              onPress={handleSetCurrentLocation}
+            >
+              <Text style={styles.secondaryBtnText}>Confirm Location</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+      </ScrollView>
     </View>
   );
 };

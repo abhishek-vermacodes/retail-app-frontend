@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff5f0',
     paddingHorizontal: 20,
     paddingTop: 80,
+   
   },
   pageTitle: {
     fontSize: 26,
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff5b27',
     borderRadius: 14,
     paddingVertical: 16,
+    marginBottom:50
   },
   secondaryBtnText: {
     color: '#fff',

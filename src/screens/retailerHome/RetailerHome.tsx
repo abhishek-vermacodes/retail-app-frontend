@@ -358,17 +358,11 @@ const RetailerHome = () => {
           </View>
         ) : (
           <View style={styles.storeBanner}>
-            {/* <TouchableOpacity
-              style={styles.editBtn}
-              onPress={() => setOpenShopModal(true)}
-            >
-              <Entypo name="dots-three-vertical" color="#ff6a32" size={14} />
-            </TouchableOpacity> */}
-
+      
             <View style={styles.storeImgContainer}>
               <Image
                 source={{
-                  uri: `http://192.168.1.12:5000${store.image}`,
+                  uri: `http://192.168.1.15:5000${store.image}`,
                 }}
                 style={styles.storeImg}
               />
@@ -393,12 +387,12 @@ const RetailerHome = () => {
           </View>
         )}
 
-        {/* <View style={styles.overviewHeader}>
+        <View style={styles.overviewHeader}>
           <Text style={styles.sectionTitle}>Overview</Text>
           <Text style={styles.viewReport}>View Report</Text>
-        </View> */}
+        </View>
 
-        {/* <View style={styles.statsRow}>
+        <View style={styles.statsRow}>
           <View style={styles.statCard}>
             <Ionicons name="people-outline" size={22} />
             <Text style={styles.statNumber}>128</Text>
@@ -412,18 +406,18 @@ const RetailerHome = () => {
             <Text style={styles.statLabel}>Total Orders</Text>
             <Text style={styles.muted}>--</Text>
           </View>
-        </View> */}
+        </View>
 
-        {/* <View style={styles.overviewHeader}>
+        <View style={styles.overviewHeader}>
           <Text style={styles.sectionTitle}>Get Started</Text>
-        </View> */}
+        </View>
 
-        {/* <View style={styles.getStartedSection}>
+        <View style={styles.getStartedSection}>
           <TouchableOpacity style={styles.actionCard}>
             <View style={styles.iconBox}>
               <Feather name="box" size={20} color="#ff6a32" />
             </View>
-            <View>
+            <View style={{ width: '68%' }}>
               <Text style={styles.actionTitle}>Add your first product</Text>
               <Text style={styles.actionDesc}>
                 Upload images and set prices to start selling.
@@ -436,7 +430,7 @@ const RetailerHome = () => {
             <View style={styles.iconBoxGray}>
               <Feather name="credit-card" size={20} />
             </View>
-            <View>
+            <View style={{ width: '68%' }}>
               <Text style={styles.actionTitle}>Set up payments</Text>
               <Text style={styles.actionDesc}>
                 Link your bank account to receive payouts.
@@ -444,10 +438,10 @@ const RetailerHome = () => {
             </View>
             <Ionicons name="chevron-forward" size={20} color="#999" />
           </TouchableOpacity>
-        </View> */}
+        </View>
       </ScrollView>
 
-      {/* editLocationModal */}
+  
       <Modal
         isVisible={openLocation}
         onBackdropPress={() => setOpenLocation(false)}
@@ -572,7 +566,6 @@ const RetailerHome = () => {
         </View>
       </Modal>
 
-      {/* storeUpdateModal */}
       <Modal
         isVisible={openShopModal}
         onBackdropPress={() => setOpenShopModal(false)}

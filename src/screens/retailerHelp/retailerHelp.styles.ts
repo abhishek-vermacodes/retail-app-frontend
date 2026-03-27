@@ -4,30 +4,39 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: '#fff5f0',
-    paddingHorizontal: 20,
-    paddingTop: 60,
   },
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 20,
-    marginBottom: 10,
+    justifyContent: 'space-between',
+    paddingTop: 60,
+    paddingBottom: 20,
+    paddingHorizontal: 20,
+    zIndex: 10,
   },
   backBtn: {
-    borderColor: '#bbb',
+    backgroundColor: 'white',
+    borderColor: '#ffe3d9',
     borderWidth: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
+    height: 40,
+    width: 40,
     borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   pageTitle: {
     fontSize: 20,
     fontFamily: 'Poppins-Bold',
-    color: '#000',
   },
   searchBtn: {
-    position: 'absolute',
-    right: 0,
+    backgroundColor: 'white',
+    borderColor: '#ffe3d9',
+    borderWidth: 1,
+    height: 40,
+    width: 40,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   searchContainer: {
@@ -38,9 +47,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ffe3d9',
     borderRadius: 50,
-    paddingHorizontal: 18,
+    paddingHorizontal: 20,
     paddingVertical: 10,
-    marginTop: 20,
+    marginHorizontal: 20,
+    marginBottom: 20,
   },
   searchText: {
     fontFamily: 'Poppins-Regular',
@@ -102,6 +112,7 @@ const styles = StyleSheet.create({
   scrollView: {
     paddingBottom: 200,
     paddingTop: 20,
+    paddingHorizontal: 20,
   },
 });
 

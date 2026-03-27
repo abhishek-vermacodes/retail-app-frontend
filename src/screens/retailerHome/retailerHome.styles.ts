@@ -1,6 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import theme from '../../theme/theme';
-
+import { responsive } from '../../theme/responsive';
+const screenWidth = Dimensions.get('screen').width;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
     marginBottom: -2,
   },
   scrollView: {
-    paddingBottom: 100,
+    paddingBottom: 150,
   },
   banner: {
     borderRadius: 22,
@@ -188,101 +189,106 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
     color: '#fff',
   },
-  // storeCatgoryText: {
-  //   fontSize: 12,
-  //   fontFamily: 'Poppins-Medium',
-  //   color: '#fff',
-  //   marginBottom: -1,
-  // },
-  // storeAddressContainer: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   gap: 6,
-  //   marginBottom: 4,
-  // },
-  // storeLocationIcon: {
-  //   marginLeft: -2,
-  //   marginTop: -4,
-  // },
-  // storeAddress: {
-  //   fontSize: 12,
-  //   fontFamily: 'Poppins-Regular',
-  // },
-  // overviewHeader: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  //   alignItems: 'center',
-  //   paddingHorizontal: 20,
-  // },
-  // sectionTitle: {
-  //   fontSize: 16,
-  //   fontFamily: 'Poppins-SemiBold',
-  // },
-  // viewReport: {
-  //   fontSize: 12,
-  //   color: '#ff6a32',
-  //   fontFamily: 'Poppins-Medium',
-  // },
-  // statsRow: {
-  //   flexDirection: 'row',
-  //   paddingHorizontal: 20,
-  //   gap: 14,
-  //   marginBottom: 24,
-  //   marginTop: 12,
-  // },
-  // statCard: {
-  //   flex: 1,
-  //   borderWidth: 1,
-  //   borderColor: '#eee',
-  //   borderRadius: 16,
-  //   padding: 16,
-  // },
-  // statNumber: { fontSize: 22, fontFamily: 'Poppins-SemiBold', marginTop: 8 },
-  // statLabel: {
-  //   fontSize: 12,
-  //   color: '#888',
-  //   marginTop: 4,
-  //   fontFamily: 'Poppins-Regular',
-  // },
-  // growth: {
-  //   fontSize: 14,
-  //   color: 'green',
-  //   marginTop: 6,
-  //   fontFamily: 'Poppins-Medium',
-  // },
-  // muted: {
-  //   fontSize: 14,
-  //   color: '#bbb',
-  //   marginTop: 6,
-  //   fontFamily: 'Poppins-Medium',
-  // },
-  // getStartedSection: {
-  //   marginTop: 12,
-  //   flexDirection: 'column',
-  //   paddingHorizontal: 20,
-  // },
-  // actionCard: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   padding: 12,
-  //   borderRadius: 16,
-  //   borderWidth: 1,
-  //   borderColor: '#eee',
-  //   marginBottom: 12,
-  //   gap: 14,
-  // },
-  // iconBox: {
-  //   backgroundColor: '#ffe7dd',
-  //   padding: 16,
-  //   borderRadius: 12,
-  // },
-  // actionTitle: { fontSize: 13, fontFamily: 'Poppins-Medium' },
-  // actionDesc: { fontSize: 11, color: '#888', fontFamily: 'Poppins-Regular' },
-  // iconBoxGray: {
-  //   backgroundColor: '#f3f3f3',
-  //   padding: 16,
-  //   borderRadius: 12,
-  // },
+
+  /**extra */
+  storeCatgoryText: {
+    fontSize: 12,
+    fontFamily: 'Poppins-Medium',
+    color: '#fff',
+    marginBottom: -1,
+  },
+  storeAddressContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 4,
+  },
+  storeLocationIcon: {
+    marginLeft: -2,
+    marginTop: -4,
+  },
+  storeAddress: {
+    fontSize: 12,
+    fontFamily: 'Poppins-Regular',
+  },
+  overviewHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontFamily: 'Poppins-SemiBold',
+  },
+  viewReport: {
+    fontSize: 12,
+    color: '#ff6a32',
+    fontFamily: 'Poppins-Medium',
+  },
+  statsRow: {
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    gap: 14,
+    marginBottom: 24,
+    marginTop: 12,
+  },
+  statCard: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#eee',
+    borderRadius: 16,
+    padding: 16,
+  },
+  statNumber: { fontSize: 22, fontFamily: 'Poppins-SemiBold', marginTop: 8 },
+  statLabel: {
+    fontSize: 12,
+    color: '#888',
+    marginTop: 4,
+    fontFamily: 'Poppins-Regular',
+  },
+  growth: {
+    fontSize: 14,
+    color: 'green',
+    marginTop: 6,
+    fontFamily: 'Poppins-Medium',
+  },
+  muted: {
+    fontSize: 14,
+    color: '#bbb',
+    marginTop: 6,
+    fontFamily: 'Poppins-Medium',
+  },
+  getStartedSection: {
+    marginTop: 12,
+    flexDirection: 'column',
+    paddingHorizontal: 20,
+  },
+  actionCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#eee',
+    marginBottom: 12,
+    gap: 14,
+    
+  },
+  iconBox: {
+    backgroundColor: '#ffe7dd',
+    padding: 16,
+    borderRadius: 12,
+  },
+  actionTitle: { fontSize: 13, fontFamily: 'Poppins-Medium' },
+  actionDesc: { fontSize: 11, color: '#888', fontFamily: 'Poppins-Regular' },
+  iconBoxGray: {
+    backgroundColor: '#f3f3f3',
+    padding: 16,
+    borderRadius: 12,
+  },
+
+
   modal: {
     justifyContent: 'flex-end',
     margin: 0,
@@ -293,7 +299,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    height: 800,
+    height: screenWidth > 500
+      ? responsive.height(600)
+      : responsive.height(600),
   },
   mapContainer: {
     backgroundColor: '#fff',

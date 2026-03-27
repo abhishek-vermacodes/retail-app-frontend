@@ -100,46 +100,50 @@ const Verification = () => {
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <FontAwesome6 name="arrow-left" size={20} color="#000000a3" />
       </TouchableOpacity>
+      <View style={styles.subContainer}>
+        <View>
+          <Text style={styles.title}>Verification</Text>
+          <Text style={styles.subtitle}>Enter the 6-digit code sent to</Text>
+          <Text style={styles.email}>{email}</Text>
 
-      <Text style={styles.title}>Verification</Text>
-      <Text style={styles.subtitle}>Enter the 6-digit code sent to</Text>
-      <Text style={styles.email}>{email}</Text>
-
-      <View style={styles.otpContainer}>
-        {otp.map((digit, index) => (
-          <TextInput
-            key={index}
-            ref={ref => {
-              if (ref) inputs.current[index] = ref;
-            }}
-            style={[styles.otpInput, digit && styles.activeInput]}
-            keyboardType="number-pad"
-            maxLength={1}
-            value={digit}
-            onChangeText={value => handleChange(value, index)}
-            onKeyPress={({ nativeEvent }) => {
-              if (nativeEvent.key === 'Backspace') {
-                handleBackspace(index);
-              }
-            }}
-          />
-        ))}
+          <View style={styles.otpContainer}>
+            {otp.map((digit, index) => (
+              <TextInput
+                key={index}
+                ref={ref => {
+                  if (ref) inputs.current[index] = ref;
+                }}
+                style={[styles.otpInput, digit && styles.activeInput]}
+                keyboardType="number-pad"
+                maxLength={1}
+                value={digit}
+                onChangeText={value => handleChange(value, index)}
+                onKeyPress={({ nativeEvent }) => {
+                  if (nativeEvent.key === 'Backspace') {
+                    handleBackspace(index);
+                  }
+                }}
+              />
+            ))}
+          </View>
+          {timer > 0 ? (
+            <Text style={styles.timer}>
+              Resend code in 00:{timer < 10 ? `0${timer}` : timer}
+            </Text>
+          ) : (
+            <TouchableOpacity onPress={resendCode}>
+              <Text style={styles.resend}>Resend Code</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+        <View>
+          <TouchableOpacity style={styles.button} onPress={verifyOtp}>
+            <Text style={styles.buttonText}>
+              {loading ? 'Verifying...' : 'Verify'}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      {timer > 0 ? (
-        <Text style={styles.timer}>
-          Resend code in 00:{timer < 10 ? `0${timer}` : timer}
-        </Text>
-      ) : (
-        <TouchableOpacity onPress={resendCode}>
-          <Text style={styles.resend}>Resend Code</Text>
-        </TouchableOpacity>
-      )}
-
-      <TouchableOpacity style={styles.button} onPress={verifyOtp}>
-        <Text style={styles.buttonText}>
-          {loading ? 'Verifying...' : 'Verify'}
-        </Text>
-      </TouchableOpacity>
     </View>
   );
 };

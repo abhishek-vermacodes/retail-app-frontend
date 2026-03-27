@@ -28,8 +28,7 @@ import { LocationProperties, Store } from '../../types/type';
 import { AuthContext } from '../../context/AuthContext';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { CustomerStackParamList } from '../../navigation/CustomerNavigator';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
 import styles from './CustomerHome.styles';
 import { getToken } from '../../utils/storage';
 
@@ -89,7 +88,7 @@ const categories = [
 function CustomerHome() {
   const { user, refreshUser } = useContext(AuthContext);
 
-  const navigation = useNavigation<NavigationProp>();
+  const navigation = useNavigation<any>();
 
   const [loading, setLoading] = useState(false);
   const [mapLoading, setMapLoading] = useState(false);
@@ -283,14 +282,10 @@ function CustomerHome() {
     }
   };
 
-  type NavigationProp = NativeStackNavigationProp<
-    CustomerStackParamList,
-    'CustomerHome'
-  >;
+
 
   const fetchShops = async () => {
-    const token = await getToken()
-
+    const token = await getToken();
 
     try {
       const response = await API.get('/api/store/get-all-stores?limit=10', {
@@ -309,8 +304,7 @@ function CustomerHome() {
   };
 
   const fetchProducts = async () => {
-       const token = await getToken();
-
+    const token = await getToken();
 
     try {
       const response = await API.get('/api/product/getAllProducts?limit=10', {
@@ -420,7 +414,6 @@ function CustomerHome() {
           />
         </View>
 
-        {/* shops */}
         <View>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Nearby Shops</Text>
@@ -442,7 +435,7 @@ function CustomerHome() {
                 <TouchableOpacity
                   activeOpacity={0.8}
                   onPress={() =>
-                    navigation.navigate('ShopDetails', { shop: item })
+                    navigation.navigate('ShopForCustomer', { shop: item })
                   }
                 >
                   <NearbyShopCard
@@ -457,7 +450,6 @@ function CustomerHome() {
           )}
         </View>
 
-        {/* products */}
         <View>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Recommended</Text>
@@ -478,7 +470,7 @@ function CustomerHome() {
                   <Image
                     style={styles.productImage}
                     source={{
-                      uri: `http://192.168.1.12:5000${product.image}`,
+                      uri: `http://192.168.1.15:5000${product.image}`,
                     }}
                   />
                 </TouchableOpacity>
@@ -506,7 +498,6 @@ function CustomerHome() {
         </View>
       </ScrollView>
 
-      {/* location modal */}
       <Modal
         isVisible={openLocation}
         onBackdropPress={() => setOpenLocation(false)}

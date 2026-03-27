@@ -11,7 +11,7 @@ const Tab = createBottomTabNavigator();
 const CustomerBottomTabNavigator = () => {
   return (
     <Tab.Navigator
-      tabBar={props => <CustomTabBar {...props} role="user" />}
+      tabBar={props => <CustomTabBar {...props} role="user"  />}
       screenOptions={{ headerShown: false }}
     >
       <Tab.Screen name="Home" component={CustomerHome} />
