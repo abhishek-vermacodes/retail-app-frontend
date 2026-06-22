@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
-import styles from './addLocation.styles';
+import styles from './AddLocation.styles';
 import API from '../../api/authApi';
 import Modal from 'react-native-modal';
 import Feather from 'react-native-vector-icons/Feather';
@@ -19,6 +19,7 @@ import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { WebView } from 'react-native-webview';
+const WebViewCast = WebView as any;
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { LocationProperties } from '../../types/type';
@@ -251,7 +252,7 @@ const AddLocation = () => {
               <Text style={styles.primaryBtnText}>Getting Location...</Text>
             </View>
           )}
-          <WebView
+          <WebViewCast
             ref={webViewRef}
             originWhitelist={['*']}
             source={{ html: mapHtml }}

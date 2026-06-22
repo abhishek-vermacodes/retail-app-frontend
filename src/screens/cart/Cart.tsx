@@ -73,7 +73,7 @@ function Cart() {
             <View style={styles.cartCard}>
               <View style={styles.productImageContainer}>
                 <Image
-                  source={{ uri: `http://192.168.1.15:5000${item.image}` }}
+                  source={{ uri: `http://192.168.1.4:5000${item.image}` }}
                   style={styles.productImage}
                 />
               </View>

@@ -110,7 +110,7 @@ const ProductDetailForCustomer = () => {
             <Image
               style={styles.productImg}
               source={{
-                uri: `http://192.168.1.15:5000${product?.image}`,
+                uri: `http://192.168.1.4:5000${product?.image}`,
               }}
             />
 
@@ -224,7 +224,7 @@ const ProductDetailForCustomer = () => {
               <Image
                 style={styles.shopImage}
                 source={{
-                  uri: `http://192.168.1.15:5000${product?.store?.image}`,
+                  uri: `http://192.168.1.4:5000${product?.store?.image}`,
                 }}
               />
             </View>

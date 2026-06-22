@@ -1,6 +1,5 @@
 
 
-
 import {
   View,
   Text,
@@ -8,7 +7,7 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
-import styles from './signin.styles';
+import styles from './Signin.styles';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';

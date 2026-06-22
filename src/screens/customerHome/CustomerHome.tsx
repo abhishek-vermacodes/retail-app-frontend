@@ -16,6 +16,7 @@ import {
 import API from '../../api/authApi';
 import Modal from 'react-native-modal';
 import WebView from 'react-native-webview';
+const WebViewCast = WebView as any;
 import HomeBanner from '../../components/HomeBanner';
 import NearbyShopCard from '../../components/ShopCard';
 
@@ -470,7 +471,7 @@ function CustomerHome() {
                   <Image
                     style={styles.productImage}
                     source={{
-                      uri: `http://192.168.1.15:5000${product.image}`,
+                      uri: `http://192.168.1.4:5000${product.image}`,
                     }}
                   />
                 </TouchableOpacity>
@@ -511,7 +512,7 @@ function CustomerHome() {
                 <Text style={styles.primaryBtnText}>Getting Location...</Text>
               </View>
             )}
-            <WebView
+            <WebViewCast
               ref={webViewRef}
               originWhitelist={['*']}
               source={{ html: mapHtml }}

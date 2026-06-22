@@ -5,7 +5,7 @@ import AddLocation from '../screens/addLocation/AddLocation';
 import Splash from '../screens/splash/Splash';
 import Intro from '../screens/intro/Intro';
 import Signup from '../screens/signUp/Signup';
-import Signin from '../screens/signIn/Signin';
+import Signin from '../screens/signin/Signin';
 import Verification from '../screens/verification/Verification';
 
 const Stack = createNativeStackNavigator();

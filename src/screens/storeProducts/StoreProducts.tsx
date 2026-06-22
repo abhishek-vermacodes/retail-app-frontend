@@ -8,7 +8,7 @@ import {
   TextInput,
   FlatList,
 } from 'react-native';
-import styles from './storeProducts.styles';
+import styles from './StoreProducts.styles';
 import API from '../../api/authApi';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
@@ -141,7 +141,7 @@ const StoreProducts = () => {
                 <Image
                   style={styles.productImage}
                   source={{
-                    uri: `http://192.168.1.15:5000${product.image}`,
+                    uri: `http://192.168.1.4:5000${product.image}`,
                   }}
                 />
               </TouchableOpacity>

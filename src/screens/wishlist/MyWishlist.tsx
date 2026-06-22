@@ -49,7 +49,7 @@ const MyWishlist = () => {
                 <Image
                   style={styles.Image}
                   source={{
-                    uri: `http://192.168.1.15:5000${item.image}`,
+                    uri: `http://192.168.1.4:5000${item.image}`,
                   }}
                 />
               </View>

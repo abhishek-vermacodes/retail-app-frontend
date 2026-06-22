@@ -1,5 +1,5 @@
 import Modal from 'react-native-modal';
-import styles from './storeProductDetail.styles';
+import styles from './StoreProductDetail.styles';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -121,7 +121,7 @@ const StoreProductDetail = () => {
             <Image
               style={styles.productImg}
               source={{
-                uri: `http://192.168.1.12:5000${product?.image}`,
+                uri: `http://192.168.1.4:5000${product?.image}`,
               }}
             />
             <View style={styles.offerContainer}>

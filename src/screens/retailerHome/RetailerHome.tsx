@@ -15,6 +15,7 @@ import {
 import API from '../../api/authApi';
 import Modal from 'react-native-modal';
 import WebView from 'react-native-webview';
+const WebViewCast = WebView as any;
 import styles from './retailerHome.styles';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -362,7 +363,7 @@ const RetailerHome = () => {
             <View style={styles.storeImgContainer}>
               <Image
                 source={{
-                  uri: `http://192.168.1.15:5000${store.image}`,
+                  uri: `http://192.168.1.4:5000${store.image}`,
                 }}
                 style={styles.storeImg}
               />
@@ -459,7 +460,7 @@ const RetailerHome = () => {
                   <Text style={styles.primaryBtnText}>Getting Location...</Text>
                 </View>
               )}
-              <WebView
+              <WebViewCast
                 ref={webViewRef}
                 originWhitelist={['*']}
                 source={{ html: mapHtml }}

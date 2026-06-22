@@ -18,7 +18,7 @@ import RazorpayCheckout from 'react-native-razorpay';
 import { AuthContext } from '../../context/AuthContext';
 import { getCartItem, clearCart } from '../../utils/storage';
 
-const API_URL = 'http://192.168.1.15:5000/api/payment'; 
+const API_URL = 'http://192.168.1.4:5000/api/payment'; 
 
 const Checkout = () => {
   const navigation = useNavigation<any>();
@@ -185,7 +185,7 @@ const Checkout = () => {
               <View key={item.id} style={styles.itemRow}>
                 <View style={styles.productImageContainer}>
                   <Image
-                    source={{ uri: `http://192.168.1.15:5000${item.image}` }}
+                    source={{ uri: `http://192.168.1.4:5000${item.image}` }}
                     style={styles.productImage}
                   />
                 </View>
