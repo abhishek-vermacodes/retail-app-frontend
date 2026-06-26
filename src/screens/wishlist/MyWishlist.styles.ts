@@ -4,14 +4,14 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: '#fff5f0',
+    paddingHorizontal: 20,
+    paddingVertical: 50,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop: 60,
     paddingBottom: 20,
-    paddingHorizontal: 20,
     zIndex: 10,
   },
   backBtn: {
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   productcardContainer: {
-    paddingHorizontal: 20,
     gap: 14,
   },
   productcard: {

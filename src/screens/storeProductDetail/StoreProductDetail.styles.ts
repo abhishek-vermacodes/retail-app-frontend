@@ -5,15 +5,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff5f0',
+        paddingHorizontal: 20,
+    paddingVertical: 50,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop: 60,
     paddingBottom: 20,
-    paddingHorizontal: 20,
-    zIndex: 10,
+       zIndex: 10,
   },
   backBtn: {
     backgroundColor: 'white',
@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     paddingBottom: 160,
-    paddingHorizontal: 20,
   },
   productMainContainer: {
     margin: 0,
@@ -223,6 +222,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   input: {
+    flex: 1,
     fontFamily: 'Poppins-Regular',
     color: '#000',
     marginBottom: -4

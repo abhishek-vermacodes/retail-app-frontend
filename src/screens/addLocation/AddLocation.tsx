@@ -21,12 +21,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { WebView } from 'react-native-webview';
 const WebViewCast = WebView as any;
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState, useContext } from 'react';
 import { LocationProperties } from '../../types/type';
+import { AuthContext } from '../../context/AuthContext';
 
 const AddLocation = () => {
   const webViewRef = useRef<WebView>(null);
   const navigation = useNavigation<any>();
+  const { user, refreshUser } = useContext(AuthContext);
+
 
   const [email, setEmail] = useState<string | null>(null);
   const [location, setLocation] = useState<LocationProperties | null>(null);
@@ -189,12 +192,19 @@ const AddLocation = () => {
       ]
         .filter(Boolean)
         .join(', ');
+      
+      const activeEmail = user?.email || email;
       await API.post('/api/auth/setAddress', {
         location: locationString,
-        email,
+        email: activeEmail,
       });
       Alert.alert('Location added successfully');
-      navigation.navigate('Signin');
+      if (user) {
+        await refreshUser();
+        navigation.goBack();
+      } else {
+        navigation.navigate('Signin');
+      }
     } catch (error) {
       Alert.alert('Failed to add Location');
       console.log('Failed to add Location', error);
@@ -211,13 +221,19 @@ const AddLocation = () => {
         .filter(Boolean)
         .join(',');
 
+      const activeEmail = user?.email || email;
       await API.post('/api/auth/setAddress', {
         location: locationSharing,
-        email,
+        email: activeEmail,
       });
       Alert.alert('Location added successfully');
 
-      navigation.navigate('Signin');
+      if (user) {
+        await refreshUser();
+        navigation.goBack();
+      } else {
+        navigation.navigate('Signin');
+      }
     } catch (error) {
       Alert.alert('Failed to add Location');
       console.log('Failed to add Location', error);

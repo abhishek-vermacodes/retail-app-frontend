@@ -101,10 +101,10 @@ export const shopCategories = [
 
 export const orderCategories = [
   { label: 'All', value: '' },
-  { label: 'New Order', value: 'New Order' },
-  { label: 'Preparing', value: 'Preparing' },
-  { label: 'Out for Delivery', value: 'Out for Delivery' },
-  { label: 'Completed', value: 'Completed' },
+  { label: 'New Order', value: 'placed' },
+  { label: 'Preparing', value: 'accepted' },
+  { label: 'Out for Delivery', value: 'shipped' },
+  { label: 'Completed', value: 'delivered' },
 ];
 
 export const productOffers = [

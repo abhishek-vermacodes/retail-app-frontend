@@ -11,6 +11,7 @@ import styles from './Signin.styles';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
@@ -47,7 +48,8 @@ const Signin = () => {
           style={styles.headerBtn}
           onPress={() => navigation.goBack()}
         >
-          <FontAwesome6 name="arrow-left" size={18} color="#000000" />
+                  <Ionicons name="arrow-back" size={18} color="#000" />
+
         </TouchableOpacity>
 
         <Text style={styles.title}>Welcome Back</Text>

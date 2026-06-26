@@ -6,12 +6,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    paddingVertical: 50,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 2,
-    paddingTop: 60,
     paddingBottom: 20,
     paddingHorizontal: 20,
     position: 'relative',
@@ -460,6 +460,7 @@ const styles = StyleSheet.create({
     width: 25,
   },
   editShopInput: {
+    flex: 1,
     fontFamily: 'Poppins-Regular',
     color: '#000',
     marginBottom: -4,

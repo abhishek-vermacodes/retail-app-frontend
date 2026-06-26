@@ -121,7 +121,7 @@ const ShopForCustomer = () => {
             <View style={styles.storeImgContainer}>
               <Image
                 source={{
-                  uri: `http://192.168.1.4:5000${shop.image}`,
+                  uri: `http://192.168.1.4:3000${shop.image}`,
                 }}
                 style={styles.storeImg}
                 resizeMode="cover"
@@ -198,7 +198,7 @@ const ShopForCustomer = () => {
                 <Image
                   style={styles.productImage}
                   source={{
-                    uri: `http://192.168.1.4:5000${product.image}`,
+                    uri: `http://192.168.1.4:3000${product.image}`,
                   }}
                 />
               </TouchableOpacity>

@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { useWishlist } from '../../context/WishlistContext';
 import { useNavigation } from '@react-navigation/native';
@@ -28,53 +28,13 @@ const MyWishlist = () => {
         </TouchableOpacity>
       </View>
 
-      <FlatList
+      <ScrollView
         showsVerticalScrollIndicator={false}
-        data={wishlist}
-        keyExtractor={item => item.id}
         contentContainerStyle={
           wishlist.length === 0 ? styles.emptyContainer : undefined
         }
-        renderItem={({ item }) => (
-          <View style={styles.productcardContainer}>
-            <TouchableOpacity
-              style={styles.productcard}
-              onPress={() =>
-                navigation.navigate('ProductDetailForCustomer', {
-                  id: item.id,
-                })
-              }
-            >
-              <View style={styles.ImageContainer}>
-                <Image
-                  style={styles.Image}
-                  source={{
-                    uri: `http://192.168.1.4:5000${item.image}`,
-                  }}
-                />
-              </View>
-
-              <View style={styles.shopContentContainer}>
-                <Text style={styles.productNameText}>{item.productName}</Text>
-                <Text style={styles.ratingText}>₹ {item.price}</Text>
-                <View style={styles.ratingContainer}>
-                  <FontAwesome name="star" size={16} color={'#ffc905'} />
-                  <Text style={styles.ratingText}>4.9 (185)</Text>
-                </View>
-              </View>
-
-              <TouchableOpacity
-                onPress={e => {
-                  e.stopPropagation();
-                  removeFromWishlist(item.id);
-                }}
-              >
-                <Ionicons name="heart" size={22} color="red" />
-              </TouchableOpacity>
-            </TouchableOpacity>
-          </View>
-        )}
-        ListEmptyComponent={
+      >
+        {wishlist.length === 0 ? (
           <View style={styles.emptyContainer}>
             <Ionicons name="heart-outline" size={60} color="#ccc" />
             <Text style={styles.emptyText}>Your wishlist is empty</Text>
@@ -82,8 +42,48 @@ const MyWishlist = () => {
               Start adding products you love ❤️
             </Text>
           </View>
-        }
-      />
+        ) : (
+          wishlist.map((item: any) => (
+            <View key={item.id} style={styles.productcardContainer}>
+              <TouchableOpacity
+                style={styles.productcard}
+                onPress={() =>
+                  navigation.navigate('ProductDetailForCustomer', {
+                    id: item.id,
+                  })
+                }
+              >
+                <View style={styles.ImageContainer}>
+                  <Image
+                    style={styles.Image}
+                    source={{
+                      uri: `http://192.168.1.4:3000${item.image}`,
+                    }}
+                  />
+                </View>
+
+                <View style={styles.shopContentContainer}>
+                  <Text style={styles.productNameText}>{item.productName}</Text>
+                  <Text style={styles.ratingText}>₹ {item.price}</Text>
+                  <View style={styles.ratingContainer}>
+                    <FontAwesome name="star" size={16} color={'#ffc905'} />
+                    <Text style={styles.ratingText}>4.9 (185)</Text>
+                  </View>
+                </View>
+
+                <TouchableOpacity
+                  onPress={e => {
+                    e.stopPropagation();
+                    removeFromWishlist(item.id);
+                  }}
+                >
+                  <Ionicons name="heart" size={22} color="red" />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+          ))
+        )}
+      </ScrollView>
     </View>
   );
 };

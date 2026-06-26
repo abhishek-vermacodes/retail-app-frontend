@@ -1,7 +1,7 @@
 import RazorpayCheckout from 'react-native-razorpay';
 import { Alert } from 'react-native';
 
-const API_URL = 'http://192.168.1.4:5000/api/payment';
+const API_URL = 'http://192.168.1.4:3000/api/payment';
 
 export const startPayment = async ({
   amount,

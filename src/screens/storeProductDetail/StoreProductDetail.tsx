@@ -4,6 +4,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
 import {
   View,
@@ -90,7 +91,8 @@ const StoreProductDetail = () => {
           style={styles.backBtn}
           onPress={() => navigation.goBack()}
         >
-          <Ionicons name="arrow-back" size={18} color="#000" />
+                  <Ionicons name="arrow-back" size={18} color="#000" />
+
         </TouchableOpacity>
 
         <Text style={styles.pageTitle}>{product?.productName}</Text>
@@ -121,7 +123,7 @@ const StoreProductDetail = () => {
             <Image
               style={styles.productImg}
               source={{
-                uri: `http://192.168.1.4:5000${product?.image}`,
+                uri: `http://192.168.1.4:3000${product?.image}`,
               }}
             />
             <View style={styles.offerContainer}>

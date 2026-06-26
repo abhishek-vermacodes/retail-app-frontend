@@ -12,6 +12,7 @@ import styles from './StoreProducts.styles';
 import API from '../../api/authApi';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { categories, Product } from '../../types/type';
 import { useEffect, useMemo, useState } from 'react';
@@ -67,7 +68,8 @@ const StoreProducts = () => {
             style={styles.backBtn}
             onPress={() => navigation.goBack()}
           >
-            <FontAwesome6 name="arrow-left" size={18} color="#000000" />
+                    <Ionicons name="arrow-back" size={18} color="#000" />
+
           </TouchableOpacity>
           <Text style={styles.pageTitle}>Products</Text>
         </View>
@@ -141,7 +143,7 @@ const StoreProducts = () => {
                 <Image
                   style={styles.productImage}
                   source={{
-                    uri: `http://192.168.1.4:5000${product.image}`,
+                    uri: `http://192.168.1.4:3000${product.image}`,
                   }}
                 />
               </TouchableOpacity>

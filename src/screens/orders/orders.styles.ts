@@ -1,11 +1,11 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: '#fff5f0',
     paddingHorizontal: 20,
-    paddingVertical: 60,
+    paddingVertical: 50,
   },
   headerContainer: {
     flexDirection: 'row',
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   backBtn: {
-    borderColor: '#bbb',
+    borderColor: '#ffe3d9',
     borderWidth: 1,
     paddingHorizontal: 10,
     paddingVertical: 8,
@@ -189,6 +189,68 @@ const styles = StyleSheet.create({
     color: '#aaa',
     fontFamily: 'Poppins-Regular',
   },
+
+  /* Items List Inside Order Card */
+  itemsList: {
+    width: '100%',
+    paddingHorizontal: 16,
+    paddingVertical: 4,
+  },
+  itemRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 6,
+  },
+  itemImageContainer: {
+    width: 44,
+    height: 44,
+    borderRadius: 8,
+    backgroundColor: '#fff5f0',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ffe3d9',
+    marginRight: 10,
+  },
+  itemImage: {
+    width: '90%',
+    height: '90%',
+    borderRadius: 6,
+    resizeMode: 'contain',
+  },
+  itemDetails: {
+    flex: 1,
+  },
+  itemName: {
+    fontSize: 13,
+    fontFamily: 'Poppins-Medium',
+    color: '#2a2a2a',
+  },
+  itemQtyPrice: {
+    fontSize: 12,
+    fontFamily: 'Poppins-Regular',
+    color: '#666',
+  },
+
+  /* Order Action Buttons Container */
+  actionContainer: {
+    width: '100%',
+    padding: 12,
+    alignItems: 'center',
+  },
+  actionBtn: {
+    backgroundColor: '#ff5b27',
+    width: '100%',
+    paddingVertical: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  actionBtnText: {
+    color: '#fff',
+    fontSize: 13,
+    fontFamily: 'Poppins-Bold',
+  },
 });
 
-export default styles
+export default styles;

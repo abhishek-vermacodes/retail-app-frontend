@@ -1,17 +1,19 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: '#fff5f0',
+    paddingHorizontal: 20,
+    paddingVertical: 50,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop: 60,
     paddingBottom: 20,
-    paddingHorizontal: 20,
     zIndex: 10,
   },
   backBtn: {
@@ -20,13 +22,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height: 40,
     width: 40,
-    borderRadius: 50,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
   pageTitle: {
     fontSize: 20,
     fontFamily: 'Poppins-Bold',
+    color: '#1a1a1a',
   },
   likeButton: {
     height: 40,
@@ -36,123 +39,179 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderColor: '#ffe3d9',
     borderWidth: 1,
-    borderRadius: 30,
+    borderRadius: 20,
   },
   scrollViewStyle: {
-    paddingBottom: 160,
-    paddingHorizontal: 20,
-    gap: 20,
+    paddingBottom: 140,
+    gap: 16,
   },
   card: {
     backgroundColor: '#fff',
-    gap: 5,
-    padding: 15,
-    borderRadius: 10,
+    padding: 16,
+    borderRadius: 16,
     borderWidth: 1,
     borderColor: '#ffe3d9',
+    elevation: 2,
+    shadowColor: '#ff5b27',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.04,
+    shadowRadius: 3,
   },
-
   sectionTitle: {
     fontSize: 15,
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: 'Poppins-Bold',
+    color: '#1a1a1a',
   },
-
+  addressHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
   addressName: {
-    fontWeight: '600',
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: 'Poppins-Bold',
+    fontSize: 14,
+    color: '#ff5b27',
+    marginTop: 8,
   },
-
   addressText: {
-    color: '#555',
-
     fontFamily: 'Poppins-Regular',
+    fontSize: 13,
+    color: '#555',
+    lineHeight: 18,
+    marginTop: 4,
   },
-
- 
   changeText: {
-    color: '#2874f0',
-    fontWeight: '600',
+    fontFamily: 'Poppins-Bold',
+    fontSize: 13,
+    color: '#ff5b27',
   },
-
   itemRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 5,
     alignItems: 'center',
-    gap: 10,
+    marginVertical: 8,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: '#ffe3d9',
+    marginVertical: 12,
   },
   productImageContainer: {
-    height: 60,
-    width: 60,
+    height: 52,
+    width: 52,
+    borderRadius: 8,
+    backgroundColor: '#fff5f0',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 6,
   },
   productImage: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 10,
-    resizeMode: 'cover',
+    width: '90%',
+    height: '90%',
+    borderRadius: 6,
+    resizeMode: 'contain',
+  },
+  itemDetails: {
+    flex: 1,
+    marginLeft: 12,
+    flexDirection: 'column',
   },
   itemName: {
-    flex: 1,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-Bold',
+    fontSize: 14,
+    color: '#1a1a1a',
   },
-
   itemQty: {
-    flex: 1,
-    textAlign: 'center',
     fontFamily: 'Poppins-Regular',
+    fontSize: 12,
+    color: '#777',
+    marginTop: 2,
   },
-
   itemPrice: {
-    flex: 1,
+    fontFamily: 'Poppins-Bold',
+    fontSize: 14,
+    color: '#1a1a1a',
     textAlign: 'right',
-    fontFamily: 'Poppins-Regular',
   },
-
   priceRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 5,
+    marginVertical: 6,
   },
-
-  totalText: {
-    fontWeight: 'bold',
+  priceLabel: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 13,
+    color: '#666',
+  },
+  priceValue: {
     fontFamily: 'Poppins-Bold',
+    fontSize: 13,
+    color: '#1a1a1a',
   },
-
+  freeText: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: 13,
+    color: '#28a745',
+  },
+  totalText: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: 15,
+    color: '#1a1a1a',
+  },
+  totalValueText: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: 17,
+    color: '#ff5b27',
+  },
   bottomBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 20,
-    paddingBottom: 50,
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 12,
+    paddingBottom: 28,
     backgroundColor: '#fff',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    borderTopWidth: 1,
+    borderColor: '#ffe3d9',
     elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
   },
-
   totalLabel: {
-    color: '#555',
+    color: '#888',
     fontFamily: 'Poppins-Regular',
+    fontSize: 12,
+    marginBottom: -2,
   },
-
   totalAmount: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontFamily: 'Poppins-Bold',
+    color: '#1a1a1a',
   },
-
   payBtn: {
-    backgroundColor: '#fb641b',
-    paddingHorizontal: 25,
-    paddingVertical: 10,
-    borderRadius: 4,
+    backgroundColor: '#ff5b27',
+    height: 48,
+    borderRadius: 24,
+    paddingHorizontal: 28,
     alignItems: 'center',
     justifyContent: 'center',
+    elevation: 3,
+    shadowColor: '#ff5b27',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
   },
-
   payText: {
     color: '#fff',
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: 'Poppins-Bold',
+    fontSize: 14,
+    marginBottom: -2,
   },
 });
+
 export default styles;

@@ -8,6 +8,7 @@ interface User {
   email: string;
   role: 'retailer' | 'customer';
   address: string;
+  createdAt: string;
 }
 
 type AuthContextType = {
@@ -28,9 +29,9 @@ export const AuthContext = createContext<AuthContextType>(
   {} as AuthContextType,
 );
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+export const AuthProvider = ({
   children,
-}) => {
+}: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -57,6 +58,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             email: loggedUser.email,
             role: loggedUser.role,
             address: loggedUser.address,
+            createdAt: loggedUser.createdAt,
           });
         } catch (err) {
           console.log('Failed to fetch user', err);
@@ -102,6 +104,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const signIn = async (email: string, password: string) => {
     try {
       const res = await signin({ email, password });
+      console.log("Res", res);
       await setToken(res.data.token);
       API.defaults.headers.common.Authorization = `Bearer ${res.data.token}`;
       setUser(res.data.user);

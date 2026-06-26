@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   backBtn: {
-    borderColor: '#bbb',
+    borderColor: '#ffe3d9',
     borderWidth: 1,
     paddingHorizontal: 10,
     paddingVertical: 8,

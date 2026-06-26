@@ -110,7 +110,7 @@ const ProductDetailForCustomer = () => {
             <Image
               style={styles.productImg}
               source={{
-                uri: `http://192.168.1.4:5000${product?.image}`,
+                uri: `http://192.168.1.4:3000${product?.image}`,
               }}
             />
 
@@ -212,45 +212,68 @@ const ProductDetailForCustomer = () => {
             </View>
           </View>
 
-          <TouchableOpacity
-            style={styles.shopContainer}
-            onPress={() =>
-              navigation.navigate('ShopForCustomer', {
-                shop: product?.store,
-              })
-            }
-          >
-            <View style={styles.shopImageContainer}>
-              <Image
-                style={styles.shopImage}
-                source={{
-                  uri: `http://192.168.1.4:5000${product?.store?.image}`,
-                }}
-              />
+          {product?.store && (
+            <View>
+              <Text style={styles.shopSectionTitle}>Sold By</Text>
+              <TouchableOpacity
+                style={styles.shopContainer}
+                onPress={() =>
+                  navigation.navigate('ShopForCustomer', {
+                    shop: product?.store,
+                  })
+                }
+              >
+                <Image
+                  style={styles.shopImage}
+                  source={{
+                    uri: `http://192.168.1.4:3000${product?.store?.image}`,
+                  }}
+                />
+
+                <View style={styles.shopContentContainer}>
+                  <Text style={styles.shopCategoryText}>
+                    {product?.store?.category}
+                  </Text>
+                  <Text style={styles.shopNameText} numberOfLines={1}>
+                    {product?.store?.storeName}
+                  </Text>
+
+                  <View style={styles.shopRatingLocationRow}>
+                    <View style={styles.shopRatingContainer}>
+                      <FontAwesome name="star" size={12} color={'#ffc905'} />
+                      <Text style={styles.shopRatingText}>4.9 (185)</Text>
+                    </View>
+                    <View style={styles.bulletSeparator} />
+                    <View style={styles.shopLocationContainer}>
+                      <Ionicons name="location" size={12} color="#ff6a32" />
+                      <Text style={styles.shopLocationText} numberOfLines={1}>
+                        {product?.store?.address}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+
+                <View style={styles.visitStoreBtn}>
+                  <FontAwesome6 name="angle-right" size={16} color="#ff5b27" />
+                </View>
+              </TouchableOpacity>
             </View>
-
-            <View style={styles.shopContentContainer}>
-              <Text style={styles.shopNameText}>
-                {product?.store?.storeName}({product?.store?.category})
-              </Text>
-
-              <View style={styles.shopRatingContainer}>
-                <FontAwesome name="star" size={16} color={'#ffc905'} />
-                <Text style={styles.shopRatingText}>4.9 (185 Reviews)</Text>
-              </View>
-
-              <View style={styles.shopLocationContainer}>
-                <Ionicons name="location" size={16} color="#ff6a32" />
-                <Text style={styles.shopLocationText}>
-                  {product?.store?.address}
-                </Text>
-              </View>
-            </View>
-          </TouchableOpacity>
+          )}
         </View>
       </ScrollView>
 
       <View style={styles.buttonContainer}>
+        <View style={styles.priceInfoContainer}>
+          <Text style={styles.priceLabel}>Total Price</Text>
+          <Text style={styles.priceValue}>
+            ₹
+            {getOfferPrice(
+              Number(product?.price) || 0,
+              Number(product?.offers) || 0,
+            ).toFixed(2)}
+          </Text>
+        </View>
+
         <TouchableOpacity
           style={styles.cartButton}
           onPress={() => {
@@ -266,6 +289,12 @@ const ProductDetailForCustomer = () => {
             navigation.navigate('Cart');
           }}
         >
+          <Ionicons
+            name="bag-handle-outline"
+            size={18}
+            color="#fff"
+            style={styles.cartIcon}
+          />
           <Text style={styles.cartButtonText}>Add to Cart</Text>
         </TouchableOpacity>
       </View>

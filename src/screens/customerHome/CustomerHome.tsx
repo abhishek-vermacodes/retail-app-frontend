@@ -471,7 +471,7 @@ function CustomerHome() {
                   <Image
                     style={styles.productImage}
                     source={{
-                      uri: `http://192.168.1.4:5000${product.image}`,
+                      uri: `http://192.168.1.4:3000${product.image}`,
                     }}
                   />
                 </TouchableOpacity>

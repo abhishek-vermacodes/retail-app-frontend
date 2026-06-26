@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: 20,
-    paddingTop: 60,
+    paddingTop: 50,
     paddingBottom: 20,
     paddingHorizontal: 20,
     position: 'relative',
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   backBtn: {
-    borderColor: '#bbb',
+    borderColor: '#ffe3d9',
     borderWidth: 1,
     paddingHorizontal: 10,
     paddingVertical: 8,
@@ -106,9 +106,7 @@ const styles = StyleSheet.create({
   },
   productImage: {
     width: '100%',
- height: screenWidth > 500
-      ? responsive.height(160)
-      : responsive.height(150),
+    height: screenWidth > 500 ? responsive.height(160) : responsive.height(150),
     resizeMode: 'cover',
     borderRadius: 10,
   },

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { getCartItem, updateCart } from '../utils/storage';
+import { getCartItem, updateCart, clearCart as clearCartStorage } from '../utils/storage';
 
 const CartContext = createContext<any>(null);
 
@@ -71,6 +71,11 @@ export const CartProvider = ({ children }: any) => {
     });
   };
 
+  const clearCart = async () => {
+    setCartItems([]);
+    await clearCartStorage();
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -79,6 +84,7 @@ export const CartProvider = ({ children }: any) => {
         increaseQty,
         decreaseQty,
         removeItem,
+        clearCart,
       }}
     >
       {children}

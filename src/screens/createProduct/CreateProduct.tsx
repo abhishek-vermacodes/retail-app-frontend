@@ -118,7 +118,8 @@ const CreateProduct = () => {
           style={styles.backBtn}
           onPress={() => navigation.goBack()}
         >
-          <FontAwesome6 name="arrow-left" size={18} color="#000000" />
+                  <Ionicons name="arrow-back" size={18} color="#000" />
+
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Create Product</Text>
       </View>

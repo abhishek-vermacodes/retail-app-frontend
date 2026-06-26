@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     width: 25,
   },
   input: {
+    flex: 1,
     fontFamily: 'Poppins-Regular',
     color: '#000',
     marginBottom: -4

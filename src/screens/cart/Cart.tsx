@@ -12,20 +12,19 @@ import { useNavigation } from '@react-navigation/native';
 import { Swipeable } from 'react-native-gesture-handler';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
 import styles from './cart.styles';
 import { useCart } from '../../context/CartContext';
 
-
 function Cart() {
   const navigation = useNavigation<any>();
-
   const { cartItems, increaseQty, decreaseQty, removeItem } = useCart();
 
   const renderRightActions = (id: string) => {
     return (
       <Pressable onPress={() => removeItem(id)} style={styles.deleteAnimation}>
-        <MaterialIcons name="delete-outline" size={30} color={'#fff'} />
+        <MaterialIcons name="delete-outline" size={28} color={'#dc3545'} />
       </Pressable>
     );
   };
@@ -43,6 +42,7 @@ function Cart() {
     <View style={styles.mainContainer}>
       <StatusBar barStyle="dark-content" />
 
+      {/* Header bar */}
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backBtn}
@@ -52,6 +52,7 @@ function Cart() {
         </TouchableOpacity>
 
         <Text style={styles.pageTitle}>My Cart</Text>
+
         <TouchableOpacity style={styles.likeButton}>
           <Entypo name="dots-three-vertical" size={18} />
         </TouchableOpacity>
@@ -61,6 +62,7 @@ function Cart() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewStyle}
       >
+        {/* Cart Item Cards list */}
         {cartItems.map((item: any) => (
           <Swipeable
             key={item.id}
@@ -71,18 +73,23 @@ function Cart() {
             overshootRight={false}
           >
             <View style={styles.cartCard}>
+              {/* Product Thumbnail with warm background */}
               <View style={styles.productImageContainer}>
                 <Image
-                  source={{ uri: `http://192.168.1.4:5000${item.image}` }}
+                  source={{ uri: `http://192.168.1.4:3000${item.image}` }}
                   style={styles.productImage}
                 />
               </View>
 
+              {/* Product details */}
               <View style={styles.productInfo}>
-                <Text style={styles.productName}>{item.productName}</Text>
+                <Text style={styles.productName} numberOfLines={1}>
+                  {item.productName}
+                </Text>
 
-                <Text style={styles.productPrice}>₹{item.price}</Text>
+                <Text style={styles.productPrice}>₹{item.price.toFixed(2)}</Text>
 
+                {/* Unified Quantity Capsule Selector */}
                 <View style={styles.qtyRow}>
                   <TouchableOpacity
                     onPress={() => decreaseQty(item.id)}
@@ -101,16 +108,38 @@ function Cart() {
                   </TouchableOpacity>
                 </View>
               </View>
+
+              {/* Direct Card Trash can button */}
+              <TouchableOpacity
+                style={styles.cardTrashBtn}
+                onPress={() => removeItem(item.id)}
+              >
+                <Ionicons name="trash-outline" size={18} color="#999" />
+              </TouchableOpacity>
             </View>
           </Swipeable>
         ))}
 
+        {/* Empty Landing View illustration */}
         {cartItems.length === 0 && (
           <View style={styles.emptyCartContainer}>
-            <Text style={styles.emptyCartText}>Your cart is empty 🛒</Text>
+            <View style={styles.emptyIconWrapper}>
+              <Ionicons name="bag-handle-outline" size={48} color="#ff5b27" />
+            </View>
+            <Text style={styles.emptyCartText}>Your Cart is Empty</Text>
+            <Text style={styles.emptyCartSubtext}>
+              Looks like you haven't added anything yet. Go back and discover some products!
+            </Text>
+            <TouchableOpacity
+              style={styles.startShoppingBtn}
+              onPress={() => navigation.navigate('CustomerHome')}
+            >
+              <Text style={styles.startShoppingText}>Start Shopping</Text>
+            </TouchableOpacity>
           </View>
         )}
 
+        {/* Bill Billing card */}
         {cartItems.length > 0 && (
           <View style={styles.summaryCard}>
             <View style={styles.row}>
@@ -119,15 +148,15 @@ function Cart() {
             </View>
 
             <View style={styles.row}>
-              <Text style={styles.label}>Delivery</Text>
+              <Text style={styles.label}>Delivery Fee</Text>
               <Text style={styles.value}>₹{deliveryFee.toFixed(2)}</Text>
             </View>
 
             <View style={styles.divider} />
 
             <View style={styles.row}>
-              <Text style={styles.total}>Total</Text>
-              <Text style={styles.total}>₹{total.toFixed(2)}</Text>
+              <Text style={styles.totalLabel}>Total</Text>
+              <Text style={styles.totalValue}>₹{total.toFixed(2)}</Text>
             </View>
 
             <TouchableOpacity
@@ -135,6 +164,7 @@ function Cart() {
               onPress={() => navigation.navigate('Checkout')}
             >
               <Text style={styles.checkoutText}>Checkout</Text>
+              <FontAwesome6 name="arrow-right" size={14} color="#fff" />
             </TouchableOpacity>
           </View>
         )}
